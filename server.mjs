@@ -35,7 +35,8 @@ createServer(async (req, res) => {
   if (await api(req, res)) return;
   const path = normalize(decodeURIComponent(new URL(req.url, "http://x").pathname));
   if (path === "/codebook.json") return res.writeHead(200, { "content-type": TYPES[".json"] }).end(CODEBOOK_JSON);
-  // Vercel에서는 public/을 CDN이 직접 서빙하고, "/"는 vercel.json에서 index.html로 돌린다
+  // Vercel에서는 public/을 CDN이 직접 서빙하고 함수에는 넣지 않으므로 "/"는 CDN의 index.html로 보낸다
+  if (path === "/" && process.env.VERCEL) return res.writeHead(302, { location: "/index.html" }).end();
   const file = join(ROOT, path === "/" ? "index.html" : path);
   if (!file.startsWith(ROOT)) return res.writeHead(403).end();
   try {
