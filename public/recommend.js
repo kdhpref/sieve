@@ -96,12 +96,111 @@ async function confirmConditions() {
     const view = await api(`/api/interviews/${session.id}/lock`, {});
     stage = view.interview.stage;
     say("me", "이 조건으로 확정할게요");
-    say("note", "조건을 확정했어요. 이 조건으로 Claude 웹 검색 결과를 보여주는 단계는 아직 준비 중이에요.");
+    say("note", "조건을 확정했어요. 이 조건으로 Claude 웹 검색을 실행할게요.");
   } catch (err) {
     showError(`${err.message}. 다시 눌러 주세요.`);
   } finally {
     busy = false;
     renderInput();
+  }
+  if (stage === "confirmed") requestRecommendation();
+}
+
+// ---------- 추천 결과 (recommendation-spec.md 2.4–3장) ----------
+const POLL_MS = 2500;
+const FAILURES = {
+  search_failed: "웹 검색이 실패했어요.",
+  timeout: "검색 시간이 초과됐어요.",
+  search_not_used: "Claude가 웹 검색을 실행하지 않아 결과를 보여드리지 않아요.",
+  no_verified_candidates: "답변에서 검증을 통과한 후보를 찾지 못했어요.",
+  analysis_failed: "답변 분석이 실패했어요.",
+  interrupted: "서버가 다시 시작돼 검색이 중단됐어요.",
+  error: "처리 중 오류가 났어요.",
+};
+let pollTimer = null;
+
+const safeHref = (u) => { try { return ["http:", "https:"].includes(new URL(u).protocol) ? u : null; } catch { return null; } };
+const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return ""; } };
+const day = (iso) => (iso ? iso.slice(0, 10) : "");
+
+function showResult(html) {
+  $("rec-result").hidden = false;
+  $("rec-result").innerHTML = html;
+}
+
+async function requestRecommendation() {
+  clearTimeout(pollTimer);
+  showResult(`<p class="rec-loading">조건으로 질문을 만들고 Claude 웹 검색을 실행하는 중이에요. 30초~1분 정도 걸릴 수 있어요.</p>`);
+  try {
+    const rec = await api("/api/recommendations", { interview_id: session.id });
+    session.recId = rec.id;
+    save();
+    renderRecommendation(rec);
+  } catch (err) {
+    showResult(`<div class="rec-fail"><p>${esc(err.message)}</p><button type="button" class="send" data-rec="retry">다시 시도</button></div>`);
+  }
+}
+
+async function poll() {
+  try {
+    renderRecommendation(await api(`/api/recommendations/${session.recId}`));
+  } catch (err) {
+    showResult(`<div class="rec-fail"><p>${esc(err.message)}</p><button type="button" class="send" data-rec="retry">다시 시도</button></div>`);
+  }
+}
+
+function renderCard(c, rec) {
+  const buy = c.buy && safeHref(c.buy.url);
+  const img = c.image && safeHref(c.image.url);
+  const p = c.price;
+  const priceNote = p ? [p.seller && `판매처 ${esc(p.seller)}`, p.checked_date_text ? `확인일 ${esc(p.checked_date_text)}` : `수집일 ${day(rec.collection.collected_at)}`]
+    .filter(Boolean).join(" · ") : "";
+  return `
+    <li class="rec-card">
+      <div class="rec-photo">
+        <span class="rec-pos" title="답변에 나온 순서">${c.explicit_rank ?? c.position}</span>
+        ${img ? `<img src="${esc(img)}" alt="${esc(c.product_name)} 판매 페이지 사진" loading="lazy" referrerpolicy="no-referrer">` : `<span class="no-photo">사진을 찾지 못했어요</span>`}
+      </div>
+      <div class="rec-body">
+        ${c.brand ? `<p class="rec-brand">${esc(c.brand)}</p>` : ""}
+        <h3 class="rec-name">${esc(c.product_name)}</h3>
+        <p class="rec-price">${p ? `<strong>${esc(p.text)}</strong><small>${priceNote} · 검색 시점 정보라 바뀔 수 있어요</small>` : `<small>답변에서 확인된 가격이 없어요</small>`}</p>
+        <p class="rec-reason">${esc(c.reason_text)}</p>
+        ${c.unverified_text ? `<p class="rec-unverified">확인되지 않은 정보: ${esc(c.unverified_text)}</p>` : ""}
+        ${buy ? `<a class="rec-buy" href="${esc(buy)}" target="_blank" rel="noopener noreferrer nofollow">${esc(host(buy))}에서 보기·구매</a>`
+          : `<p class="rec-nobuy">답변 인용에서 판매 페이지를 찾지 못했어요. 아래 출처를 확인해 주세요.</p>`}
+        ${c.sources.length ? `<ul class="rec-sources">${c.sources.map((s) => `<li>출처: <a href="${esc(safeHref(s.url) ?? "#")}" target="_blank" rel="noopener noreferrer nofollow">${esc(s.title || host(s.url))}</a></li>`).join("")}</ul>` : ""}
+      </div>
+    </li>`;
+}
+
+function renderRecommendation(rec) {
+  clearTimeout(pollTimer);
+  const conds = rec.conditions.length ? `<ul class="rec-conds">${rec.conditions.map((c) => `<li>${esc(c.label)}</li>`).join("")}</ul>` : "";
+  const question = `<div class="rec-question"><b>Claude에 보낸 질문 (확정 조건으로 조립)</b>${esc(rec.question_text)}${conds}</div>`;
+  if (["queued", "collecting", "analyzing"].includes(rec.status)) {
+    const step = rec.status === "analyzing" ? "답변에서 후보·가격·판매 페이지를 확인하는 중이에요." : "Claude 웹 검색으로 후보를 찾는 중이에요.";
+    showResult(`<p class="rec-loading">${step}</p>${question}`);
+    pollTimer = setTimeout(poll, POLL_MS);
+    return;
+  }
+  const meta = `<p class="rec-meta">${rec.is_internal_test ? "내부 테스트 · " : ""}수집 ${esc(rec.collection.collected_at?.replace("T", " ").slice(0, 16) ?? "-")} UTC · ${esc(rec.collection.model_id ?? "-")} · 검색 위치 ${esc(rec.collection.search_country)} · 웹 검색 ${rec.collection.search_used ? "실행" : "미실행"}</p>`;
+  const raw = rec.answer_text ? `<details class="rec-raw"><summary>Claude 답변 원문 보기</summary><pre>${esc(rec.answer_text)}</pre></details>` : "";
+  if (rec.status === "failed") {
+    showResult(`<h2>Claude 웹 검색으로 찾은 후보</h2>${meta}<div class="rec-fail"><p>${esc(FAILURES[rec.failure] ?? "결과를 만들지 못했어요.")}</p>
+      <button type="button" class="send" data-rec="retry">다시 시도</button></div>${question}${raw}`);
+    return;
+  }
+  showResult(`
+    <h2>Claude 웹 검색으로 찾은 후보</h2>
+    ${meta}
+    <p class="rec-notice">Sieve가 고르거나 보증한 제품이 아니에요. 순서는 답변에 나온 순서이며 우열을 뜻하지 않아요. 가격·사진·링크는 검색 시점의 판매 페이지 정보예요. 제휴 링크가 아니며, 이 화면에는 혜택을 붙이지 않아요.${rec.review_count ? ` 검증을 통과하지 못한 ${rec.review_count}개는 검수 대기로 빼 두었어요.` : ""}</p>
+    <ol class="rec-cards">${rec.candidates.map((c) => renderCard(c, rec)).join("")}</ol>
+    ${question}
+    ${raw}`);
+  // 사진이 안 열리면(핫링크 차단 등) 자리 표시로 바꾼다
+  for (const img of $("rec-result").querySelectorAll(".rec-photo img")) {
+    img.addEventListener("error", () => { img.replaceWith(Object.assign(document.createElement("span"), { className: "no-photo", textContent: "사진을 불러오지 못했어요" })); }, { once: true });
   }
 }
 
@@ -149,12 +248,18 @@ export async function startRecommend({ product, productLabel, lang }) {
       picked = new Set();
       renderLog();
       renderInput();
+      if (stage === "confirmed") {
+        if (session.recId) poll(); else requestRecommendation();
+      }
       return;
     } catch {
       localStorage.removeItem(STORE_KEY); // 서버 기록이 없으면 새로 시작
     }
   }
-  session = { id: null, product: product.code, log: [] };
+  clearTimeout(pollTimer);
+  $("rec-result").hidden = true;
+  $("rec-result").innerHTML = "";
+  session = { id: null, product: product.code, log: [], recId: null };
   current = null;
   stage = null;
   busy = true;
@@ -197,6 +302,9 @@ export function bindRecommend(restart) {
     }
     if (current.type === "scale") return send({ kind: "option", value_num: Number(code) }, opt.label ?? code);
     send({ kind: "option", codes: [code] }, opt.label ?? code);
+  });
+  $("rec-result").addEventListener("click", (e) => {
+    if (e.target.closest("[data-rec=retry]")) requestRecommendation();
   });
   $("composer").addEventListener("submit", (e) => { e.preventDefault(); sendText(); });
   $("chat-input").addEventListener("keydown", (e) => {

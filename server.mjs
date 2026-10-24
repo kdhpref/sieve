@@ -7,6 +7,8 @@ import { openStore } from "./lib/interview/store.mjs";
 import { createClaude } from "./lib/interview/claude.mjs";
 import { createInterviewService } from "./lib/interview/service.mjs";
 import { createApi } from "./lib/api.mjs";
+import { createRecommendClaude } from "./lib/recommend/claude.mjs";
+import { createRecommendService } from "./lib/recommend/service.mjs";
 // data/ JSON은 import로 읽어야 Vercel 함수 번들에 함께 들어간다
 import blockedTermsFile from "./data/interview-blocked-terms.json" with { type: "json" };
 // 인터뷰 코드북(docs/interview-guideline.md)은 data/의 이 파일 하나만 내보낸다
@@ -18,7 +20,8 @@ const DB_DIR = process.env.VERCEL ? "/tmp" : join(import.meta.dirname, "data");
 const store = openStore(join(DB_DIR, "interview.db"));
 const blockedTerms = blockedTermsFile.terms;
 const claude = createClaude();
-const api = createApi({ service: createInterviewService({ store, claude, blockedTerms }), store });
+const recommend = createRecommendService({ store, claude: createRecommendClaude() });
+const api = createApi({ service: createInterviewService({ store, claude, blockedTerms }), store, recommend });
 
 const ROOT = join(import.meta.dirname, "public");
 const CODEBOOK_JSON = JSON.stringify(codebook);
