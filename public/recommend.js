@@ -200,7 +200,7 @@ function drawRecommendation(rec) {
   const meta = `<p class="rec-meta">${rec.is_internal_test ? t("internalTest") : ""}${t("meta", esc(rec.collection.collected_at?.replace("T", " ").slice(0, 16) ?? "-"), esc(rec.collection.model_id ?? "-"), esc(rec.collection.search_country), rec.collection.search_used)}</p>`;
   const raw = rec.answer_text ? `<details class="rec-raw"><summary>${t("rawAnswer")}</summary><pre>${esc(rec.answer_text)}</pre></details>` : "";
   if (rec.status === "failed") {
-    showResult(`<h2>${t("resultsTitle")}</h2>${meta}${failHTML(t(FAILURES[rec.failure] ?? "failDefault"))}${question}${raw}`);
+    showResult(`<h2>${t("resultsTitle")}</h2>${meta}${failHTML(t(FAILURES[rec.failure] ?? "failDefault") + (rec.error ? ` (${rec.error})` : ""))}${question}${raw}`);
     return;
   }
   showResult(`
@@ -280,7 +280,8 @@ export async function startRecommend({ product, productLabel, lang }) {
   showError(null);
   try {
     const view = await api("/api/interviews", {
-      lang, market: "US", mode: "recommend",
+      // 한국어로 받으면 한국 구매처, 영어로 받으면 미국 구매처 기준으로 묻고 검색한다(recommendation-spec.md 2.4)
+      lang, market: lang === "en" ? "US" : "KR", mode: "recommend",
       product_category: product.code, product_category_other: product.other ?? null,
     });
     session.id = view.interview.id;

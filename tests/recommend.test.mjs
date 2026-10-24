@@ -127,13 +127,13 @@ test("검증: 원문에 없는 이유·없는 인용 ID는 빼고, 가격은 원
 test("추천 흐름: 확정 전에는 거절, 확정 후 202 → 완료 시 검증 통과 후보만 사진·가격·구매 링크와 함께", async () => {
   const { store, interviews, recommend, recClaude } = setup();
   const started = await interviews.start({ lang: "en", market: "US", product_category: "SK-TONER", mode: "recommend" });
-  assert.throws(() => recommend.create({ interview_id: started.interview.id }), { status: 409 });
+  await assert.rejects(recommend.create({ interview_id: started.interview.id }), { status: 409 });
 
   const v = await confirmedInterview(interviews);
-  const first = recommend.create({ interview_id: v.interview.id });
+  const first = await recommend.create({ interview_id: v.interview.id });
   assert.equal(first.status, 202);
   // 진행 중 중복 요청은 같은 기록을 돌려준다
-  const dup = recommend.create({ interview_id: v.interview.id });
+  const dup = await recommend.create({ interview_id: v.interview.id });
   assert.equal(dup.status, 200);
   assert.equal(dup.body.id, first.body.id);
   await recommend.settle(first.body.id);
@@ -160,23 +160,23 @@ test("실패 상태: 검색 미실행·검증 통과 0개는 그대로 알리고
   const noSearch = fakeClaude({ collect: () => ({ ok: true, raws: [], usage: {}, cost_usd: 0.01, model_id: "m", parsed: parseCollected([{ type: "text", text: ANSWER }]) }) });
   const a = setup(noSearch);
   const v = await confirmedInterview(a.interviews);
-  const r1 = a.recommend.create({ interview_id: v.interview.id });
+  const r1 = await a.recommend.create({ interview_id: v.interview.id });
   await a.recommend.settle(r1.body.id);
   assert.equal(a.recommend.get(r1.body.id).failure, "search_not_used");
   assert.deepEqual(a.recommend.get(r1.body.id).candidates, []);
-  const r2 = a.recommend.create({ interview_id: v.interview.id });
+  const r2 = await a.recommend.create({ interview_id: v.interview.id });
   assert.equal(r2.status, 202);
   assert.notEqual(r2.body.id, r1.body.id);
 
   const none = setup(fakeClaude({ analyze: () => ({ candidates: [{ ...GOOD, reason_text: "nope" }] }) }));
   const v2 = await confirmedInterview(none.interviews);
-  const r3 = none.recommend.create({ interview_id: v2.interview.id });
+  const r3 = await none.recommend.create({ interview_id: v2.interview.id });
   await none.recommend.settle(r3.body.id);
   assert.equal(none.recommend.get(r3.body.id).failure, "no_verified_candidates");
 
   const timeout = setup(fakeClaude({ collect: () => ({ ok: false, error: "timeout", raws: [], usage: {}, cost_usd: 0, model_id: "m" }) }));
   const v3 = await confirmedInterview(timeout.interviews);
-  const r4 = timeout.recommend.create({ interview_id: v3.interview.id });
+  const r4 = await timeout.recommend.create({ interview_id: v3.interview.id });
   await timeout.recommend.settle(r4.body.id);
   assert.equal(timeout.recommend.get(r4.body.id).failure, "timeout");
 });
@@ -194,4 +194,31 @@ test("사진 찾기: 내부 주소·http(s) 밖 주소는 거절하고, og:image
   assert.equal(extractImage(html, "https://shop.test/p/1"), "https://shop.test/img/a.jpg?x=1&y=2");
   assert.equal(extractImage(`<meta property="og:image" content="javascript:alert(1)">`, "https://shop.test/"), null);
   assert.equal(cleanUrl("javascript:alert(1)"), null);
+});
+
+test("언어가 시장을 정한다: 한국어 추천은 KR(한국 구매처·검색 위치), 영어 추천은 US", async () => {
+  const { store, interviews } = setup();
+  const ko = await interviews.start({ lang: "ko", market: "US", product_category: "SK-TONER", mode: "recommend" });
+  assert.equal(ko.interview.market, "KR");
+  const en = await interviews.start({ lang: "en", market: "KR", product_category: "SK-TONER", mode: "recommend" });
+  assert.equal(en.interview.market, "US");
+  const v = await confirmedInterview(interviews, { lang: "ko", overrides: { budget_band: { kind: "option", codes: ["bud_2"] }, planned_channel: { kind: "option", codes: ["ch_oliveyoung"] } } });
+  const q = buildQuery(store.getInterview(v.interview.id));
+  assert.equal(q.search_country, "KR");
+  assert.match(q.question_text, /^한국에서 구매할 수 있는 한국 브랜드 토너 중에서 지성 피부를 고려한/);
+  assert.match(q.question_text, /1개 예산: 1만~2만 원\. 올리브영에서 살 생각이야\./);
+  // 조사 모드는 그대로 둔다
+  const research = await interviews.start({ lang: "ko", market: "US", product_category: "SK-TONER" });
+  assert.equal(research.interview.market, "US");
+});
+
+test("서버리스 모드: POST 안에서 수집을 끝내고 완료 결과를 돌려준다", async () => {
+  const store = openStore(":memory:");
+  const interviews = createInterviewService({ store, claude: itvClaude() });
+  const recommend = createRecommendService({ store, claude: fakeClaude(), imageFinder: async () => null, waitInRequest: true });
+  const v = await confirmedInterview(interviews);
+  const r = await recommend.create({ interview_id: v.interview.id });
+  assert.equal(r.status, 200);
+  assert.equal(r.body.status, "done");
+  assert.equal(r.body.candidates[0].image, null);
 });
