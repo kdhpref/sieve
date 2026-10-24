@@ -43,6 +43,7 @@ npm test
 | `/` | 소비자 참여 화면(한국어·영어 전환). 제품 종류를 고른 뒤 두 갈래로 나뉜다 |
 | `/interview.html` | AI 인터뷰 화면(내부 테스트). 혜택 전 기록 → 결과와 이유 |
 | `/stats.html` | 소비자 제출 정량 집계. 모든 막대에서 산정 대상 원문으로 이동 |
+| `/brand.html` | 브랜드 담당자용 데이터 조회·시각화. 소비자 화면의 제품 종류 선택 단계에 있는 “브랜드 데이터 보기” 버튼으로 열며, 고른 제품 종류로 추려서 연다(`?category=`). 소비자 제출(자기보고)·제품 추천 받기의 Claude 웹 검색 후보·Claude API 웹 검색 테스트(이전 데모의 `data/sieve.db`, 있을 때만)를 합산하지 않고 나란히 보여주고, 모든 막대·표는 원문 서랍으로 이동한다. 외부 데이터(Search Console·Bing·GA4·제휴 정산)는 미연결 → “데이터 없음”. 내 브랜드 이름을 적으면 해당 행만 강조한다 |
 
 소비자 화면의 두 갈래:
 
@@ -65,7 +66,7 @@ npm test
 | `GET /api/brand/overview[?category=]` | 브랜드 담당자용 요약. 소비자 제출·추천 요청·API 테스트를 합산하지 않고 각각 반환하며, 미연결 외부 데이터는 "데이터 없음"으로 표시 |
 | `GET /api/brand/api-test/responses/:id` | API 테스트 응답 원문 |
 
-브랜드 담당자 화면(`/brand.html`)은 아직 없고 API만 준비되어 있다.
+브랜드 담당자 화면(`/brand.html`, `public/brand.js`)은 위 두 API와 `/api/interview-stats/evidence?category=`, `/api/recommendations/:id`를 읽는다.
 
 ## 구조
 

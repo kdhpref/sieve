@@ -113,6 +113,8 @@ function renderDock() {
     setNext(t("shareBtn"), !productReady());
     $("next-alt").textContent = t("recommendBtn");
     $("next-alt").disabled = !productReady();
+    // 브랜드 조회 화면은 고른 제품 종류로 추려서 연다(고르기 전이면 전체)
+    $("brand-link").href = state.code ? `/brand.html?category=${encodeURIComponent(state.code)}` : "/brand.html";
   } else if (v === "paste") {
     const problem = pasteProblem();
     $("picked").textContent = problem ?? t("pasted", share.excerpt.trim().length.toLocaleString());

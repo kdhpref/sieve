@@ -105,23 +105,37 @@ test("질문 조립: 검수 대기 값과 '정하지 않음·아직 모름'은 �
   assert.ok(q.conditions.every((c) => c.slot !== "budget_band" && c.slot !== "planned_channel"));
 });
 
-test("검증: 원문에 없는 이유·없는 인용 ID는 빼고, 가격은 원문에 있을 때만 붙인다", () => {
+test("검증: 원문에 없는 이름·이유와 비추천은 빼고, 인용 없는 후보는 '검색 확인 안 됨'으로 보여준다", () => {
   const parsed = parseCollected(COLLECT_CONTENT);
   const { shown, review } = verifyCandidates({ candidates: [
     GOOD,
     { ...GOOD, product_name: "Fake", reason_text: "made up reason" },
-    { ...GOOD, product_name: "Bad cite", citation_ids: ["c9"] },
-    { ...GOOD, product_name: "Heartleaf 77% Toner", mention_type: "recommended", reason_text: "popular for oily skin", price_text: "$12.00", price_amount: 12, buy_citation_id: null, citation_ids: ["c2"] },
-    { ...GOOD, product_name: "Discouraged", mention_type: "discouraged" },
-  ] }, parsed);
+    { ...GOOD, product_name: "Heartleaf 77% Toner", brand: "Anua", reason_text: "popular for oily skin", price_text: "$12.00", price_amount: 12, buy_citation_id: null, citation_ids: ["c9"] },
+    { ...GOOD, product_name: "Dokdo", mention_type: "discouraged" },
+  ] }, parsed, { channel: "ch_amazon_us", country: "US" });
   assert.deepEqual(shown.map((c) => c.product_name), ["1025 Dokdo Toner", "Heartleaf 77% Toner"]);
-  assert.deepEqual(review.map((r) => r.product_name), ["Fake", "Bad cite", "Discouraged"]);
+  assert.deepEqual(review.map((r) => r.reasons), [["name_not_in_answer", "reason_not_in_answer"], ["discouraged"]]);
+  assert.equal(shown[0].verified, true);
   assert.equal(shown[0].price.text, "$15.90");
   assert.equal(shown[0].price.seller, "Amazon");
-  assert.equal(shown[0].buy.url, "https://www.amazon.com/dp/B0TEST?th=1"); // 제휴 tag·ref 경로 제거, 변형 값 유지
-  assert.equal(shown[1].price, null); // $12.00은 원문에 없음
-  assert.deepEqual(shown[1].notes, ["price_not_in_answer"]);
-  assert.equal(shown[1].buy, null);
+  assert.deepEqual(shown[0].buy, { url: "https://www.amazon.com/dp/B0TEST?th=1", title: "Round Lab Dokdo Toner", kind: "cited_page" }); // 제휴 tag·ref 경로 제거
+  // 없는 인용 ID는 버리고, 출처가 없으니 검색 확인 안 됨 + 가격 숨김 + 구매처 검색 링크
+  assert.equal(shown[1].verified, false);
+  assert.deepEqual(shown[1].sources, []);
+  assert.equal(shown[1].price, null);
+  assert.deepEqual(shown[1].notes, ["price_without_source"]);
+  assert.deepEqual(shown[1].buy, { url: "https://www.amazon.com/s?k=Anua%20Heartleaf%2077%25%20Toner", title: null, kind: "store_search" });
+});
+
+test("구매 링크: 인용이 없으면 검색 결과에 있던 판매 페이지만 쓰고, 목록에 없는 URL은 버린다", () => {
+  const parsed = parseCollected(COLLECT_CONTENT);
+  const base = { ...GOOD, buy_citation_id: null, citation_ids: [] };
+  const ok = verifyCandidates({ candidates: [{ ...base, buy_search_result_url: "https://example.com/review" }] }, parsed, { channel: "ch_coupang", country: "KR" });
+  assert.equal(ok.shown[0].buy.kind, "search_result_page");
+  assert.equal(ok.shown[0].verified, true);
+  const made = verifyCandidates({ candidates: [{ ...base, buy_search_result_url: "https://made.up/product" }] }, parsed, { channel: "ch_coupang", country: "KR" });
+  assert.equal(made.shown[0].buy.kind, "store_search");
+  assert.match(made.shown[0].buy.url, /^https:\/\/www\.coupang\.com\/np\/search\?q=/);
 });
 
 test("추천 흐름: 확정 전에는 거절, 확정 후 202 → 완료 시 검증 통과 후보만 사진·가격·구매 링크와 함께", async () => {
@@ -149,36 +163,49 @@ test("추천 흐름: 확정 전에는 거절, 확정 후 202 → 완료 시 검�
   assert.equal(rec.collection.search_used, true);
   assert.equal(rec.is_internal_test, true);
   // 수집 질문에 자사·경쟁사 목록 같은 추가 정보가 없고 조립한 질문 그대로 보낸다
-  assert.equal(recClaude.calls[0].input.question, rec.question_text);
+  assert.equal(recClaude.calls[0].input.question, rec.collection.question_text);
   // 원본은 sha256과 함께 저장, 조사 집계 테이블에는 추천 행이 없다
   const row = store.db.prepare("SELECT raw_sha256, cost_usd FROM recommendations WHERE id = ?").get(rec.id);
   assert.match(row.raw_sha256, /^[0-9a-f]{64}$/);
   assert.ok(row.cost_usd > 0);
 });
 
-test("실패 상태: 검색 미실행·검증 통과 0개는 그대로 알리고, 실패 후에는 다시 요청할 수 있다", async () => {
-  const noSearch = fakeClaude({ collect: () => ({ ok: true, raws: [], usage: {}, cost_usd: 0.01, model_id: "m", parsed: parseCollected([{ type: "text", text: ANSWER }]) }) });
-  const a = setup(noSearch);
+test("검색이 안 되면 검색 없이 Claude가 아는 정보로 후보를 내고, 그래도 없으면 실패를 알린다", async () => {
+  // 웹 검색 단계에서 후보 0개 → 검색 없는 대체 수집으로 후보 표시
+  const fallback = fakeClaude({
+    collect: (input) => ({ ok: true, raws: [{ search: input.search }], usage: {}, cost_usd: 0.01, model_id: "m",
+      parsed: parseCollected(input.search ? COLLECT_CONTENT : [{ type: "text", text: ANSWER }]) }),
+    analyze: (input) => ({ candidates: input.citations.length ? [] : [{ ...GOOD, citation_ids: [], buy_citation_id: null }] }),
+  });
+  const a = setup(fallback);
   const v = await confirmedInterview(a.interviews);
   const r1 = await a.recommend.create({ interview_id: v.interview.id });
   await a.recommend.settle(r1.body.id);
-  assert.equal(a.recommend.get(r1.body.id).failure, "search_not_used");
-  assert.deepEqual(a.recommend.get(r1.body.id).candidates, []);
-  const r2 = await a.recommend.create({ interview_id: v.interview.id });
-  assert.equal(r2.status, 202);
-  assert.notEqual(r2.body.id, r1.body.id);
+  const rec = a.recommend.get(r1.body.id);
+  assert.equal(rec.status, "done");
+  assert.equal(rec.source_mode, "knowledge");
+  assert.deepEqual(fallback.calls.filter((c) => c.purpose === "collect").map((c) => c.input.search), [true, false]);
+  assert.equal(rec.candidates[0].verified, false);
+  assert.equal(rec.candidates[0].price, null);
+  assert.equal(rec.candidates[0].buy.kind, "store_search");
+  assert.equal(rec.candidates[0].image, null); // 검색 링크에서는 사진을 찾지 않는다
+  assert.match(rec.error, /no_candidates_with_search/);
 
   const none = setup(fakeClaude({ analyze: () => ({ candidates: [{ ...GOOD, reason_text: "nope" }] }) }));
   const v2 = await confirmedInterview(none.interviews);
   const r3 = await none.recommend.create({ interview_id: v2.interview.id });
   await none.recommend.settle(r3.body.id);
   assert.equal(none.recommend.get(r3.body.id).failure, "no_verified_candidates");
+  // 실패한 뒤에는 다시 요청하면 새 기록을 만든다
+  const r4 = await none.recommend.create({ interview_id: v2.interview.id });
+  assert.equal(r4.status, 202);
+  assert.notEqual(r4.body.id, r3.body.id);
 
   const timeout = setup(fakeClaude({ collect: () => ({ ok: false, error: "timeout", raws: [], usage: {}, cost_usd: 0, model_id: "m" }) }));
   const v3 = await confirmedInterview(timeout.interviews);
-  const r4 = await timeout.recommend.create({ interview_id: v3.interview.id });
-  await timeout.recommend.settle(r4.body.id);
-  assert.equal(timeout.recommend.get(r4.body.id).failure, "timeout");
+  const r5 = await timeout.recommend.create({ interview_id: v3.interview.id });
+  await timeout.recommend.settle(r5.body.id);
+  assert.equal(timeout.recommend.get(r5.body.id).failure, "timeout");
 });
 
 test("사진 찾기: 내부 주소·http(s) 밖 주소는 거절하고, og:image를 페이지 기준으로 푼다", async () => {

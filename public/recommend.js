@@ -175,7 +175,8 @@ function renderCard(c, rec) {
         <p class="rec-price">${p ? `<strong>${esc(p.text)}</strong><small>${priceNote} · ${t("priceNote")}</small>` : `<small>${t("noPrice")}</small>`}</p>
         <p class="rec-reason">${esc(c.reason_text)}</p>
         ${c.unverified_text ? `<p class="rec-unverified">${t("unverified", esc(c.unverified_text))}</p>` : ""}
-        ${buy ? `<a class="rec-buy" href="${esc(buy)}" target="_blank" rel="noopener noreferrer nofollow">${t("buyAt", esc(host(buy)))}</a>`
+        ${c.verified === false ? `<p class="rec-badge">${t("notVerified")}</p>` : ""}
+        ${buy ? `<a class="rec-buy${c.buy.kind === "store_search" ? " is-search" : ""}" href="${esc(buy)}" target="_blank" rel="noopener noreferrer nofollow">${c.buy.kind === "store_search" ? t("searchAt", esc(host(buy))) : t("buyAt", esc(host(buy)))}</a>`
           : `<p class="rec-nobuy">${t("noBuy")}</p>`}
         ${c.sources.length ? `<ul class="rec-sources">${c.sources.map((s) => `<li>${t("source")}: <a href="${esc(safeHref(s.url) ?? "#")}" target="_blank" rel="noopener noreferrer nofollow">${esc(s.title || host(s.url))}</a></li>`).join("")}</ul>` : ""}
       </div>
@@ -191,7 +192,8 @@ function renderRecommendation(rec) {
 
 function drawRecommendation(rec) {
   const conds = rec.conditions.length ? `<ul class="rec-conds">${rec.conditions.map((c) => `<li>${esc(c.label)}</li>`).join("")}</ul>` : "";
-  const question = `<div class="rec-question"><b>${t("sentQuestion")}</b>${esc(rec.question_text)}${conds}</div>`;
+  // 조립한 질문 문장은 화면에 보여주지 않고, 적용한 조건만 태그로 보여준다(조건 요약, 명세 3장)
+  const question = conds ? `<div class="rec-question"><b>${t("appliedConditions")}</b>${conds}</div>` : "";
   if (["queued", "collecting", "analyzing"].includes(rec.status)) {
     const step = rec.status === "analyzing" ? t("recAnalyzing") : t("recSearching");
     showResult(`<p class="rec-loading">${step}</p>${question}`);
@@ -206,6 +208,7 @@ function drawRecommendation(rec) {
   showResult(`
     <h2>${t("resultsTitle")}</h2>
     ${meta}
+    ${rec.source_mode === "knowledge" ? `<p class="rec-notice rec-warn">${t("knowledgeNotice")}</p>` : ""}
     <p class="rec-notice">${t("notice", rec.review_count)}</p>
     <ol class="rec-cards">${rec.candidates.map((c) => renderCard(c, rec)).join("")}</ol>
     ${question}
