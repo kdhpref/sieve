@@ -1,40 +1,163 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>sieve · AI 추천 근거 추적</title>
-  <link rel="stylesheet" href="/style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sieve: 어떤 화장품을 찾고 있었나요?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <span class="logo">sieve</span>
-      <span class="sub">AI 추천 근거 추적</span>
-    </div>
-    <span class="tag">Claude API 웹 검색 테스트</span>
-    <span id="keyStatus" class="key"></span>
+  <div class="test-banner" role="note">내부 테스트 화면이에요. 실제 보상은 지급되지 않아요.</div>
+
+  <header class="top">
+    <span class="wordmark">Sieve</span>
+    <ol class="steps" aria-label="참여 단계" id="steps">
+      <li>제품 종류</li>
+      <li>원래 고민</li>
+      <li>대화 공유</li>
+      <li>확인</li>
+    </ol>
   </header>
 
-  <div class="layout">
-    <aside class="side">
-      <section class="card">
-        <h2>고정 질문</h2>
-        <p id="questionText" class="question"></p>
-        <dl id="questionMeta" class="meta"></dl>
-        <button id="runBtn" class="run">이 질문 실행</button>
-        <p id="runHint" class="hint"></p>
-      </section>
-      <section class="card">
-        <h2>실행 기록</h2>
-        <ul id="runList" class="runs"></ul>
-      </section>
-    </aside>
+  <main class="page" id="step-product" data-step="1">
+    <section class="intro">
+      <h1>어떤 화장품을<br>찾고 있었나요?</h1>
+      <p>AI에게 물어보며 알아본 제품 종류를 하나 골라 주세요.
+        사지 않았거나 다른 브랜드를 골랐어도 보상은 같아요.</p>
+    </section>
 
-    <main class="main" id="main">
-      <div class="empty">왼쪽에서 실행 기록을 선택하거나 질문을 실행하세요.</div>
-    </main>
-  </div>
+    <nav class="groups" aria-label="제품 분류" id="groups"></nav>
+
+    <section class="shelf" aria-live="polite">
+      <div class="shelf-grid" id="shelf" role="radiogroup" aria-label="제품 종류"></div>
+    </section>
+
+    <details class="other" id="other">
+      <summary>찾던 제품이 목록에 없어요</summary>
+      <label for="other-text">어떤 제품이었는지 적어 주세요</label>
+      <input id="other-text" type="text" maxlength="40" placeholder="예: 토너 겸용 앰플">
+    </details>
+  </main>
+
+  <main class="page" id="step-concern" data-step="2" hidden>
+    <section class="intro intro-concern">
+      <div class="picked-product" id="picked-product"></div>
+      <div>
+        <h1 id="concern-title">무엇을 보고<br>고르려 했나요?</h1>
+        <p>AI에게 묻기 전에 원래 하던 고민을 모두 골라 주세요. 정답은 없어요.</p>
+      </div>
+    </section>
+
+    <div id="concerns"></div>
+
+    <section class="block" id="primary-block" hidden>
+      <h2>이 중 가장 중요했던 하나는?</h2>
+      <div class="primary-list" id="primary" role="radiogroup" aria-label="가장 중요했던 고민"></div>
+    </section>
+
+    <details class="other" id="attrs">
+      <summary>제형이나 용량도 정해 두었다면 (선택)</summary>
+      <div id="attr-list"></div>
+    </details>
+
+    <p class="lock-note">대화 공유까지 마치면 이 기록은 잠겨서 수정할 수 없어요.
+      혜택 안내는 그다음에 보여 드려요.</p>
+  </main>
+
+  <main class="page" id="step-share" data-step="3" hidden>
+    <section class="intro">
+      <h1>AI와 나눈 대화를<br>알려 주세요</h1>
+      <p>기억나는 만큼만 적어도 괜찮아요. 쇼핑과 관계없는 대화나
+        이름·연락처·주소·주문번호는 빼 주세요.</p>
+    </section>
+
+    <section class="block">
+      <h2>어떤 AI에게 물어봤나요?</h2>
+      <p class="hint">여러 개를 썼다면 모두 골라 주세요.</p>
+      <div class="chips" id="ai-service"></div>
+      <label class="free" id="ai-other-wrap" hidden><span>어떤 AI였는지 적어 주세요</span>
+        <input type="text" id="ai-other" maxlength="40"></label>
+    </section>
+
+    <div id="ai-used">
+      <section class="block">
+        <h2><label for="ai-question">AI에게 실제로 한 질문</label></h2>
+        <p class="hint">처음 물어본 문장을 그대로 붙여 넣거나 기억나는 대로 적어 주세요.</p>
+        <textarea id="ai-question" rows="3" maxlength="500"
+          placeholder="예: 지성 피부인데 끈적이지 않는 토너 추천해 줘"></textarea>
+      </section>
+
+      <section class="block">
+        <h2><label for="candidate-input">AI가 알려준 제품</label></h2>
+        <p class="hint">브랜드와 제품 이름을 AI가 말한 그대로 적어 주세요. 하나씩 추가해요.</p>
+        <div class="candidate-add">
+          <input type="text" id="candidate-input" maxlength="80" placeholder="예: OO 수분 토너">
+          <button type="button" class="add" id="candidate-add">추가</button>
+        </div>
+        <ul class="candidates" id="candidates"></ul>
+      </section>
+
+      <section class="block">
+        <h2><label for="ai-excerpt">대화에서 필요한 부분 (선택)</label></h2>
+        <p class="hint">AI 답변 중 제품을 비교하거나 추천한 부분만 붙여 넣어 주세요.</p>
+        <textarea id="ai-excerpt" rows="6" maxlength="4000"></textarea>
+        <p class="pii-warning" id="pii-warning" role="alert" hidden></p>
+      </section>
+
+      <section class="block">
+        <h2>AI 답을 본 뒤 따로 확인한 곳</h2>
+        <p class="hint">여러 개를 고를 수 있어요.</p>
+        <div class="chips" id="verify-channels"></div>
+      </section>
+    </div>
+
+    <section class="block">
+      <h2>2주 안에 이 제품 종류를 살 가능성은?</h2>
+      <div class="scale" id="intent-scale" role="radiogroup" aria-label="2주 안 구매 가능성"></div>
+    </section>
+
+    <section class="block" id="leading-block" hidden>
+      <h2>지금 가장 마음이 가는 제품 (선택)</h2>
+      <p class="hint">위에 적은 제품 중에서 고르거나 직접 적어 주세요.</p>
+      <div class="chips" id="leading-chips"></div>
+      <input type="text" class="leading-input" id="leading-input" maxlength="80" placeholder="직접 적기">
+    </section>
+
+    <section class="block">
+      <h2>산다면 어디서 살 생각인가요?</h2>
+      <div class="chips" id="planned-channel"></div>
+    </section>
+  </main>
+
+  <main class="page" id="step-confirm" data-step="4" hidden>
+    <section class="intro">
+      <h1 id="confirm-title">이대로 기록할까요?</h1>
+      <p id="confirm-lead">확인하면 지금까지 적은 내용이 잠기고, 그 뒤에는 고칠 수 없어요.
+        고칠 곳이 있다면 이전 단계로 돌아가 주세요.</p>
+    </section>
+    <dl class="summary" id="summary"></dl>
+    <label class="consent" id="consent-wrap">
+      <input type="checkbox" id="consent">
+      <span>쇼핑과 관계없는 대화와 개인정보를 빼고 적었어요. 이 기록이 브랜드 분석에
+        참여자를 알아볼 수 없는 형태로 쓰이는 데 동의해요.</span>
+    </label>
+    <section class="locked" id="locked" hidden>
+      <p class="locked-stamp" id="locked-stamp"></p>
+      <p>혜택 안내와 최종 결과·이유 제출 화면은 아직 준비 중이에요.
+        구매하지 않았거나 다른 제품을 골라도 조사 보상은 같아요.</p>
+      <button type="button" class="restart" id="restart">내부 테스트 다시 시작</button>
+    </section>
+  </main>
+
+  <footer class="dock">
+    <button class="back" id="back" type="button" hidden>이전</button>
+    <p class="picked" id="picked">아직 고르지 않았어요</p>
+    <button class="next" id="next" type="button" disabled>다음: 원래 고민 고르기</button>
+  </footer>
+
 
   <script type="module" src="/app.js"></script>
 </body>

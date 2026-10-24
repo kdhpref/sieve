@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "sieve-demo",
+      "name": "sieve-consumer",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["server.mjs"],
-      "port": 3000
+      "runtimeArgs": ["server.mjs", "3100"],
+      "port": 3100
     }
   ]
 }

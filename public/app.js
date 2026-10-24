@@ -1,443 +1,415 @@
-// 화면 로직. 모든 외부 문자열은 textContent로만 넣고, 링크는 http/https만 허용한다.
+import { GROUPS, CATEGORY_VERSION } from "./categories.js";
+import { CONCERN_GROUPS, ALL_CONCERNS, SKIN_GUIDE, TONER_ATTRS } from "./concerns.js";
+import { productSVG } from "./illustrations.js";
+import { share, initShare, shareProblem, shareSlots, shareSummary, setShareLocked } from "./share.js";
 
-const $ = (sel) => document.querySelector(sel);
-const SVG_NS = "http://www.w3.org/2000/svg";
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+const allItems = GROUPS.flatMap((g) => g.items);
+const concernOf = (code) => ALL_CONCERNS.find((c) => c.code === code);
+// 직접 적은 고민은 적은 내용으로 보여준다
+const concernLabel = (code) => (concernOf(code).free && state.freeText[code]) || concernOf(code).ko;
 
-function h(tag, attrs = {}, ...children) {
-  const el = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (v == null || v === false) continue;
-    if (k === "class") el.className = v;
-    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
-    else el.setAttribute(k, v);
-  }
-  for (const c of children.flat()) {
-    if (c == null || c === false) continue;
-    el.append(c instanceof Node ? c : document.createTextNode(String(c)));
-  }
-  return el;
+const state = {
+  step: 1,
+  // 1단계
+  group: "SK", code: null, otherText: "",
+  // 2단계
+  concerns: new Set(), freeText: {}, primary: null, primaryChosen: false,
+  skinSource: null, guideAnswer: null, attrs: {},
+};
+
+// 받침 있는 글자 뒤에는 "을", 없으면 "를"
+function objectParticle(word) {
+  const code = word.charCodeAt(word.length - 1) - 0xac00;
+  return code >= 0 && code <= 11171 && code % 28 ? "을" : "를";
 }
 
-function s(tag, attrs = {}, ...children) {
-  const el = document.createElementNS(SVG_NS, tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (v == null) continue;
-    if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
-    else el.setAttribute(k, v);
-  }
-  for (const c of children.flat()) if (c != null) el.append(c instanceof Node ? c : document.createTextNode(String(c)));
-  return el;
+function pickedName() {
+  if (state.code === "OTHER") return state.otherText;
+  return allItems.find((i) => i.code === state.code)?.ko ?? "";
 }
 
-function safeLink(url, label) {
-  try {
-    const u = new URL(url);
-    if (u.protocol === "http:" || u.protocol === "https:") {
-      return h("a", { href: u.href, target: "_blank", rel: "noopener noreferrer" }, label ?? u.href);
-    }
-  } catch {}
-  return h("span", { class: "muted" }, label ?? url);
+/* ---------- 1단계: 제품 종류 ---------- */
+
+function renderGroups() {
+  $("groups").innerHTML = GROUPS.map((g) => {
+    const open = g.items.some((i) => i.active);
+    return `<button type="button" class="group" data-group="${g.code}" aria-pressed="${g.code === state.group}">
+      ${g.ko}${open ? "" : `<span class="soon">준비 중</span>`}
+    </button>`;
+  }).join("");
 }
 
-const allSegs = (p) => [...p.segment_ids, ...(p.support_segment_ids ?? [])];
-const truncate = (t, n) => (t.length > n ? t.slice(0, n - 1) + "…" : t);
-
-// SVG 텍스트를 픽셀 폭 기준으로 자른다. 한글·한자·가나는 라틴 문자보다 넓게 계산한다.
-function fitText(t, px, fontPx) {
-  let w = 0;
-  for (let i = 0; i < t.length; i++) {
-    w += /[ᄀ-ᇿ　-鿿가-힯＀-￯]/.test(t[i]) ? fontPx : fontPx * 0.58;
-    if (w > px) return t.slice(0, Math.max(0, i - 1)) + "…";
-  }
-  return t;
-}
-const fmtTime = (iso) => (iso ? new Date(iso).toLocaleString("ko-KR", { hour12: false }) : "—");
-
-const MENTION_LABEL = { recommended: "추천", discouraged: "비추천", neutral: "중립 언급", uncertain: "불명확" };
-const STATUS_LABEL = { running: "수집 중", succeeded: "완료", partial: "일부 완료(출력 잘림)", failed: "실패" };
-const KIND_LABEL = { api: "실제 API 응답", example: "예시 데이터" };
-
-const state = { config: null, runs: [], run: null, selected: null, polling: null };
-
-// ---------- 데이터 로드 ----------
-
-async function api(path, opts) {
-  const res = await fetch(path, opts);
-  return { status: res.status, body: await res.json() };
+function renderShelf() {
+  const group = GROUPS.find((g) => g.code === state.group);
+  $("shelf").innerHTML = group.items.map((item) => `
+    <button type="button" role="radio" class="item" data-code="${item.code}"
+        aria-checked="${item.code === state.code}" ${item.active ? "" : `aria-disabled="true" tabindex="-1"`}>
+      ${productSVG(item)}
+      <span class="name">${item.ko}</span>
+      <span class="ja" lang="ja">${item.ja}</span>
+      ${item.active ? "" : `<span class="soon">준비 중</span>`}
+    </button>`).join("");
 }
 
-async function loadConfig() {
-  state.config = (await api("/api/config")).body;
-  const { question, settings, api_key_configured } = state.config;
-  $("#questionText").textContent = question.text;
-  const meta = $("#questionMeta");
-  meta.replaceChildren(
-    ...[["질문 ID", question.question_id], ["언어·국가", `${question.language} · ${question.country}`], ["모델", settings.model], ["검색 도구", `${settings.web_search_tool} (max_uses ${settings.max_uses})`]].flatMap(([k, v]) => [h("dt", {}, k), h("dd", {}, v)]),
-  );
-  const key = $("#keyStatus");
-  key.textContent = api_key_configured ? "API 키 설정됨" : "API 키 없음 — 저장된 기록만 조회 가능";
-  key.className = `key ${api_key_configured ? "ok" : "warn"}`;
-  updateRunButton();
+function selectProduct(code) {
+  state.code = code;
+  if (code !== "OTHER") $("other").open = false;
+  renderShelf();
+  renderDock();
 }
 
-async function loadRuns() {
-  state.runs = (await api("/api/runs")).body.runs;
-  renderRunList();
-}
-
-async function openRun(id) {
-  const { status, body } = await api(`/api/runs/${id}`);
-  if (status !== 200) return;
-  state.run = body;
-  state.selected = null;
-  renderRunList();
-  renderRun();
-  if (body.status === "running") startPolling(id);
-}
-
-function startPolling(id) {
-  clearInterval(state.polling);
-  state.polling = setInterval(async () => {
-    const { body } = await api(`/api/runs/${id}`);
-    if (body.status !== "running") {
-      clearInterval(state.polling);
-      state.polling = null;
-      state.config.active_run_id = null;
-      updateRunButton();
-      await loadRuns();
-      if (state.run?.run_id === id) openRun(id);
-    }
-  }, 3000);
-}
-
-function updateRunButton() {
-  const btn = $("#runBtn");
-  const hint = $("#runHint");
-  const running = Boolean(state.config?.active_run_id);
-  btn.disabled = !state.config?.api_key_configured || running;
-  btn.textContent = running ? "수집 중…" : "이 질문 실행";
-  hint.textContent = !state.config?.api_key_configured
-    ? ".env.local에 ANTHROPIC_API_KEY를 넣고 서버를 다시 시작하세요."
-    : running
-      ? "새 실행 기록이 추가되는 중입니다. 수집은 수십 초 이상 걸릴 수 있습니다."
-      : "실행할 때마다 별도 실행 기록이 저장됩니다.";
-}
-
-$("#runBtn").addEventListener("click", async () => {
-  $("#runBtn").disabled = true;
-  const { status, body } = await api("/api/runs", { method: "POST" });
-  if (body.run_id) {
-    state.config.active_run_id = body.run_id;
-    updateRunButton();
-    await loadRuns();
-    openRun(body.run_id);
-  } else {
-    $("#runHint").textContent = body.error || `실행 실패 (HTTP ${status})`;
-    updateRunButton();
-  }
+$("groups").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-group]");
+  if (!btn) return;
+  state.group = btn.dataset.group;
+  renderGroups();
+  renderShelf();
 });
 
-// ---------- 실행 목록 ----------
+$("shelf").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-code]");
+  if (!btn || btn.getAttribute("aria-disabled") === "true") return;
+  selectProduct(btn.dataset.code);
+});
 
-function renderRunList() {
-  const list = $("#runList");
-  if (!state.runs.length) return list.replaceChildren(h("li", { class: "muted" }, "아직 기록이 없습니다."));
-  list.replaceChildren(
-    ...state.runs.map((r) =>
-      h(
-        "li",
-        { class: `run-item ${state.run?.run_id === r.run_id ? "active" : ""}`, onclick: () => openRun(r.run_id) },
-        h("div", { class: "row" }, h("span", { class: `pill kind-${r.data_kind}` }, KIND_LABEL[r.data_kind] ?? r.data_kind), h("span", { class: `pill st-${r.status}` }, STATUS_LABEL[r.status] ?? r.status)),
-        h("div", { class: "time" }, fmtTime(r.created_at)),
-        r.products != null ? h("div", { class: "muted small" }, `추천 ${r.products} · citation ${r.citations ?? 0}`) : null,
-      ),
-    ),
-  );
+$("other").addEventListener("toggle", () => {
+  if ($("other").open) selectProduct("OTHER");
+  else if (state.code === "OTHER") selectProduct(null);
+});
+
+$("other-text").addEventListener("input", (e) => {
+  state.otherText = e.target.value.trim();
+  renderDock();
+});
+
+/* ---------- 2단계: 원래 고민 ---------- */
+
+function renderConcernHeader() {
+  const item = allItems.find((i) => i.code === state.code);
+  $("picked-product").innerHTML = item ? productSVG(item, "-picked") : "";
+  const name = pickedName();
+  $("concern-title").innerHTML = `${esc(name)}${objectParticle(name)} 고를 때<br>무엇이 중요했나요?`;
 }
 
-// ---------- 관계 계산 ----------
-
-function indexRun(run) {
-  const parsed = run.parsed ?? { segments: [], citations: [], search: { results: [], queries: [] }, text: "" };
-  const products = run.analysis?.products ?? [];
-  const segById = new Map(parsed.segments.map((x) => [x.id, x]));
-  const citeById = new Map(parsed.citations.map((x) => [x.id, x]));
-  const sources = [];
-  const sourceByUrl = new Map();
-  for (const c of parsed.citations) {
-    if (!sourceByUrl.has(c.url)) {
-      const src = { id: `u${sources.length + 1}`, url: c.url, title: c.title, domain: c.domain, citation_ids: [] };
-      sources.push(src);
-      sourceByUrl.set(c.url, src);
-    }
-    sourceByUrl.get(c.url).citation_ids.push(c.id);
-  }
-  const productsBySeg = new Map();
-  for (const p of products) for (const sid of allSegs(p)) (productsBySeg.get(sid) ?? productsBySeg.set(sid, []).get(sid)).push(p);
-  return { parsed, products, segById, citeById, sources, sourceByUrl, productsBySeg };
+function chip(c) {
+  const on = state.concerns.has(c.code);
+  const guided = c.skinType && on && state.skinSource === "guided" && c.code !== "skin_unknown";
+  return `<button type="button" class="chip" data-concern="${c.code}" aria-pressed="${on}">
+    <span class="chip-label">${c.ko}</span>
+    ${c.sub ? `<span class="chip-sub">${guided ? "질문으로 골랐어요" : c.sub}</span>` : ""}
+  </button>`;
 }
 
-/** 선택된 노드와 연결된 제품·문장·출처 집합 */
-function related(idx, sel) {
-  const r = { products: new Set(), segments: new Set(), sources: new Set() };
-  if (!sel) return null;
-  const addSeg = (sid) => {
-    r.segments.add(sid);
-    for (const cid of idx.segById.get(sid)?.citation_ids ?? []) r.sources.add(idx.sourceByUrl.get(idx.citeById.get(cid).url).id);
-  };
-  if (sel.type === "product") {
-    const p = idx.products.find((x) => x.id === sel.id);
-    r.products.add(p.id);
-    allSegs(p).forEach(addSeg);
-  } else if (sel.type === "segment") {
-    addSeg(sel.id);
-    for (const p of idx.productsBySeg.get(sel.id) ?? []) r.products.add(p.id);
-  } else if (sel.type === "source") {
-    r.sources.add(sel.id);
-    const src = idx.sources.find((x) => x.id === sel.id);
-    for (const seg of idx.parsed.segments) {
-      if (seg.citation_ids.some((cid) => src.citation_ids.includes(cid))) {
-        r.segments.add(seg.id);
-        for (const p of idx.productsBySeg.get(seg.id) ?? []) r.products.add(p.id);
-      }
-    }
-  }
-  return r;
+function renderConcerns() {
+  $("concerns").innerHTML = CONCERN_GROUPS.map((g, gi) => {
+    const free = g.items.filter((c) => c.free && state.concerns.has(c.code));
+    return `<section class="block">
+      <h2>${g.ko}</h2>
+      ${g.hint ? `<p class="hint">${g.hint}</p>` : ""}
+      <div class="chips ${gi === 0 ? "chips-skin" : ""}">${g.items.map(chip).join("")}</div>
+      ${gi === 0 ? guideHTML() : ""}
+      ${free.map((c) => `
+        <label class="free"><span>${c.free}</span>
+          <input type="text" maxlength="60" data-free="${c.code}" value="${esc(state.freeText[c.code] ?? "")}">
+        </label>`).join("")}
+    </section>`;
+  }).join("");
 }
 
-function select(sel) {
-  const same = state.selected && sel && state.selected.type === sel.type && state.selected.id === sel.id;
-  state.selected = same ? null : sel;
-  renderRun();
+// 잘 모름을 고르면 유도 질문을 보여준다. 답하면 결과 피부 타입으로 바뀌고, 다시 고를 수 있게 남겨 둔다.
+function guideHTML() {
+  const open = state.concerns.has("skin_unknown") || state.skinSource === "guided";
+  if (!open) return "";
+  return `<div class="guide" role="group" aria-labelledby="guide-q">
+    <p class="guide-q" id="guide-q">${SKIN_GUIDE.question}</p>
+    <div class="guide-answers">
+      ${SKIN_GUIDE.answers.map((a) => `
+        <button type="button" class="guide-answer" data-guide="${a.code}" aria-pressed="${state.guideAnswer === a.code}">
+          ${a.text}<span class="guide-result">${a.result === "skin_unknown" ? "잘 모름으로 둘게요" : concernOf(a.result).ko}</span>
+        </button>`).join("")}
+    </div>
+    <p class="guide-note">피부 진단이 아니라, 고르기 쉽게 돕는 질문이에요.</p>
+  </div>`;
 }
 
-// ---------- 실행 상세 ----------
+function renderPrimary() {
+  const picked = [...state.concerns];
+  // 고민이 하나면 자동으로 정하고, 둘 이상이면 참여자가 직접 고른 경우에만 유지한다
+  if (!state.concerns.has(state.primary)) state.primaryChosen = false;
+  if (picked.length === 1) { state.primary = picked[0]; state.primaryChosen = false; }
+  else if (!state.primaryChosen) state.primary = null;
+  $("primary-block").hidden = picked.length < 2;
+  $("primary").innerHTML = picked.map((code) => `
+    <button type="button" role="radio" class="primary-option" data-primary="${code}" aria-checked="${state.primary === code}">
+      ${esc(concernLabel(code))}
+    </button>`).join("");
+}
 
-function renderRun() {
-  const run = state.run;
-  const main = $("#main");
-  if (!run) return;
-  const idx = indexRun(run);
-  const rel = related(idx, state.selected);
+function renderAttrs() {
+  const toner = ["SK-TONER", "SK-PAD"].includes(state.code);
+  $("attrs").hidden = !toner;
+  $("attr-list").innerHTML = TONER_ATTRS.map((a) => `
+    <div class="attr"><h3>${a.ko}</h3><div class="chips">
+      ${a.values.map(([v, ko]) => `<button type="button" class="chip chip-small" data-attr="${a.key}" data-value="${v}"
+        aria-pressed="${state.attrs[a.key] === v}"><span class="chip-label">${ko}</span></button>`).join("")}
+    </div></div>`).join("");
+}
 
-  const blocks = [renderBanner(run)];
-  if (run.status === "running") {
-    blocks.push(h("div", { class: "card center" }, h("div", { class: "spinner" }), "Claude가 웹 검색 후 답변을 작성하는 중입니다. 완료되면 자동으로 표시됩니다."));
-  } else if (run.status === "failed" && !run.parsed) {
-    blocks.push(h("div", { class: "card error" }, h("h3", {}, "수집 실패"), h("p", {}, run.error?.message ?? "알 수 없는 오류"), run.error?.http_status ? h("p", { class: "muted" }, `HTTP ${run.error.http_status} · ${run.error.type ?? ""}`) : null));
+function renderStep2() {
+  renderConcerns();
+  renderPrimary();
+  renderDock();
+}
+
+function toggleConcern(code) {
+  const c = concernOf(code);
+  if (state.concerns.has(code)) {
+    state.concerns.delete(code);
+    if (c.skinType) { state.skinSource = null; state.guideAnswer = null; }
   } else {
-    blocks.push(renderSummary(run, idx));
-    blocks.push(h("section", { class: "card" }, h("div", { class: "card-head" }, h("h2", {}, "추천 근거 흐름"), h("span", { class: "muted small" }, "노드를 클릭하면 연결된 근거만 강조됩니다")), renderGraph(idx, rel)));
-    blocks.push(h("div", { class: "two-col" }, renderAnswer(idx, rel), renderDetail(idx)));
-    blocks.push(renderSources(idx, rel));
-    blocks.push(renderConditions(run));
-  }
-  main.replaceChildren(...blocks);
-}
-
-function renderBanner(run) {
-  if (run.data_kind === "example") {
-    return h("div", { class: "banner example" }, h("strong", {}, "예시 데이터"), " — 화면 구성 확인용으로 만든 가상 응답입니다. 실제 Claude 수집 결과가 아니며 브랜드·URL은 모두 가상입니다.");
-  }
-  return h(
-    "div",
-    { class: "banner api" },
-    h("strong", {}, "저장된 실제 API 응답"),
-    ` — 수집 시각 ${fmtTime(run.collection?.collected_at ?? run.created_at)} · 모델 ${run.collection?.model_id ?? run.settings?.model} · 표본 1건 (실시간 응답이 아닌 저장 기록)`,
-  );
-}
-
-function renderSummary(run, idx) {
-  const rec = idx.products.filter((p) => p.mention_type === "recommended");
-  const review = idx.products.filter((p) => p.review_required).length;
-  const stat = (label, value, note) => h("div", { class: "stat" }, h("div", { class: "stat-v" }, value), h("div", { class: "stat-l" }, label), note ? h("div", { class: "stat-n" }, note) : null);
-  const analysisNote = run.analysis?.status === "failed" ? h("div", { class: "banner warn" }, `브랜드·추천 분석 실패: ${run.analysis.error}. 원문과 citation은 그대로 확인할 수 있습니다.`) : null;
-  return h(
-    "div",
-    {},
-    analysisNote,
-    h(
-      "div",
-      { class: "stats" },
-      stat("추천된 제품", run.analysis?.status === "succeeded" ? rec.length : "—", `언급 전체 ${idx.products.length}`),
-      stat("공식 citation", idx.parsed.citations.length, `출처 URL ${idx.sources.length}개`),
-      stat("검색 결과(인용 안 됨 포함)", idx.parsed.search.results.length, `검색 ${idx.parsed.search.queries.length}회`),
-      stat("검수 대기", run.analysis?.status === "succeeded" ? review : "—", "근거 불일치·불명확"),
-      stat("검색 실행", idx.parsed.search.used ? "예" : "아니오", run.status === "partial" ? "출력 잘림" : null),
-    ),
-  );
-}
-
-// 4단 흐름도: 질문 → 제품 → 근거 문장 → 출처
-function renderGraph(idx, rel) {
-  const { products, sources } = idx;
-  const usedSegIds = new Set(products.flatMap(allSegs));
-  let segs = idx.parsed.segments.filter((x) => usedSegIds.has(x.id));
-  if (!products.length) segs = idx.parsed.segments.filter((x) => x.citation_ids.length);
-  const segSourceIds = new Set(segs.flatMap((x) => x.citation_ids.map((cid) => idx.sourceByUrl.get(idx.citeById.get(cid).url).id)));
-  const srcs = sources.filter((x) => segSourceIds.has(x.id));
-
-  if (!segs.length) return h("p", { class: "muted" }, "연결할 근거 문장이 없습니다. (citation이 없는 응답이거나 분석 결과가 없음)");
-
-  const W = 1080, rowH = 46, nodeH = 36, top = 34;
-  const cols = { q: 10, p: 200, s: 450, u: 820 };
-  const widths = { q: 150, p: 210, s: 330, u: 250 };
-  const rows = Math.max(products.length, segs.length, srcs.length, 1);
-  const H = top + rows * rowH + 10;
-  const y = (i, n) => top + ((rows - n) * rowH) / 2 + i * rowH;
-
-  const pos = new Map();
-  products.forEach((p, i) => pos.set(p.id, { x: cols.p, y: y(i, products.length) }));
-  segs.forEach((x, i) => pos.set(x.id, { x: cols.s, y: y(i, segs.length) }));
-  srcs.forEach((x, i) => pos.set(x.id, { x: cols.u, y: y(i, srcs.length) }));
-  const qPos = { x: cols.q, y: y(0, 1) };
-
-  const dim = (kind, id) => (rel && !rel[kind].has(id) ? " dim" : "");
-  const edge = (x1, y1, x2, y2, cls) => {
-    const mx = (x1 + x2) / 2;
-    return s("path", { d: `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`, class: `edge ${cls}` });
-  };
-
-  const edges = [];
-  for (const p of products) {
-    const a = pos.get(p.id);
-    edges.push(edge(qPos.x + widths.q, qPos.y + nodeH / 2, a.x, a.y + nodeH / 2, `m-${p.mention_type}${dim("products", p.id)}`));
-    for (const sid of allSegs(p)) {
-      const b = pos.get(sid);
-      const kind = p.segment_ids.includes(sid) ? "" : " support";
-      if (b) edges.push(edge(a.x + widths.p, a.y + nodeH / 2, b.x, b.y + nodeH / 2, `m-${p.mention_type}${kind}${rel && !(rel.products.has(p.id) && rel.segments.has(sid)) ? " dim" : ""}`));
+    if (c.skinType) {
+      for (const s of ALL_CONCERNS) if (s.skinType) state.concerns.delete(s.code);
+      state.skinSource = "self";
+      state.guideAnswer = null;
     }
+    state.concerns.add(code);
   }
-  for (const seg of segs) {
-    const a = pos.get(seg.id);
-    for (const cid of seg.citation_ids) {
-      const src = idx.sourceByUrl.get(idx.citeById.get(cid).url);
-      const b = pos.get(src.id);
-      if (b) edges.push(edge(a.x + widths.s, a.y + nodeH / 2, b.x, b.y + nodeH / 2, `cite${rel && !(rel.segments.has(seg.id) && rel.sources.has(src.id)) ? " dim" : ""}`));
-    }
-  }
-
-  const isSel = (type, id) => state.selected?.type === type && state.selected.id === id;
-  const node = (type, id, p, w, label, sub, cls) =>
-    s(
-      "g",
-      { class: `node ${cls}${isSel(type, id) ? " sel" : ""}`, transform: `translate(${p.x},${p.y})`, onclick: () => select({ type, id }) },
-      s("title", {}, label),
-      s("rect", { width: w, height: nodeH, rx: 8 }),
-      s("text", { x: 10, y: sub ? 15 : 22, class: "nl" }, fitText(label, w - 20, type === "segment" ? 12 : 13)),
-      sub ? s("text", { x: 10, y: 29, class: "ns" }, fitText(sub, w - 20, 11)) : null,
-    );
-
-  const nodes = [
-    s("g", { class: "node q", transform: `translate(${qPos.x},${qPos.y})` }, s("rect", { width: widths.q, height: nodeH, rx: 8 }), s("text", { x: 10, y: 15, class: "nl" }, "질문"), s("text", { x: 10, y: 29, class: "ns" }, fitText(state.run.question.text, widths.q - 20, 11))),
-    ...products.map((p) => node("product", p.id, pos.get(p.id), widths.p, p.product ? `${p.brand} ${p.product}` : p.brand, `${MENTION_LABEL[p.mention_type]}${p.review_required ? " · 검수 필요" : ""}`, `m-${p.mention_type}${dim("products", p.id)}`)),
-    ...segs.map((x) => node("segment", x.id, pos.get(x.id), widths.s, x.text.replace(/\s+/g, " ").trim(), `${x.id} · citation ${x.citation_ids.length}`, `seg${x.citation_ids.length ? "" : " nocite"}${dim("segments", x.id)}`)),
-    ...srcs.map((x) => node("source", x.id, pos.get(x.id), widths.u, x.domain ?? x.url, x.title, `src${dim("sources", x.id)}`)),
-  ];
-
-  const header = [["질문", cols.q], ["추천·언급 제품", cols.p], ["근거 문장 (답변 원문)", cols.s], ["인용 출처 (공식 citation)", cols.u]].map(([t, x]) => s("text", { x, y: 18, class: "colh" }, t));
-
-  return h("div", { class: "graph-wrap" }, s("svg", { viewBox: `0 0 ${W} ${H}`, class: "graph", width: "100%" }, ...header, ...edges, ...nodes));
+  renderStep2();
 }
 
-// 답변 원문: 근거 문장은 제품 판정 색, citation이 있는 문장에는 [c1] 표시
-function renderAnswer(idx, rel) {
-  const frag = idx.parsed.segments.map((seg) => {
-    const prods = idx.productsBySeg.get(seg.id) ?? [];
-    const mention = prods.find((p) => p.segment_ids.includes(seg.id))?.mention_type;
-    const cls = ["seg", seg.citation_ids.length ? "cited" : "", mention ? `hl-${mention}` : "", rel && !rel.segments.has(seg.id) ? "dim" : "", state.selected?.type === "segment" && state.selected.id === seg.id ? "sel" : ""].filter(Boolean).join(" ");
-    return h(
-      "span",
-      { class: cls, onclick: seg.citation_ids.length || prods.length ? () => select({ type: "segment", id: seg.id }) : null },
-      renderInline(seg.text),
-      ...seg.citation_ids.map((cid) => h("sup", { class: "cref" }, cid)),
-    );
+function answerGuide(code) {
+  const answer = SKIN_GUIDE.answers.find((a) => a.code === code);
+  for (const s of ALL_CONCERNS) if (s.skinType) state.concerns.delete(s.code);
+  state.concerns.add(answer.result);
+  state.skinSource = "guided";
+  state.guideAnswer = code;
+  renderStep2();
+}
+
+$("concerns").addEventListener("click", (e) => {
+  const chipBtn = e.target.closest("[data-concern]");
+  if (chipBtn) return toggleConcern(chipBtn.dataset.concern);
+  const guideBtn = e.target.closest("[data-guide]");
+  if (guideBtn) answerGuide(guideBtn.dataset.guide);
+});
+
+$("concerns").addEventListener("input", (e) => {
+  const code = e.target.dataset.free;
+  if (!code) return;
+  state.freeText[code] = e.target.value.trim();
+  renderPrimary();
+  renderDock();
+});
+
+$("primary").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-primary]");
+  if (!btn) return;
+  state.primary = btn.dataset.primary;
+  state.primaryChosen = true;
+  renderPrimary();
+  renderDock();
+});
+
+$("attr-list").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-attr]");
+  if (!btn) return;
+  const { attr, value } = btn.dataset;
+  if (state.attrs[attr] === value) delete state.attrs[attr];
+  else state.attrs[attr] = value;
+  renderAttrs();
+});
+
+/* ---------- 공통: 단계 이동과 하단 바 ---------- */
+
+function step2Problem() {
+  if (state.concerns.size === 0) return "고민을 하나 이상 골라 주세요";
+  for (const code of state.concerns) {
+    if (concernOf(code).free && !state.freeText[code]) return "직접 적는 칸을 채워 주세요";
+  }
+  if (!state.primary) return "가장 중요했던 고민을 골라 주세요";
+  return null;
+}
+
+function renderDock() {
+  if (state.step === 1) {
+    const item = allItems.find((i) => i.code === state.code);
+    const other = state.code === "OTHER";
+    $("picked").textContent = item ? `${item.ko}${objectParticle(item.ko)} 골랐어요`
+      : other ? (state.otherText ? `직접 입력: ${state.otherText}` : "어떤 제품인지 적어 주세요")
+      : "아직 고르지 않았어요";
+    $("next").textContent = "다음: 원래 고민 고르기";
+    $("next").disabled = !(item || (other && state.otherText));
+  } else if (state.step === 2) {
+    const problem = step2Problem();
+    $("picked").textContent = problem
+      ?? `고민 ${state.concerns.size}개, 가장 중요한 것은 ${concernLabel(state.primary)}`;
+    $("next").textContent = "다음: 대화 공유";
+    $("next").disabled = Boolean(problem);
+  } else if (state.step === 3) {
+    const problem = shareProblem();
+    $("picked").textContent = problem ?? "필수 항목을 모두 채웠어요";
+    $("next").textContent = "다음: 확인하기";
+    $("next").disabled = Boolean(problem);
+  } else {
+    $("picked").textContent = state.locked ? "기록이 잠겼어요" : $("consent").checked ? "확인하면 잠겨요" : "동의에 체크해 주세요";
+    $("next").textContent = state.locked ? "잠김" : "확인하고 잠그기";
+    $("next").disabled = state.locked || !$("consent").checked;
+  }
+  $("back").hidden = state.step === 1 || state.locked;
+}
+
+function goTo(step) {
+  state.step = step;
+  $("step-product").hidden = step !== 1;
+  $("step-concern").hidden = step !== 2;
+  $("step-share").hidden = step !== 3;
+  $("step-confirm").hidden = step !== 4;
+  [...$("steps").children].forEach((li, i) => {
+    const current = i + 1 === step;
+    li.classList.toggle("is-current", current);
+    li.classList.toggle("is-done", i + 1 < step);
+    if (current) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
   });
-  return h("section", { class: "card answer" }, h("div", { class: "card-head" }, h("h2", {}, "답변 원문"), h("span", { class: "muted small" }, "밑줄 = 공식 citation이 붙은 문장")), h("div", { class: "answer-text" }, frag));
+  document.title = `Sieve: ${["어떤 화장품을 찾고 있었나요?", "원래 고민 고르기", "대화 공유", "확인"][step - 1]}`;
+  if (step === 2) { renderConcernHeader(); renderAttrs(); renderStep2(); }
+  if (step === 4) renderSummary();
+  renderDock();
+  window.scrollTo({ top: 0 });
+  document.querySelector(`[data-step="${step}"] h1`)?.focus({ preventScroll: true });
 }
 
-// **굵게** 정도만 해석하고 나머지는 그대로 텍스트로 둔다.
-function renderInline(text) {
-  return text.split(/(\*\*[^*]+\*\*)/g).map((part) => (part.startsWith("**") && part.endsWith("**") && part.length > 4 ? h("strong", {}, part.slice(2, -2)) : document.createTextNode(part)));
-}
-
-function renderDetail(idx) {
-  const sel = state.selected;
-  const wrap = (title, ...body) => h("section", { class: "card detail" }, h("h2", {}, title), ...body);
-  if (!sel) {
-    return wrap(
-      "근거 상세",
-      h("p", { class: "muted" }, "흐름도의 제품·문장·출처나 답변의 밑줄 문장을 클릭하세요."),
-      idx.products.length ? h("ul", { class: "plist" }, idx.products.map((p) => h("li", { onclick: () => select({ type: "product", id: p.id }) }, h("span", { class: `pill m-${p.mention_type}` }, MENTION_LABEL[p.mention_type]), " ", p.brand, p.product ? ` · ${p.product}` : ""))) : null,
-    );
-  }
-  const citeCard = (cid) => {
-    const c = idx.citeById.get(cid);
-    return h("div", { class: "cite" }, h("div", { class: "cite-h" }, h("span", { class: "cref" }, c.id), " ", safeLink(c.url, c.domain ?? c.url), c.in_search_results ? null : h("span", { class: "pill warn" }, "검색 결과 목록에 없음")), c.title ? h("div", { class: "small" }, c.title) : null, c.cited_text ? h("blockquote", {}, c.cited_text) : h("div", { class: "muted small" }, "인용 원문 없음"));
+// 저장 필드는 명세 4.1을 따른다. intent_ids는 선택값에서 파생한다.
+function step2Record() {
+  const codes = [...state.concerns];
+  const hasSkin = codes.some((c) => concernOf(c).skinType);
+  return {
+    category_version: CATEGORY_VERSION,
+    product_category: state.code,
+    product_category_other: state.code === "OTHER" ? state.otherText : null,
+    product_attrs: { ...state.attrs },
+    concern_codes: codes,
+    // 자유 입력은 선택지 코드별로 둔다. 고르지 않은 칸은 저장하지 않는다.
+    concern_other_text: Object.fromEntries(
+      codes.filter((c) => concernOf(c).free && state.freeText[c]).map((c) => [c, state.freeText[c]])),
+    primary_concern_code: state.primary,
+    intent_ids: [...new Set(codes.map((c) => concernOf(c).intent).filter(Boolean))].sort(),
+    primary_intent_id: concernOf(state.primary).intent,
+    skin_type_source: hasSkin ? state.skinSource : null,
+    skin_guide_answer: hasSkin ? state.guideAnswer : null,
+    is_internal_test: true,
   };
-
-  if (sel.type === "product") {
-    const p = idx.products.find((x) => x.id === sel.id);
-    return wrap(
-      p.product ? `${p.brand} · ${p.product}` : p.brand,
-      h("div", { class: "row" }, h("span", { class: `pill m-${p.mention_type}` }, MENTION_LABEL[p.mention_type]), p.list_position ? h("span", { class: "pill" }, `등장 순서 ${p.list_position}`) : null, p.explicit_rank ? h("span", { class: "pill" }, `명시 순위 ${p.explicit_rank}`) : null, p.review_required ? h("span", { class: "pill warn" }, "검수 필요") : null),
-      h("h3", {}, "판정 근거 (원문 발췌)"),
-      h("blockquote", { class: p.evidence_found ? "" : "bad" }, p.evidence_text || "—"),
-      p.issues.length ? h("ul", { class: "issues" }, p.issues.map((x) => h("li", {}, x))) : h("p", { class: "ok small" }, "근거 문장이 원문에 존재함을 코드로 확인"),
-      (p.support_segment_ids ?? []).length ? h("h3", {}, `제품 설명 문장 (${p.support_segment_ids.length})`) : null,
-      (p.support_segment_ids ?? []).length ? h("ul", { class: "support" }, p.support_segment_ids.map((sid) => { const sg = idx.segById.get(sid); return h("li", { onclick: () => select({ type: "segment", id: sid }) }, sg.text.replace(/\s+/g, " ").trim(), ...sg.citation_ids.map((cid) => h("sup", { class: "cref" }, cid))); })) : null,
-      h("h3", {}, `근거를 뒷받침하는 출처 (${p.citation_ids.length})`),
-      p.citation_ids.length ? p.citation_ids.map(citeCard) : h("p", { class: "muted" }, "이 근거 문장에는 공식 citation이 붙어 있지 않습니다. 모델의 일반 지식이거나 출처 표시가 누락된 문장일 수 있습니다."),
-    );
-  }
-  if (sel.type === "segment") {
-    const seg = idx.segById.get(sel.id);
-    const prods = idx.productsBySeg.get(seg.id) ?? [];
-    return wrap(`문장 ${seg.id}`, h("blockquote", {}, seg.text), prods.length ? h("p", { class: "small" }, "이 문장을 근거로 한 제품: ", prods.map((p) => `${p.brand}(${MENTION_LABEL[p.mention_type]})`).join(", ")) : null, h("h3", {}, `출처 (${seg.citation_ids.length})`), seg.citation_ids.length ? seg.citation_ids.map(citeCard) : h("p", { class: "muted" }, "공식 citation 없음"));
-  }
-  const src = idx.sources.find((x) => x.id === sel.id);
-  return wrap(src.domain ?? "출처", h("p", {}, safeLink(src.url)), src.title ? h("p", { class: "small" }, src.title) : null, h("h3", {}, `이 출처의 인용 (${src.citation_ids.length})`), src.citation_ids.map(citeCard));
 }
 
-function renderSources(idx, rel) {
-  const citedUrls = new Set(idx.sources.map((x) => x.url));
-  const searchOnly = idx.parsed.search.results.filter((r) => !citedUrls.has(r.url));
-  return h(
-    "section",
-    { class: "card" },
-    h("h2", {}, "출처 구분"),
-    h(
-      "div",
-      { class: "two-col tight" },
-      h("div", {}, h("h3", {}, `공식 citation (${idx.sources.length})`), h("ul", { class: "slist" }, idx.sources.map((x) => h("li", { class: rel && !rel.sources.has(x.id) ? "dim" : "", onclick: () => select({ type: "source", id: x.id }) }, h("span", { class: "dom" }, x.domain), " ", h("span", { class: "muted small" }, truncate(x.title || x.url, 60)), h("span", { class: "pill" }, `인용 ${x.citation_ids.length}`))))),
-      h("div", {}, h("h3", {}, `검색 결과에만 존재 (${searchOnly.length})`), h("p", { class: "muted small" }, "검색은 됐지만 답변에서 인용되지 않은 페이지. 추천 근거로 세지 않습니다."), h("ul", { class: "slist" }, searchOnly.map((r) => h("li", {}, h("span", { class: "dom" }, r.domain), " ", safeLink(r.url, truncate(r.title || r.url, 60)))))),
-    ),
-    idx.parsed.search.queries.length ? h("p", { class: "small" }, "실행된 검색어: ", idx.parsed.search.queries.map((q) => h("code", {}, q))) : null,
-  );
-}
+/* ---------- 4단계: 확인과 잠금 ---------- */
 
-function renderConditions(run) {
-  const c = run.collection ?? {};
-  const rows = [
-    ["데이터 종류", KIND_LABEL[run.data_kind] ?? run.data_kind],
-    ["실행 ID", run.run_id],
-    ["상태", STATUS_LABEL[run.status] ?? run.status],
-    ["질문 ID · 버전", `${run.question.question_id} · ${run.question.version}`],
-    ["모델 (요청 / 응답)", `${run.settings.model} / ${c.model_id ?? "—"}`],
-    ["검색 도구", `${run.settings.web_search_tool}, max_uses ${run.settings.max_uses}, 위치 ${run.settings.user_location?.country}`],
-    ["수집 시각", fmtTime(c.collected_at)],
-    ["응답 시간", c.latency_ms != null ? `${(c.latency_ms / 1000).toFixed(1)}초` : "—"],
-    ["종료 사유", c.stop_reason ?? "—"],
-    ["토큰 (입력 / 출력)", run.cost_estimate ? `${run.cost_estimate.input_tokens.toLocaleString()} / ${run.cost_estimate.output_tokens.toLocaleString()}` : "—"],
-    ["추정 비용", run.cost_estimate ? `$${run.cost_estimate.usd} (계산 예시 단가 기준, 청구액 아님)` : "—"],
-    ["원본 SHA-256", c.sha256 ? truncate(c.sha256, 24) : "—"],
+// 지침 3.1 슬롯 중 아직 화면이 없는 것. 결측(skipped)과 구분해 not_asked로 남긴다.
+const SLOTS_WITHOUT_SCREEN = ["trigger", "current_status", "dissatisfaction", "decision_factors", "budget_band"];
+
+function step2Slots() {
+  const r = step2Record();
+  const row = (slot, extra) => ({ slot, value_code: null, value_num: null, rank: null, value_text: null,
+    status: "answered", source: "option", ...extra });
+  return [
+    row("product_category", { value_code: r.product_category, value_text: r.product_category_other }),
+    ...r.concern_codes.map((c) => row("concern_codes", { value_code: c, value_text: r.concern_other_text[c] ?? null })),
+    r.skin_type_source === "guided"
+      ? row("skin_guide_answer", { value_code: r.skin_guide_answer })
+      : row("skin_guide_answer", { status: "not_asked", source: null }),
+    row("primary_concern_code", { value_code: r.primary_concern_code }),
+    ...SLOTS_WITHOUT_SCREEN.map((slot) => row(slot, { status: "not_asked", source: null })),
   ];
-  return h("section", { class: "card" }, h("h2", {}, "수집 조건"), h("dl", { class: "cond" }, rows.flatMap(([k, v]) => [h("dt", {}, k), h("dd", {}, v)])));
 }
 
-// ---------- 시작 ----------
+function summaryRows() {
+  const r = step2Record();
+  const concerns = r.concern_codes.map(concernLabel).join(", ");
+  const rows = [
+    ["찾던 제품", pickedName()],
+    ["원래 고민", concerns],
+    ["가장 중요했던 고민", concernLabel(r.primary_concern_code)],
+    ...shareSummary(),
+  ];
+  return rows;
+}
 
-await loadConfig();
-await loadRuns();
-if (state.config.active_run_id) openRun(state.config.active_run_id);
-else if (state.runs[0]) openRun(state.runs[0].run_id);
+function renderSummary(rows = summaryRows()) {
+  $("summary").innerHTML = rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+}
+
+async function sha256(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function lockPreOffer() {
+  const body = {
+    stage: "pre_offer",
+    is_internal_test: true,
+    verification_level: "self_reported",
+    codebook_version: state.codebookVersion,
+    ...step2Record(),
+    // AI를 쓰지 않았다고 고르면 붙여 넣었던 대화는 저장하지 않는다
+    raw_content: share.ai.has("ai_none") ? null : share.excerpt.trim() || null,
+    slots: [...step2Slots(), ...shareSlots()],
+    consented_at: new Date().toISOString(),
+  };
+  const locked_at = new Date().toISOString();
+  const record = { ...body, locked_at, sha256: await sha256(JSON.stringify(body)) };
+  localStorage.setItem("sieve.pre_offer.locked", JSON.stringify(record));
+  // 화면 복원용 요약. 기록 본문(해시 대상)과 분리해 둔다.
+  localStorage.setItem("sieve.pre_offer.locked.summary", JSON.stringify(summaryRows()));
+  localStorage.removeItem("sieve.pre_offer.draft");
+  showLocked(record);
+}
+
+function showLocked(record) {
+  state.locked = true;
+  setShareLocked(true);
+  $("consent-wrap").hidden = true;
+  $("locked").hidden = false;
+  $("confirm-title").textContent = "기록을 잠갔어요";
+  $("confirm-lead").textContent = "이제 이 기록은 고칠 수 없어요. 다음 단계에서 혜택을 보더라도 지금 기록은 그대로 남아요.";
+  const at = new Date(record.locked_at).toLocaleString("ko-KR");
+  $("locked-stamp").textContent = `${at} 잠김 · 확인값 ${record.sha256.slice(0, 12)}`;
+  renderDock();
+}
+
+$("next").addEventListener("click", async () => {
+  if (state.step < 4) {
+    if (state.step === 2) localStorage.setItem("sieve.pre_offer.draft", JSON.stringify(step2Record()));
+    return goTo(state.step + 1);
+  }
+  $("next").disabled = true;
+  await lockPreOffer();
+});
+
+$("back").addEventListener("click", () => goTo(state.step - 1));
+$("consent").addEventListener("change", renderDock);
+$("restart").addEventListener("click", () => {
+  localStorage.removeItem("sieve.pre_offer.locked");
+  localStorage.removeItem("sieve.pre_offer.locked.summary");
+  location.reload();
+});
+
+document.querySelectorAll(".page h1").forEach((h) => h.setAttribute("tabindex", "-1"));
+renderGroups();
+renderShelf();
+state.codebookVersion = await initShare(renderDock);
+goTo(1);
+
+// 잠긴 기록이 있으면 확인 화면을 잠긴 상태로 연다. 잠긴 기록은 화면에서 고칠 수 없다.
+const saved = localStorage.getItem("sieve.pre_offer.locked");
+if (saved) {
+  const record = JSON.parse(saved);
+  renderSummary(JSON.parse(localStorage.getItem("sieve.pre_offer.locked.summary") ?? "[]"));
+  state.step = 4;
+  ["step-product", "step-concern", "step-share"].forEach((id) => ($(id).hidden = true));
+  $("step-confirm").hidden = false;
+  [...$("steps").children].forEach((li, i) => {
+    li.classList.toggle("is-current", i === 3);
+    li.classList.toggle("is-done", i < 3);
+  });
+  showLocked(record);
+}
