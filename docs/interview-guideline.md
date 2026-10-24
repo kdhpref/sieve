@@ -128,6 +128,20 @@ on_answer(slot, answer):
 - **종료 조건.** 모든 required 슬롯 처리, 또는 최대 턴(슬롯 질문 기준) 도달. 최대 턴 도달로 끝난 슬롯은 `not_asked`로 저장해 결측과 구분한다.
 - **pre_offer 잠금.** P10 처리 후 요약 화면을 보여주고 참여자가 확인하면 잠근다. 잠근 뒤에만 제휴 혜택 정보를 보여준다.
 
+### 3.3 추천 모드 (`mode=recommend`)
+
+‘제품 추천 받기’의 조건 대화([recommendation-spec.md](recommendation-spec.md) 2.1·5·7장)는 같은 인터뷰 엔진을 `mode=recommend`로 쓴다. `POST /api/interviews`에 `mode`를 보내지 않으면 조사 모드(`research`)다.
+
+| 항목 | 조사 모드 (`research`) | 추천 모드 (`recommend`) |
+| --- | --- | --- |
+| 묻는 슬롯 | 3.1의 pre_offer 전체 | 니즈 슬롯 9개: `trigger`, `concern_codes`, `skin_guide_answer`, `current_status`, `dissatisfaction`, `decision_factors`, `primary_concern_code`, `budget_band`, `planned_channel` (조건 슬롯 규칙은 같음) |
+| AI 공유 슬롯 | 질문 | `ai_service`, `ai_question_raw`, `ai_candidates_raw`, `verify_channels`, `intent_scale`, `leading_candidate_raw`는 묻지 않고 잠글 때 `not_asked`로 저장 |
+| 잠금 후 단계 | `offer` → 혜택 안내 → post_offer | `confirmed`(조건 확정). 혜택 단계 없음(`/offer`는 409) |
+| 집계 | 소비자 제출(자기보고) 집계 | 조사 집계·원문 조회에서 제외. 집계 화면은 제외 건수만 알린다 |
+| Claude 입력 | `mode: "research"` | `mode: "recommend"`. 시스템 프롬프트가 “아직 AI로 알아보기 전인 참여자”로 보고 AI 경험을 전제로 묻지 않는다 |
+
+`view.interview.mode`로 화면이 모드를 알 수 있다. 추천 실행(`POST /api/recommendations`: 확정 조건으로 질문 조립·웹 검색 수집·결과 화면)은 아직 구현하지 않았다. 실측(2026-10-24, 영어/US 1건): 니즈 질문 7개 + 재질문 1회로 끝났고, 잠금 후 조사 집계의 잠긴 기록 수는 바뀌지 않았다.
+
 ## 4 질문 생성 규칙 (Claude에게 주는 지침)
 
 ### 4.1 맞춤화 방법
@@ -317,6 +331,7 @@ Claude 출력을 저장하기 전에 코드로 확인한다(`lib/interview/valid
 | 5 | Haiku 5.5 전환 | 1장 전환 규칙(20건 중 18건)으로 판단 |
 | 6 | 품절의 분류 | 실제 실행에서 “올리브영 갔는데 품절이었고”가 `r_seller`(판매처)로 분류됐다. 재고 문제를 판매처에 둘지, 별도 코드로 뺄지 코드북 v0.2에서 결정 |
 | 7 | 검수자 수정(`source=reviewer`) | 검수 대기 값을 사람이 확정·수정하는 화면은 아직 없다. P1 검수 화면과 함께 |
+| 8 | 추천 모드 니즈 집계 | recommendation-spec.md 5장의 “추천 요청 참여자 n명의 조건” 별도 집계는 아직 없다. 지금은 조사 집계에서 빼고 건수만 표시 |
 
 ## 8 구현 현황 (2026-10-24)
 

@@ -352,3 +352,56 @@ test("AI 미사용 참여자의 자유 답변을 Claude가 'AI 후보 구매'로
   const outcome = v.summary.post_offer.find((x) => x.slot === "outcome");
   assert.equal(outcome.review_required, true);
 });
+
+test("추천 모드: 니즈 슬롯 9개만 묻고 AI 공유 슬롯은 not_asked, 잠그면 confirmed, 혜택 단계 없음", async () => {
+  const { store, service } = setup();
+  await assert.rejects(service.start({ ...START, mode: "survey" }), { status: 400 });
+  let v = await service.start({ ...START, mode: "recommend" });
+  assert.equal(v.interview.mode, "recommend");
+  v = await answerAll(service, v, {
+    concern_codes: { kind: "option", codes: ["skin_oily", "avoid_fragrance"] },
+    current_status: { kind: "option", codes: ["cur_unsatisfied"] },
+  });
+  const turnSlots = store.turns(v.interview.id).map((t) => t.slot);
+  assert.deepEqual(turnSlots, ["trigger", "concern_codes", "current_status", "dissatisfaction", "decision_factors", "primary_concern_code", "budget_band", "planned_channel"]);
+  v = await service.lock(v.interview.id);
+  assert.equal(v.interview.stage, "confirmed");
+  await assert.rejects(service.offer(v.interview.id, { shown: true }), { status: 409 });
+  const status = Object.fromEntries(store.db.prepare("SELECT slot, status FROM interview_values WHERE interview_id = ?").all(v.interview.id).map((r) => [r.slot, r.status]));
+  for (const s of ["ai_service", "ai_question_raw", "ai_candidates_raw", "verify_channels", "intent_scale", "leading_candidate_raw"]) assert.equal(status[s], "not_asked");
+  assert.equal(status.planned_channel, "answered");
+});
+
+test("추천 모드 인터뷰는 조사 집계와 원문 조회에서 빠지고 건수만 알린다", async () => {
+  const { store, service } = setup();
+  let r = await answerAll(service, await service.start({ ...START, mode: "recommend" }));
+  await service.lock(r.interview.id);
+  let s = computeStats(store, { internal: true });
+  assert.equal(s.header.started, 0);
+  assert.equal(s.header.pre_locked, 0);
+  assert.equal(s.header.recommend_excluded, 1);
+  assert.equal(s.header.llm.calls, 0);
+  assert.equal(s.slots.find((x) => x.slot === "trigger").asked, 0);
+  assert.equal(evidenceFor(store, { slot: "trigger" }).length, 0);
+
+  const v = await answerAll(service, await service.start(START)); // 기본값은 조사 모드
+  assert.equal(v.interview.mode, "research");
+  await service.lock(v.interview.id);
+  s = computeStats(store, { internal: true });
+  assert.equal(s.header.pre_locked, 1);
+  assert.equal(s.slots.find((x) => x.slot === "trigger").asked, 1);
+});
+
+test("mode 열이 없던 기존 DB 파일도 열면 research로 채워진다", async () => {
+  const { DatabaseSync } = await import("node:sqlite");
+  const { mkdtempSync } = await import("node:fs");
+  const { join } = await import("node:path");
+  const { tmpdir } = await import("node:os");
+  const file = join(mkdtempSync(join(tmpdir(), "itv-")), "old.db");
+  const old = new DatabaseSync(file);
+  old.exec("CREATE TABLE interviews (id TEXT PRIMARY KEY, campaign_id TEXT NOT NULL, participant_id TEXT NOT NULL, lang TEXT NOT NULL, market TEXT NOT NULL, product_category TEXT NOT NULL, product_category_other TEXT, codebook_version TEXT NOT NULL, model_id TEXT, prompt_hash TEXT, is_internal_test INTEGER NOT NULL, verification_level TEXT NOT NULL, recruitment_channel TEXT NOT NULL, stage TEXT NOT NULL, state_json TEXT NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, pre_locked_at TEXT, offer_shown_at TEXT, post_completed_at TEXT)");
+  old.exec("INSERT INTO interviews VALUES ('itv-old','c','p','ko','KR','SK-TONER',NULL,'v0.1',NULL,NULL,1,'self_reported','internal_team','pre_offer','{}','t','t',NULL,NULL,NULL)");
+  old.close();
+  const store = openStore(file);
+  assert.equal(store.getInterview("itv-old").mode, "research");
+});

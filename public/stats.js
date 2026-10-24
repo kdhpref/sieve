@@ -47,7 +47,7 @@ function render() {
     </div>
     <p class="caveat">캠페인 참여자 ${h.pre_locked}명의 관측이에요. 전체 소비자 비율이 아니에요.
       시장 ${esc(markets)} · 모집 경로 ${esc(channels)} · 인증 수준 ${esc(levels)} · 코드북 ${esc(h.codebook_version)}.
-      분모는 각 질문을 받은 사람(응답 + 건너뜀)이고, 검수 대기 값은 비율에서 빼고 따로 표시해요.</p>
+      분모는 각 질문을 받은 사람(응답 + 건너뜀)이고, 검수 대기 값은 비율에서 빼고 따로 표시해요.${h.recommend_excluded ? ` 제품 추천 받기 인터뷰 ${h.recommend_excluded}건은 별도 계열이라 여기에 넣지 않았어요.` : ""}</p>
     <div class="key"><span><i class="k-conf"></i>확정</span><span><i class="k-pend"></i>검수 대기(Claude 분류 검증 실패·애매)</span><span><i class="k-skip"></i>응답 안 함</span></div>`;
 
   if (!h.pre_locked) {

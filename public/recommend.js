@@ -10,6 +10,7 @@ let session = null; // { id, product, log: [{who, text}] }
 let current = null; // 서버가 준 현재 질문
 let picked = new Set(); // 복수 선택 버튼
 let busy = false;
+let stage = null; // 서버 인터뷰 단계: pre_offer(대화 중·확인 대기) → confirmed(조건 확정)
 
 // 순위 질문은 버튼으로 순서를 매기기 어려워 글로만 받는다
 const canUseButtons = (q) => q && q.type !== "rank" && q.options.length > 0 && q.options.length <= MAX_BUTTONS;
@@ -33,6 +34,13 @@ function renderLog(pending = false) {
 
 function renderInput() {
   const q = current;
+  // 질문이 끝나면 조건 확정 버튼만 보여준다(명세 2.2: 확인을 받은 뒤 확정)
+  if (!q && stage === "pre_offer") {
+    $("composer").hidden = true;
+    $("chat-skip").hidden = true;
+    $("chat-options").innerHTML = `<button type="button" class="send" id="confirm-conditions" ${busy ? "disabled" : ""}>이 조건으로 확정하기</button>`;
+    return;
+  }
   const open = Boolean(q) && !busy;
   $("composer").hidden = !q;
   $("chat-skip").hidden = !q;
@@ -67,6 +75,7 @@ async function api(path, body) {
 // 서버 응답을 반영한다. 질문이 끝나면 요약을 보여준다.
 function apply(view) {
   current = view.question;
+  stage = view.interview.stage;
   picked = new Set();
   if (current) say("ai", current.text);
   else finish(view);
@@ -75,8 +84,25 @@ function apply(view) {
 function finish(view) {
   const rows = (view.summary?.pre_offer ?? []).filter((r) => r.status === "answered");
   const lines = rows.map((r) => `${r.title}: ${r.answer}`).join("\n");
-  say("ai", `답해 주셔서 고마워요. 정리하면 이래요.\n${lines || "정리할 답이 없어요."}`);
-  say("note", "이 조건으로 제품을 추천하는 단계는 아직 준비 중이에요.");
+  say("ai", `답해 주셔서 고마워요. 정리하면 이래요.\n${lines || "정리할 답이 없어요."}\n\n이대로 확정하면 고칠 수 없어요. 고칠 곳이 있다면 "처음부터 다시"를 눌러 주세요.`);
+}
+
+async function confirmConditions() {
+  if (busy) return;
+  busy = true;
+  showError(null);
+  renderInput();
+  try {
+    const view = await api(`/api/interviews/${session.id}/lock`, {});
+    stage = view.interview.stage;
+    say("me", "이 조건으로 확정할게요");
+    say("note", "조건을 확정했어요. 이 조건으로 Claude 웹 검색 결과를 보여주는 단계는 아직 준비 중이에요.");
+  } catch (err) {
+    showError(`${err.message}. 다시 눌러 주세요.`);
+  } finally {
+    busy = false;
+    renderInput();
+  }
 }
 
 async function send(payload, shownText) {
@@ -119,6 +145,7 @@ export async function startRecommend({ product, productLabel, lang }) {
     try {
       const view = await api(`/api/interviews/${session.id}`);
       current = view.question;
+      stage = view.interview.stage;
       picked = new Set();
       renderLog();
       renderInput();
@@ -129,6 +156,7 @@ export async function startRecommend({ product, productLabel, lang }) {
   }
   session = { id: null, product: product.code, log: [] };
   current = null;
+  stage = null;
   busy = true;
   renderLog(true);
   renderInput();
@@ -154,6 +182,7 @@ export async function startRecommend({ product, productLabel, lang }) {
 export function bindRecommend(restart) {
   $("chat-options").addEventListener("click", (e) => {
     const btn = e.target.closest("button");
+    if (btn?.id === "confirm-conditions") return confirmConditions();
     if (!btn || !current) return;
     if (btn.id === "send-picked") {
       const codes = [...picked];
