@@ -12,8 +12,4 @@ OpenAI·Anthropic·Google의 "도구형 비서"와 달리, sieve는 에이전트
 
 | 문서 | 내용 |
 | --- | --- |
-| [01-concept.md](docs/01-concept.md) | 대주제 해석, 문제 정의, 포지셔닝, 컨셉 후보, 핵심 루프 |
-| [02-gamification-entertainment.md](docs/02-gamification-entertainment.md) | 게이미피케이션·엔터 요소 카탈로그, 우선순위, 윤리 가드레일 |
-| [03-global-strategy.md](docs/03-global-strategy.md) | 글로벌 시장 전략, 현지화, 지역별 규제 |
-| [04-tech-architecture.md](docs/04-tech-architecture.md) | Next.js + Vercel 기반 기술 스택과 시스템 구조 |
-| [05-roadmap.md](docs/05-roadmap.md) | MVP~확장 로드맵, 성공 지표 |
+| [K_Brand_GEO_Demo_Kickoff_20261024.md](docs/K_Brand_GEO_Demo_Kickoff_20261024.md) | K 브랜드 AI 검색 가시성 모니터 데모 개발 착수 보고서 (에이전트 기준 문서) |
