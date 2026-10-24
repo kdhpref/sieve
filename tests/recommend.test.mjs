@@ -136,6 +136,9 @@ test("구매 링크: 인용이 없으면 검색 결과에 있던 판매 페이�
   const made = verifyCandidates({ candidates: [{ ...base, buy_search_result_url: "https://made.up/product" }] }, parsed, { channel: "ch_coupang", country: "KR" });
   assert.equal(made.shown[0].buy.kind, "store_search");
   assert.match(made.shown[0].buy.url, /^https:\/\/www\.coupang\.com\/np\/search\?q=/);
+  // 제품명에 브랜드가 이미 있으면 검색어에 두 번 넣지 않는다
+  const dup = verifyCandidates({ candidates: [{ ...base, brand: "Round Lab", product_name: "Round Lab 1025 Dokdo Toner" }] }, parsed, { channel: "ch_coupang", country: "KR" });
+  assert.equal(new URL(dup.shown[0].buy.url).searchParams.get("q"), "Round Lab 1025 Dokdo Toner");
 });
 
 test("추천 흐름: 확정 전에는 거절, 확정 후 202 → 완료 시 검증 통과 후보만 사진·가격·구매 링크와 함께", async () => {
