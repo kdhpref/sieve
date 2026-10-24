@@ -1,0 +1,1431 @@
+{
+  "run_id": "run-20261024044548-20da94",
+  "data_kind": "api",
+  "status": "succeeded",
+  "created_at": "2026-10-24T04:45:48.064Z",
+  "question": {
+    "question_id": "q01-ko",
+    "intent_id": "01",
+    "language": "ko",
+    "country": "KR",
+    "version": "v1",
+    "text": "한국에서 구매할 수 있는 한국 브랜드 토너 중에서 민감한 피부를 고려한 제품을 비교해줘. 후보 3개와 비교 이유를 알려줘."
+  },
+  "settings": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "web_search_tool": "web_search_20250305",
+    "max_uses": 3,
+    "max_tokens": 4000,
+    "user_location": {
+      "type": "approximate",
+      "country": "KR"
+    },
+    "request_timeout_ms": 90000,
+    "max_pause_continues": 3
+  },
+  "collection": {
+    "collected_at": "2026-10-24T04:46:20.301Z",
+    "model_id": "claude-sonnet-5-5",
+    "stop_reason": "end_turn",
+    "stop_details": null,
+    "latency_ms": 32235,
+    "usage": {
+      "input_tokens": 30410,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 3817,
+      "server_tool_use": {
+        "web_search_requests": 3,
+        "web_fetch_requests": 0
+      }
+    },
+    "sha256": "65cad607233ad73d90bbfdac438e3e9de49329d2707a6ef4ff9225fe1ca97c15",
+    "raw_responses": [
+      {
+        "model": "claude-sonnet-5-5",
+        "id": "msg_011CgLTHRNqpDaMthCMEssfw",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "thinking",
+            "thinking": "",
+            "signature": "CAQS1wcKEAgTGAI4AUIIdGhpbmtpbmcSDLeU0KdI2b5KDy8lGRoM/4/sMujDhBWkefwJIjC1jC0UJnfMobNAaCZJ89Vc/CGN2fvd5HDYYtiuzso06ZlAULUsWDZs40O2EVyihTUq9Aays/UvFtUUc8N+WcwW+t3sFtcG3WQG+dGJx9Tu+blkdtdhQKlPml8Hs0cPDArxKR6Mxl2wBqXSjMTtf82xs+hkPIDIfJlu4q7O9dEFAtcODEvmAxvz0zmnZXQamY4JBM3bfwGLkyo54Cds0vjEgPxCkEYEbCzwjhksl42kF3zrLSSqRfJG/hdBU5EDAXuWAH1ySbJsgFKB2rmWEAzPBHCY4Xx71mkEFhCQS39EKikWsPZ54oCEKpK/Ed+j7k7HQAPEYRfdMvQ0krl8r5khqDzPJO8RHTujyhnbwQJe2nfSy8r6MSoWcNUHI1EtwpL3C69r3kRaJLUobcgnK7BnKzMTiwgGwoN1MP2bBmXCvNutqZAGRJD79CwD5p2n872YSWWYhIKMWaoRCEp8+IsdtE3d6gjwNDdBi1a/TP7WqGitnI3rHCIV3bPEsHE5L8o1RBOoRSYyW2nxUf/0tZCazJZ2vPqndf1DUqBqVaDNYUOe3E3cn3HFurWOv8MLXuUE3ywuJiAca+ytRY3vli68mgpZuGG4+/kS4vHeJjS6jqt7bZKKBM2hsvhNJlx+/rpXa7JDBG6d5CVHFNUvJ84Ru9vyL87Mw2lIrsMd2CxRN/BW+gJ0QGHExSmPpIg9GzJe0yX3YUwDohE+70k0TYV8VcE7ON3Jc7YqR49ZTrI4y7sdBKCOBaJ3f+wB067H4ccgIxkE9+d/ge1G8wgmTuBVMs6LJhYlNeM/QtQKJHmp75QrekLOTwB49hnZg+v5yArMO7Qt6ipjfdN2vx8dcr75dzGFxJ5IvRSq3yARoCaOWLr3oUl3Aym9owFNMiOd+jS9JC4JQqcveKZyYtic8c6gtlgDxH/hUhtFTgIx3odWo5WP82GGyK521d/MedICBZktEa8H5CialeUvmmlZgLEuOMeKnh1mCEWFQfWtkFVLMjXq6paRIRjhIcqh5ezZWL+EzNVZdrviNqObk1LemvnIN4SwxQfyYTS8LgYN45uWpANUSy2VrFyQF1EHBcT879qT8BTkjmKDGd0JYlCZG9JLXrCiZhp/5j/zChudyxB6yPzdOHoMZpokt4isvFyOyTP8u82qVwoSN2MhneU46v4h7Ac7k3oZY8An9/+vCzV2NTLxU1GTZcEwD0l5gkl1gDHuWys+fPBJA0sz6jebu8i8gKgJ3MdCwxgB"
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_01YYcX21AGAmmDnS2Kqf2fgL",
+            "name": "web_search",
+            "input": {
+              "query": "민감성 피부 토너 추천 아누아 어성초 77 수딩 토너 전성분"
+            }
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_01NXnQeFg9sg6mibBHC8Rnik",
+            "name": "web_search",
+            "input": {
+              "query": "라운드랩 1025 독도 토너 민감성 피부 성분 가격"
+            }
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_015mK31fFqwfMSV35eDKQwdi",
+            "name": "web_search",
+            "input": {
+              "query": "토리든 다이브인 저분자 히알루론산 토너 민감성 피부 성분 가격"
+            }
+          },
+          {
+            "type": "web_search_tool_result",
+            "tool_use_id": "srvtoolu_01YYcX21AGAmmDnS2Kqf2fgL",
+            "content": [
+              {
+                "type": "web_search_result",
+                "title": "아누아(ANUA) 어성초 77 수딩 토너 - 광고 없는 내돈내산 찐리뷰",
+                "url": "https://unpa.me/reviews/331900",
+                "encrypted_content": "Et8QCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDBYbaXYms2yCg+Tw7BoMg4mSHjuO9T7L2cPsIjBQOCoOsuZl5ePB3q2cv1P0t7oBPGS63NgP2p+kSPtA5NLsig56mV/+zemIkjmbdpAq4g9Z3kVSNg+SlxpY7XN0bo2jZH8yifrgRIXTxqN/lZXOT1QmJLMKK/FaUVV5B4vhSqGGdyS1Dmf+foI7w/SPh9UFR1MnoKoQ+vvfrcanF9t/FeS+SGcmqKqIndeAzpoGgq+i8FED6V7SxQhn7n+FtFq3V5YnWO1oX6lfIHgdGaAxWJqDdwFiwvA+vIWyydl9uN09V7hTGUm65ccWwOKDPJwy6WqVnAM/KTazniFfNxgLxThxuthOKJNvQOiYsa/gpLXoh8UrT+DoK7BVGWVtuzogwWhBSPqa1SREHCqa1emEv9R/AupSSCSPiiWZHDMy2RWFqP/11tMfsYLNcOr7o7uo2SdAouiWXt84eaEUeVoTWGJ8SH8j/m7PrZRJrPMXA5RS/S5uOrd18TrE2v2IGiFDNug4UMeETQ+LVnGxuqZW3qmzBaH46VOkWp/Rqrh9usfpYY3oh9fewuZas4KurAO7Sz4ISFns6c/LsQtC8oFjzXqMsruSSJB2kRlMv/fy6K+lap76qxdjNDWMaaBIlb7WXi2gC83YRkOxPyePBd1TAnE01QEwzJ9CuVjpVMwopJ0hwZtgtM4qY3arC6EFUlHIMGl8obfmLn8Bx8wUONoLQKsQzoQWGlRk3srzlU7A9UYCHklqkoJanWImYWv7ITE17PLMlnPsVdtxKyYcFHyYSS/PCH4LcqpFXq23rjdS+4RAjFyMuqgZT6zlQe3ZvXPbhMy+ImiuRTMVhvy3wbSYeHeC+jEZM+bcTqO3IgyYrGl0UAJKrGLgcgIgwiqUcgB+AN4zkajsvMQ42YcwZQUeVXqRrscjKxnWZb7wYy8LLb7MC2eFPgdNp47GafhZJ1KgtKp7uX5uf0dj47GXb7ERTg0Ba908Bz1tJ8LJT6fKvQnnyzorfrgF1yNw3Cwf69ofVpjMoSPCNFINHsE74v+Cifq7mDwY3k6nw9jQ4mkOs8JW/IyzFdysRIl3+GhZbj2RRqKhARvAmW06/n66LCXCP+SD697RIBYRbt3Ttbame8SBxShuQnFofnUAFU+nOohRuC6syhV5Mm3ZzOy6eL3wOBhAamvDoEsknuXUwhJ72x73u4gDo8odxjRKrNit8KLFVjwEV4VMd29I7ySOp2n1u0iR5dBhWB/ugHW7Zy4IUoG2r/mvPkzwXGchcFZZtDH4vLqn3pJ9juNPcLW2qsePLNNjOCtnHMQL87vlCxq73pp604xSoRqhHmiXgqApBGYw5HDpdRxyNPcnpFpKdc34ZRzQtQAzQ9wMIEq7JDMqfO8vD4J9va9Gtd/s26urOpo2b7lTp3QYYo1A/r1H/d0J2V6rhlZJv1QA6kjWVD35G8n4x1UgTUrGJ65hf58lhLzSxW51Q34GmL5STxVvtR5yYHzwUHRkWYILmwDykSjVc2ayJHuPAqLMrkI91DUi1AMaJzm1ad+THOC2M/jntMtXpkS+fYquM0/oAGE6zs1zHgTGUCvQB+Ai43djJqn+iSO6jkInxS+9CYZvgGa3OMXQNYVaomwNhQMjLhreB5Gf0RWPAt0jtIdQD1jS+1LqCmdkvrZYqi0ASk+bv00Tm9TgPJ0JoXIdLS1IXMJPuFU8yAtrzvo8tYMKYWSba4cXRjX7eDq743ZYLHZSAs5X+fRNlEXDorhG4bAP4m8hH+i66S/hJaq/pePljhpTowR+645RBMNVb4hROuGVkww96pXyRUUQzhh3lmfVoqBb54Y2KUvR0o3268UUFgChjclz9oxpKRVQP1l90JjpVJp4a94fCAlDZO5nzgMhumdZeqqv+HNA08idsD/jrV2QZdqXi0LAlMUecJkNaIrgOAL5dowKiKjQ5e9fcf5ADHwWU3WHGjbY0suls9ZSUmpUoUDMSqS2f6OwQZ3BbNMqBYVuqv99lk1DYw/tqPnEWdZ7wAXRQbGg8Dzx+5+6De9uujdQlFjxb1b8ig4hX+Z38U50tmimiB7GxlGg17Rxnouzs2RkBBDm1iGlhfGEO/65ZSHX9UXUG0J1j44qyKvhGZs7/t+ENHW4/1kyHWIDEizUKbQbV28GY5rIWIGUuPMqey+do8yuc3kE1ivrdHRwqsXvt42z0noH9ndt5M3Apa1CsyyyTDYDR//PmPipcAuhmTGt+Z24xCLaQlmUe88GykMOvZy5rjh5OJ38GN0OmQQRbWHp2hg1L86IzHgNKtK3YeooQ5qmI7oFvk0jk300ohg7pUlW1Ek8pKJbml8fDjxN3W+nzd2HejZkAvQwk/FjJKyoeLONYMXTOIJErI+KAXOJuwHVlgfZ/ic+5/Y+zdYnha7zHXpH4b4SvdNXd4v7U2w5E1YKMMVJjo6QGgtZxHWJ2bXcOM+E5IhtDaxQWI5H+XoxGE7s3kHVZAQFRr9LqNCoi/RCmdOTavExV0UMRlEZK27YWl2culjr8KktI+8/x0bJ8EbULNQfhYvtQKbFo3di0+H2MUZWc9f46Aozvbogcq7RFZ6iXMkHliWX9dLWEds4gSZPog+KtCD4jhiW2Q9fUfEZor/EVQzqcMExc6+tUTx3ZqjyfUWr6lwb0E6RL3IlQaTgz+1rKQuOgnm6eembmrhXdGHtxCGpLz7LP6YlKiN5TnhKTHhiheXEgF0mq+XNjDk8H4H7e663KdmNeYXR9dWCSt2IT1sR2066o8xf2DDcb3zTLcfOmFBflvAp8Sz6FR93CxgD",
+                "page_age": "481 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "아누아 어성초 77 토너, 예민한 날 진정용으로 좋아 - 언니의파우치 커뮤니티",
+                "url": "https://unpa.me/community/toner/125215528",
+                "encrypted_content": "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",
+                "page_age": "254 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "피부 진정에 좋은 아누아 어성초 77% 토너 사용후기 - 언니의파우치 커뮤니티",
+                "url": "https://unpa.me/community/toner/112799908",
+                "encrypted_content": "Et8QCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDNQXr4b5AjIWaCL0thoMDY7SQD8p0PyAqeK5IjDpTyj7BshQQeFtJaHN3WwrJgxglgg+dQt6jqlxh8H3DDPMi2o9H48coDqIkyYrbdEq4g/MC9pOI1X1Ib+jn332w8EpNx3kkHTKq2YUUjKIf4+U/DhZoPEYktQUYim/GHofxu4O+r9r/8vCn6zNyt5OF2uQUEFzITXSPNuJFo6ERulpuxefsE7fHj3tXONxOR/9zLs3v1m/sG233123cmbXFV6X+zcRxnYGLsojfEyr06Qc+e4jJiQMg31gsHO7BSMvX0k+FjtmUrIb+MOikpyeHtiZF28C0wCp65W2xiW6MzzwrDjOrMJtvBKS1YaJaYFtBb1wYiWw30SRIK96fN89M7vZa3Fy4IhsmU7z734FAZEjzdlr0f60p/BrVBnkwgX4xdqqab+mJeQRkdMFtl8mPU81RYDksPfS9qaaCXbVu8uBeKE/vC/+kRpDVO2Uihl1KXzzbxmoWq0/6tEng9192Q2xbGHwwWexVl9uHB4eVyFhLEwsHkHSK4XzUqjBC7Jz/Bo71ImwDAeCgU50hTCRTW4ceZJ2F6JGyE+hahbSqKySsdYU0GBgHEtZNrcU/GE+hQToGJrSjdkUm120BILEPXOQxCoFDY5wjo321mrqAP9M00MtEeiffqQq3i7dP9SBB16UT6SX0Y1XmnUD01GGcaZuUlAfHOx2x9ygAmbnTD+eZ550zTr+x9yP7Iget0wR6Bql3Qw4JHDgqt3tGrf5s8yuv1xZClbgKHV+s+4w33uYlloGZMMURjlkIo6AS601rTS/eOyrDrCp1LryTv7iqsbdeZcgRde9U7wlKMJ743AJCPzcVWDuYuIdHM2XBRU1WwABfw7718xDOVvD25nJ4XfnhObFQ789PVis4N6cFwv9pJKCnjeZXXFZmcfJ0/aq6KzmK38tM43B6aaSExSaCbRKlJMwtDhZbACLWcvRyu/G2HboQulhNeXXiaLLDqyYzWi1KfIUij2rzSv7Mt5Q2l9O9f2j4g3+W1akQa2maFCVHcidMVJErsybpb/C25DoPGYCkXn4qpbwiUrqtMLK4q6Po8PdUBniHlgf5QwJamz8rfHn13i1RHuaMFv05OCq7qPg5SqxfznCPBVA/FAh15hCE5ZW1WeergCt054ZUJ4ZvVRC9VZL4E74hLzIDB9ZPulB1KmeIsSz+qxV/d+qDpbZXInNeXNLAQ62n6nVORnd/4cmPHfVrff4AwdtIm7m0NaQWOWukTbtQ7kuzmpAJEaUi9wbEWY6gAgY0hIts8KFo8e2uZMNUcwnqjQt9mllbjjlmIGaIHNS3OF5/sp1wT29+9M7XAW6HQ58IrRiUbFE2auxv6tfFKss2RZ9lPpoYxD98d5xiCRo4Wu4ymsAp7XI7M82OQs3iwwmG8LAYVMU4ab0pB2HYgaF5sNMJE8tRtKzawDAfBMpb0LBVaTYg7iy1fSGMkVtLZCG3eUIeJv53ng4z1DkSKlvRZ52XXb3ln1mwzcmy1aLyzjeqJrQYtA4NBKebJl9CjuJLVqCPLgoO6SK7J/b0PVUs9G//Qt0NtVrFxnsBAgf/NWkd98Wg8XYa9ua5MIXdyum8FgcIlsx8XE3IRDkUT7TN6FIorKQdBSqqc3hrkiJ3/QL9su6BAM7IoEd0oJNQNw6toMTS0Zc8Yy+5yF8cE/igS2r7tpUT6d6/f3gQhElCSckn4pOFwT8B3KOVaveW5RkGHM6U+dMBQAWhv0wIbxkOi9H0pibTna9Yh926l4nttSLoM+5z+uTW1Uhz25XO9uVycs9YRWtgqcMS/tv/9IYmKWc9rN30KYcZz+DIPvf6HBLsWx0aPMcB6vV7NMFPvnhbXP3hbwx22WnpFXz33Bd4IOIBPpf+drsYF4kzaxLlt1brnxgMbW5gEfDZtFe88AdfuyIyNZvOI2siUNL4xbSNNCXB9bWOKm+luKcUdmCxApTlX/piSTw6HqrhoHSIods4h7lJoRxh5TuuNNR2xKD/Scf+u64cXYj3neYI+xl3MKOTBwFs/QkI4I1PSpbPDhlAUSd3BxL/VhsrHquq6jSzBRsTqU1DOHAu5BLTkS+YNr7TO64lclZaMpLYDG21paqoA3xSjDxDeqTkPPcuT6laR5txJzQNl4MKuz1IyyhsBr3Xo0ZBbf6l1E+5Sz6vncJ50Yu5ZSmTYN2yldcNUuR7ZvZip7L0CvWxeKzlH2SVvIgDiUZ093x//9wUcV1jPVVrUm5sYLKCSMbQJo9PFT1QXIKESOsmufpTVL4tL9cjqqWvCb4HaB+4IBNXsjWgOnJMs7IZqfJpmtVKKQIBmmJH80N5XmEWi1bQZCZlHpVfXdVrVJdDGU7eUPttgIKwEECAK3odmpmdLbqBowX1JdKrJodwBlAcWwbIdI4Uyh8raK+ktU+JQEUP8jHs4bE6ige40nOWG54wjqDiTp1PdfUrvxz5d3Jhz8TwbNeiBZnC8MF0QsB3EnJ2xS2A7iG+Dce1MFrahnevbOR0VUOoM2J0lsrSBdDht5vITlckntv6wi1We1mK7vUWowVNAJvusZxSNpYMXlwDKVvAAcafTEB2AqyEvdOOIWU6Zt2FQ6M2ivTMCqddnNOjQlzOvxT4a+snJ41AhAo1iaJ7WW6W7fuL0boGlc4gS4iddqPawi4G9v8g/A0uKZXZXJoxxm1Cb1FquCsH/Tnnngt0hql/ZsAyNpOk07yConk20AC4lAU/VmLpom73NX4lgE26UV2iISdQGp4YTC2DqAeRJ1io6MrSEO10QD+Fp9ZGhgD",
+                "page_age": "452 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "내돈내산 아누아 어성초 77 수딩 토너 - 언니의파우치 커뮤니티",
+                "url": "https://unpa.me/community/toner/19494173",
+                "encrypted_content": "ErwHCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDAdhUoq/fYKnYe4FyRoMc5h5bx39JxdGBkYrIjDlAQ5ndyQ/D3UrtnCK7ip/p8L4h5c4WMosYvUIg+r9n4tHpUmtCo9PBACLTk1ia4cqvwYyBI7fWraIGX6k6gfXTli4dyZ+V2MWsfHY+VIvhKIHCTmi/G83YG25pDeUvpci4Cun0bcDWqgyuR37H4+MJTAeyZwkSZRpi9WYhvX3EyFMdOhHXA7/dDZh/BSVBiZMrP6VQ1l5nyqlYV1u1pZto8S/gAEgmtKgRL2a1yumAvUvjYhJfSANSB47/SchbU8HRj3z38ww/tB4lSm4t0gccOmNOtjzLZsvLGug+08CGO4EYL2qK1U4SvUrd6hHapxsRPoOzWTAov5nKQ6tuBLQ5OnURNddXYYL5X9P1GRVSKeUvKFkLHfO+PL5bH936l/JVLPUxU+Wo6eGbuXEf+a8L4NJxg4Q+utFDprbDxTC3/+PTi/glg7BQegP2kb2a+7ZmZLiaJoHx/M4wk+f0MEDG7J9IKEhHvxsdQFHTW9X0TXvvEANFFHUq3nLdpKxIhMv1Wl9yZM2dV/wuIyGJ8cvFhR1FYtiY29ZJb1teg2vUWJjHB+hMAWf8RuimNzxdCyBw/YuhyZsX005AhAWSeovrUFAR3l0KCVsokMPHWSz1Kq32RhU2enlGR+iE+LGJAru/ZUWsZIlKsberUvYhUQLlU6pAHIYvjrdSwPfsE+PlTA8POZa+86O3EDEwi/1KBkd516Oc4BqTyAxc0rVFKcMOx5OS3a1a5Rrvu6dCjoEU4K7lwMJvfwCAQGCI7LMAGpF7IVXPNk0tu+FVQC7vooN7epSOxFs3bKPa+tXVqhsVkCTLbSJVZNTYQv8S0ZsJRzDAydH65XvxROcFrcbsAYSgBpZpqaS2Sb1tQ2byyisDmcHC1VaWNxe9/iHo1iR9MGBmAMNtBcJnSnmYLy/x+qFC534HzajMvZ+Ctpz3LgdRlfw9WY1mDjqOgMzHyJJHUMJpoOt41jFQFOVk6outhiIbiHekKL0VVeLvgJyFH0Ury+w0eu5z5OJ5jmhR0j8fNidfmmevpo/802MHh6DIxagOZQR2qEPNLLiksNauVMG43x6mDNZhN79tfB3QkfElHKIfg6+QhR0WjagGuSW+USWgehBNCnnZ+dRdfMtliZ0gww3clZOSMvfMa87YT7Dtz3EFgNqHDWilcQcyeJcxphHPLsYAw==",
+                "page_age": "1055 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "아누아(ANUA) 어성초 77 수딩 토너 - 김윤아#4RZ6 님의 광고 없는 내돈내산 찐리뷰",
+                "url": "https://unpa.me/reviews/401545",
+                "encrypted_content": "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",
+                "page_age": "250 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "아누아 어성초 77 수딩토너 별점⭐️⭐️⭐️ 좁쌀 없앨려고 구매함 2주정도 사용해봤는데 좁쌀 없애지기는 개뿔 여드름 더 심해짐 민감성은 비추해 사실 걍 일반 피부여도 추천은 안해ㅎ 재구매는 절대 안할듯 나한테는 너무 안맞아#fyp #아누아 #토너 #어성초77토너 #올리브영 #올영세일 #스킨케어",
+                "url": "https://www.tiktok.com/@eoeotod/video/7495015285775158536",
+                "encrypted_content": "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",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Songhwa-milsu",
+                "url": "https://en.wikipedia.org/wiki/Songhwa-milsu",
+                "encrypted_content": "EssICioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDBCCEu86ttsG531IPRoMWDGXwhjeJkvW6FP5IjC/KHoMMnoFrJSAjCzCyTxbIqWzrGUwRBQY+mwfaZ19d/N2UyCpwaY+Vh+MTB6iaN8qzgfojdUMvVZ2B7cuNf5gJ8wUXHmWeDEqTCPqloETKv9qBwzfTuOKzxvPLtDDgNjxZqsp4ojjxq8ZzEps77xCnSRhYyRUAJSDKms7Stv4MBy1eDk/h0U+bVLvvBWhLXid28P4qDqD1yFPO++73md0EjHxYYQnrMQ/5wbWC0hZxvJ4aWFZgzhoHZDXCG9pJUnX1cprxk5hQHG5Qv7lfLYVA3w4RVkRmhmmouShtwdnfUb6oy/7RXdxwRbLfpy7KkS9HWMye6wY4/Wqq1ny5Nb5Dui0SoZEc5ewOqSWV1q6hNG7IdbRJ1noeqcju3Esma8asjnuHiU6jl5u8RQbsbEO8bE9dkDUcB56fApKHPEL3HiqIE1pyvueGdWgCqhyV/cJwBWhe3FwywTmewly/p637N7QD/idgznD+MYs7ZuyE+pHmagZh99HA/UhEgR+T7LHTXl2aDx9pTR39ZOcjNpB+qsbEUKCsitOcBWoxVP1Jnzkzob44ExUOExvjn0Ot62rS1ZbGwlwJw8A4RdFGgMT2IYrWaouIcv7S/un1bJ+ygnWNWSaqWt9v6/i07bjJ8C5EvNpZx13OxDkvpWGGBDE8Kd66AmoAy8khecYd9169zKpO+5fJysXFt3eVrJbAV5YiylExW/QlD4A+DGO2NwQGHDi6cYlbclr6PcaUESYIm3bx5lRKVHi25uPC3ccWUYHX6lbn3IG90oH7t2Cy7cc3hejW7/f+p1c0RI9NEcrcxj4nydZvsbXwShQCtcZaw7ELFuQd/UJf+xATAMtz3w4OL89aioPaSKq/kmsQbG3iODkaaZsfd+zOF5UXCp0GxQrbr0V0FBOUmXuC3pWoi0vDbj465T7BauHXrk8RJ5CErqhIcMWgBdTwolyhFxO+bQb+d7aPwlVXz1aQxqaGNs8Ym+r+zcUSODPaEmMd1VvgQrILUKb2kLhkVWoXTCX6nruyM5Pey167AQtvoRyo3LC9L1cLy/pgiXD8y6vQz+QYDp66U7pNKqQS0bfcgope+gOtlFi40vtEYJr7iSdzWbOf5k1RmaNmr3U0eBnt2cetriVronderHfy8ODcgLt++LYcqSlWctBq5Z0474UCoxbupw1Ub72QL+sS9JT09D2Y/fUAUvJQKJEFa/PursbM2ho0ZQ4a5/TLI9s+e77+O/Sf77738x+UkgjSCKC4IyJbc3AjfWSRm9+Pgrkl/SNqTOL7ZX3EqB4SW6O6HYeHNvMJn9pGaWGN2wYnY2QOnnYvXNseClFd1It+7SuvPFsw2vJMOXyZTHrGAoiRFcOlCpVVxgD",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Hydroalcoholic",
+                "url": "https://en.wikipedia.org/wiki/Hydroalcoholic",
+                "encrypted_content": "EvsBCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDK2dkYw2aejgib7GFxoMWuJ7oSQDks0x+HOOIjAbG7uc0SGmoRjEhBn7NP5SOfydc2CCw0uh9F3PrJ/p+xYqqtEJ2RDHG/4iXMQvdHoqf9NBUd0hxQ5dEoWO6yfP5ZMYqBX3Rx0AmYMv/EEGzeDtDbh/BpIUhbtx3mY5JkdVMyYZLN8ld8TK0MZDLblhQyPOqlkfbovv3JMq7ethAGvDo5mbL8e42JfCk+8Vjdl3l/ysLIwQcDGrqycs4CqnLNc1h8JKLOTbzTd25MDU8BIYAw==",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Innisfree (brand)",
+                "url": "https://en.wikipedia.org/wiki/Innisfree_(brand)",
+                "encrypted_content": "EpcHCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDF5LDPeDCL0D6T88TxoMdYjSjxdV0/yxjDB5IjC9IqaGIR7Ds+5EWLzKt+m19l7uyYLKpxnGkDcOBbbeK4WDVQmxbKXBVZ5QKJUG5oEqmgbN10uhBEQTOEAdUJ+U9uKs70EWF6tu76msSmq6h3wUFOJLS4MLLXCFpNfCLrwEjMICLVvxWF3rNBmuKt5EilbooiUnaFXz9H+4kQ1w9pmnSYBE8awP5uYf8GtA1t9rBJig+tECyEH1zb6uh5z8LXvz5kxFgYaRMUEiKUJ8CkZoiRAVRDICCTxmXDphqYgMmd0LCyWkCHuvaE1JHxVwYiqNYv8w3NizAQLtc3sA2uCKHVQhGzqqIa+yEf3qth9J9Ed/Tfg2DXLLHgjRIzo0A+R5GrFQqQ5NHfKdz5fOTvZ14+vkZ5EyC04YAMKKUAujzF5D8L/5w94dPrP04UR0uKWKlwgbjjZTXDYI/M1BHklaWMQjVN6F7RHB+d08MxphalrCK/tySmyaQ0gKZ6mfdhz2prgpL3AX7p3cAI9ghWi2K2qlr5psU2OkHx0XmmwAP01b/NvAeTIvhkcvOEjw133A6uM996UOw3h6FELA6NGxNyYcQEquS+r6zrUl33HbHH/c1N+0XJ27AbTzQJMs8KoovksTG3Pu4YVnquL5f3DvievoiearkaOrIeQHW12HriZqWMtqJX2evKsZ9fbnmaMJIKGWa8948GMi63i5Ks3/TJFJ4Xc2cWUxSjxMaUs3ltH3bDBpp3f6cR6PVd/YGxL8WpcmodEnuUX9L9+8iiiM30mRDfuwofiuUgBdBAbC9WqWa4N0mqLf23FDIrqCHGQivQLmRVPb6l9tYgTI1e7hbh+5LU9VotA/VrMf7daWii1funSzmAtfaUcwPHnT3g77wfGojdb5MPx8qMJzSIKcpHD9t7EO53sxBbSN9MK4uhw8o/dwb8gzJDayGDc+c9Ed4oms6oGblZYTGtGqUfgl7Dcg1OEO5so7zVOmT9MTxE+ygV7ZnLVgiUgjKYdmhxDsT92CfH+YjC5MUn/tDISnaCc134ol5i9JXq8ZQ5gq1cDSZkcllxPnX18PVjmEPsM00z8N6bjPmhQdkLwgyMZtYGP8HPrslCGq+kJ0DxDLX9tC3zzDZHhMgmfdqBqzjW5N0TRG+FCrLZMY1RgD",
+                "page_age": null
+              }
+            ],
+            "caller": {
+              "type": "direct"
+            }
+          },
+          {
+            "type": "web_search_tool_result",
+            "tool_use_id": "srvtoolu_01NXnQeFg9sg6mibBHC8Rnik",
+            "content": [
+              {
+                "type": "web_search_result",
+                "title": "라운드랩 1025 독도 토너 500ml 1개 - 가격비교-11번가 PC",
+                "url": "https://catalog.11st.co.kr/pc/433291061?sortCds=DLV_INCLUDE&poc=pc",
+                "encrypted_content": "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",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "라운드랩 1025 독도 토너 500ml 3개 - 가격비교-11번가 PC",
+                "url": "https://catalog.11st.co.kr/pc/361885348?sortCds=DLV_INCLUDE&poc=pc",
+                "encrypted_content": "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",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "라운드랩 1025 독도 토너 - 혜경😜 님의 광고 없는 내돈내산 찐리뷰",
+                "url": "https://unpa.me/reviews/455118",
+                "encrypted_content": "EtwPCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDL/ViYH0369SmRzi1BoMJ0pViEQRcuy7DGo+IjBpP8FXRZLrsRfy1q926H57fvzA30fO2uHMMuB3VH3EVEF+Ec9wYf75CCGc/cp8fJ4q3w7wJWyw7pejrVSOO9Dt+L/02IdWjhP6TlSd7JkkXzDbrYuSV7TL+bEP2+xE+FQSRLY32XQE70Y1XJg6xK9mseEcqeBra10ZKUXrJixMif6ITTRA34uEWNtHhsb+i0BUWOBFObZFXXLail8kTVxxeNaoEm6ciIFAkjwOBESzEPq6s4aBjdXbpmF1w1etMSpVdiIWCYJLPP5/o240Px7d0E0TJkPKyvgqecpv0sisl9pFsg33n6k5vklEEHf3G0L5jDZm7YwykC4COoKBppP7VaIAvwEvbJglIOcSgUIDVwbsaaAz+rKc4tpAg/IayrfShfvn/NOwxh9sQveLP1COXMyzTg6XwSi9wybcPBMnK1kggbt02JhbJsgWfq9GcRZ/F701hPr+e1ZkPJyJPOscVat864t+/29YYcDONyZ3i3PhOA2A9DJPRKFoow8Z0sywW6NU8QppRMpgGsGYvrOYTgipvMkHA4KPSw8X3G4nbnWI2BYs7cZ5aWV3EyvFiUlcJ7a+2oH+R5bQzYZi59uZQIlFytDRjsv/0D7qmS85OA4ltVpi/6P95sKnZQ0D/VB2hGnAOg6dpkggmVtwVpFnqLUVBhbBMQ5SE6wLAi49w7++dnqH5Payhxdb4kqvM6iuZsyE+7ljgbQNhuu7jc6YzrDNzcx+ba8xosuElUqzwu6YnN0no9n4s1w/yFT76QJR+I6eUPC7lpbwaPxIDI1XyOHLCWfU7ZTAoXJVsX62jqvrHViLWYJoA9ccszJ8x38g0QSjfQTp5M7qfS8lGinoYTv3CUz6rf8+JbwshYPyJhfowd9kXEODQlPbMoxs4B0ZCS2wOnki87YG07Zhl6eFGoxPdlJZ7v0MsoENRSr4EySKO6NlcwXlF03y3shVKbX6/Vr6yNip50xdrMsWdCjBNYmZJpQ5HM5EVCprPoNB210xtLGQ7G2LwPYJL0OpdvO2vIjCoCkE0znCkRyhUtIwr0egNYk3orMN7TTqlhU5VkCyetTNDTJt/UYWfqWPArAEnRXoYzXKxmqvEXexGNlBschMjgrrFcqsVkzMTCkpiha7M9H9yFY/2KF2P1EZOEZ2oAxB1UmXgdqXFEySm+vKnD87yZmDRSMlQelRwuPpBklZhwacscD2O5YSqm2+H79uRLA1AlPCCQNkxvdiUj7hXsxB3MwT234P502x1hhZomDOWZrYC5VoRLXU31+lsMlNFfRQHj0NmWgxvtN5qtQlZYaS6KnyvXwGASSoZeIW0Zmw/Q8Yg4avIBZMOqJO4Rtm3ylRbi/tFG2tAl+p1VDkuTNc+ZEFZs6+B8oRgjJHm8S4ZJxRE4bGG6HMRbSrRNCE6kKvPf9OUz+yYJhvt+hxeXehGL83Y3hlQHR1T47cPiMGugaHS4aOHfrUZ9Vn7245RHjFYdW6iSJaj9sicEh1zY6Rbee5Bsp44Cqtyvy+RgJ/Su5MMfeI7AbgXLCE+FKBl5vK5gmcSdslKgpLAVkG8TVTSLsc3xiSdkCqKJQqeysIlzQ7DGy52qBjy+6q5aMHYtjRhmIYtyitzj2HFriB85jdcOs412wjGzNxt6dIkY8V6/3JDD8lFV2uV8iwiax+ym+ahWIo3V7WgxY4kLPMpSdf8TsOEuS1dQJkZcvONEAAehvXas1nAzBhkWoZyLuQQxbi9XvYN+rSLL7bYGslZ0axPh0n9cG3M+wLqBvDvC1DgAyME+mIrJNfyxy9IEctoOzkeo7XdbsLOrTwMWj5V8NlhvFuK2voBnLEiDFypt42OPMzuFEhU1rSLNBFKOM3APWMKf0qv2qlKkUxw070aep1NZKTDKcE4BSRPaWDjXMr3wKnbV+fPjolzVYvorfWMxaqMTQ0HbcGXI276JM7XoauYJ445wm1ePPmfGLKbw87v8G6+DRysBsyN0gO53JynVX4iFpUnlqt31Ug+EI2CgmdVyTxTpF0OqgS9nH10V7Dq5T9UzxVwoTAaKMs4mndQgYMdDNHR8vN+qCB3/ROK+yP46hhgrYfQmQ0SOTozmYbw5yoPx77Duw4EKWThAlvKGx5cRS1f+ElsQBg/p/WfrrJi4xx+Uyk0EhtArGjO1CROn9JiqNcr9SIret5Zm+WU9D33mRbrKuSmLe81fXflPO3LvuwBjFHenbuVCNUnFg8eX/CNADOvEdTGCFQiFVOSNUSkEtQa0f41gkQbLviUQSWVV2YSz42xYkIOBiAWpbuDQymh+DVYhcPoYRWpyD8RcK4+MJxm2DR/j8NMv/c5uZJfZDkja9nwHkG/ThyinAKcQ0CPhAcF2ydp9U63mEn8QVtBaqpQ3daAO0LTPopG3A99cVJ/prMH2DFaYGyibb09dl9+pC9Z+dVP0e0IVb/UMwl+iN5fg9QWtgG5370amQIkQEZI6/TD0WQ9fEhf+2J5qlE1rvF71q0k4lV2OVdq3LMXREyVBt/esTDQlZ7eOc4lJYlruEmf0CDUEVKpSHEYmeA+5pOIkHc7DGlwrZLkilx0SKmOTZIFcoUeGmvHcUYAw==",
+                "page_age": "97 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "라운드랩 1025 독도 토너 - 광고 없는 내돈내산 찐리뷰",
+                "url": "https://unpa.me/reviews/176983",
+                "encrypted_content": "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",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "라운드랩 1025 독도 토너 500ml (1개) : 다나와 가격비교",
+                "url": "https://prod.danawa.com/info/?pcode=5568067",
+                "encrypted_content": "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",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "라운드랩 1025 독도 토너 200ml + 로션 200ml (1세트) : 다나와 가격비교",
+                "url": "https://prod.danawa.com/info/?pcode=5802548",
+                "encrypted_content": "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",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "라운드랩 독도토너 후기｜2025 올리브영 어워즈 수상템 성분·사용감 정리 - 언니의파우치 커뮤니티",
+                "url": "https://unpa.me/community/toner/122398032",
+                "encrypted_content": "Eo4ICioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDEX1NuLpoOnxoGvoXxoMYU5bfsP+rYCClUHLIjCGJh2InU3rLHlNBrG3NUZV7CMZxYzPEszlQ3oK1aBi6D/3N20Tvrl3q1XqOfj9DfoqkQdITeI5XreoxA+7MoVE8aHc5wCDCZzQMe1SYMxeIJ8qwbt124UercEtf4kD4kPjwxoXPzyErjS8C3YXEkIOOSknhSx8+1HKqBruH61WtmWPNkHQBNgG4lOkI1kVn/LX/UIauN7yjGH6iSdJBymD0gAgq1yA6AfAGb9mbjpL0zAz+GPh/CdzND87kGkkldZ9MX8+4MksreA1XLxYuoufxK2ROVGUQkMtyyMx01AFtbWpZWXNP8gQew08DVXmQMAaqrzedh8HzEUo9LBUBNLTjixyYmrSkHsxV4H/1Uj78oMmCpxgZMzv4JlvwIwZ63gyhsDXOnsB2dRCAjurdGtF1KBRbwb9NDlILzb/BShjC8TBB4/S9X5S4AOFTGek+px3iizhPe400TC4Vh3HqDkTiFZ/VNE6Iwlv31QISacBOyv+9/ry77s45ejpMK2LJJSpuJ73tI9e/VTX85fZ2Rz3Fn07fu82mGNNepmIOm0yjyH1dBYmmK1lqVJeLdRfzsVa3WZcuzaruXoKddT3OOT/twKeX1T7CKusrAGLbIR78OibOZC0kf6w+2D4REIz79V+OtBbrAMB1gikObLNdKRlFwAASXqL9F87lPBmhZGjVr0pSnvuPBUYG/gbDL3B66NwrMBk2jsYhax88QZLs2Y16NnkuXiTf+IlAtESp0tyD1IoQwQbKXFUDA6lnzOlOcdE3aC7x/Go+r68sZw5kj5uAMRTTc3aAL9zx5XUZVF18bEN6t1gXhzUuifkEYpkDQ0IEBJB6nRGMIAPz3zbsjU9lUUxL8lroZim0Cn2vYdJeFcqIlNvU7o8azOqb4fxtrIAtLc3KPPJUOrYfhtSpWEvgyugfk47JZvgWGwwg19LSdVQYJsiEQhd/DsTadxip5YUO1yiy3FxiTESjnoNXbmtilMG5ud95/iLBEYMt2Qwdoh7iErLaZ7ZRVg3/MblrAk1vM4mVKbsxaTGiOEVmWmwnEddvdQLohQyKvEfPN0Vz3YAr2c3sNvZhdCF/vFmO5iEzkrsYLE8XyWqQ0TxlFZtZfvxDcubAleda0tj+1kl9aPCP/CwT1fIH6l6sbiax/LShbnbalvbcJi3DkmxXJiqBPsWB8rdGvYk/MwVUaeCUpunly4FKztN9zKgQOAGN+AyHMLRC+eKupLtjiyWJMjsgHvKRah4K4d98obhiLWeQReC+k+Vh209ESr9oUuwPiEacv1OGAM=",
+                "page_age": "304 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "라운드랩 1025 독도 토너",
+                "url": "https://www.glowpick.com/products/81847",
+                "encrypted_content": "EoENCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDDL+qb/iJEkZC14UWBoMD5UuREHtkapHZy3AIjA1mrBA36CfgNMy8AGEWdY+0anXQYP996KZpSin8bkOLPRThnqNHgs5aJBt00GP79QqhAz7YMKYPaPkdgc5OquEDANiU9DJNFlSFgwUuYSxBOikR2XF7kcDOzhCsNJFtvjgxj5A0o3Kk+NFjyCbD1j9GXb0eluPYfe+a5M2W4hmdF/3WaBz30uUNbPu/W+52lb7jWkw/TggX3wVXtvMWklvEDIn7sDoLQuf6+7bHPhINKVlNrDkdG/vJnB/XcbtjHlGDrMoR7uhvDqPiG5qJ6TpUHIzoNkmNr6TV7Nczh9DvVTaQRQcHOTXaO5SJvBA2CPdRxP7AR4D2pqDKazi6ZrEvsoBrIalgoTkvTqQZNyPL5cP3dwEpwLrsFrI1BVJ7FYQWILPn0MxrGSle6QKl7gitUZbCBuRw1j2pJNPycQQB7JSC+DVkEfKej3TvzxtaI5GQndasLGp8ZMibWNEyWD4g9YNsP5jFeXUeaJ3SydJHMwEaMPIDTPC8w0g3UqcAIb7Q0LvyRtip4pPWCLjWfxLc6IRUkM0ohx765l0qgtZ1cTRizexZqdeMWSFczR3grFFRy0KX2YxRmqv2ioZxqNirs6x6v6HwaHY6zoojBaIfNAjbPyU/B8qMtgQw1fzPsGc86dmNwGnU6s81w8mtlnsJkXZ1T2A6xz05QVmDUqzc0KOxnYwaWt63Tw1mJfBTb8xnLbHhKhvH+fe9ALR6HSZ9qiirBXsIc5FVUgwU9G/fVn3X1OV27NPqk/FU/eR66zxZX6EQhE3VEqN9m16kVWMRhSGL5858szAdrRumbpnP0WnCwbl3vu1Yq9iwsV3F9u/nfjzTKRhjklYPgVrgu9jUdeBWzGr0vkzqXItp8Vvpk4q5w2W6vqbIJk2aZdSDeleQWYaL/Hx8bAGnB7KhWrov9CkNNxbhyK/3db+56DG0BGJehu3MuXDoK2M4eA9cVUmF69rWE6lU20ckz2VfTpVP78n/b0mHq9bif0Dyndm7lK5L2W5rUnIN+5sQa6RbZFDGpAwIpnyz+qjZ61iDtg7Vdolt248BGI2Kctcmo4T/dbkeK8eZase6XgiU7s0n6mfpMxcSMh8CsCQ3TPRfz+xxlKXyUKC1gH0xk+83DQmqruaNhQ+uhmtT67ADTKmCtwk+MvuIvtvUZT6RL3m2Yilbm0ARR0brKUNfUhyhF4ByHlZ+tcb1k/Fouq/jPOrODScEkwe4NDW3A5nKPcScZgVzZR+zD73fL7kC2CZMFevGfXv5q9GG0Wks4D/cysNJyh2ZIymGM6RpuAXItN2D4fiy8It/EAHXJSNg8h6hDGH7dnMV/XmuWgNA703wNNpP3alxkFLVyy03asIJa8GjjQYpePgrrhzh+8RjEMPbSITEEwXkcT9GfwQk2niYFBL4WMfh8Gy/sYSRXEzrGL5m7Evm4Ny74LxSXVrrfwDFYFJJpMam2aksqlZLIanw9rJwTjZvw4S/GrME4Q1f1UfGL/Etf5jceUuHa4TB9DMLlEQJPD7lCG3b11NPSPvrs1R1FfZwNQHMoDOugJwIPN+8QKRqeLK54g8Pw6NxSRv/CdS630BjX9KzmnTtVjTAI/+HKcBs/CSynCtxtBZQadRB2sPKLhy7dmJHuYPXSn8S8p+24YvJbUwkXGEPMQv9v14NE5XqeuP03/pfZEQhgck47p3TxPR6HCDV8cUBijevHFBnYv8X01S6zFrjaR6t/Mj0hZvKaWAcMfhlSPd7di4IkCPUMyFHOskwtKaV7gcTXCFn5Fhnut1EpatvI81neA6TwGTFPU9MlpZeZvFf9vyLVD+C/qDaIADgOH1J+gvSwT+MvhmJmOl1VBVdXjo7yAzKlXKZqo4hguzSFnKnTBoEt0GDAbGAWv8h0LBUn24+tkzx11CDHvRmCL03oh9agViw266cuFrK7TFBPYQpXDkQrUuySu1KhO/8d+hal6Iu5CZ68S76TyD1pdAlfN1gx3b6K7CNbUco/9Nuhipx8CycQSiSirDZfuVXYk9Jjj8ebBjANuT57YC2HdrlDQtOxC1s3vDRigu9PV++O3LafT6bGGXiy4XUUULEf43mBYxk2Ito5m1/TDFQlT+Ak+XnIvTxmQ5Ix+/2C1dGAM=",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "[라운드랩] 1025 독도 토너 200ml K017",
+                "url": "https://hanpoom.com/products/%EB%9D%BC%EC%9A%B4%EB%93%9C%EB%9E%A9-1025-%EB%8F%85%EB%8F%84-%ED%86%A0%EB%84%88-200ml",
+                "encrypted_content": "ErYFCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDOVhsi3xmbqbaL4gWBoMV+ISt7wzSXbDZXM/IjDYkrBozRcfTHc9xv+olUWrcM6VSX/Hd1+r2W3FuhuyefOxS+n0TFC7WHHqCFxVdtEquQSDVS5MpAuVa8vR7sn/whvdH4NtJaifgsjoKCkI9TxPh1i5yPbkICCsnDFZg+qgj/6JAeDL4wp/weMMU0D7zjUTvxOmNFDLjjLy8+Q3fhDfPfHeAgiY+HpTs2WECSvLkIEeQKFquYvWVwIXjx9E7qstqudfaQ7wnvUV+kTvqDcfz5qCc892BNjM1EWOoTmbw1JPMWqpvNlqu0VJdkRQzlNl2BXf495sWMllMo9KD019KdQBn4rEZzVQY/XXF4LYNQfTfBIVpih1ALC3aMNhh24eenIMhntMinRO86NaSvAdnRzfE0GJR5F+f34fLNkOUL1EWGk30IYsEgGuIiXO4WKrOHQFRwtR1fonLjjt/AvVHP/P0/asjc/MzNQGBo43mCijvPfACtaf8QePez60V8f3zccpDaC3HmCB16KOc5HJh3uD+b3mHIrlShyNOYTytyzg+TXg2PlQ+bZC7d3Rpo9TPCd50fV96oo5JJp5pOTcQH4RSgXaPjymr4g3/fPuTS/qO79yZWbkvhzGcZ4PJZgNJOYE78cKQbMBYau6OhLbUO6pux3pmdCSu4jBluE/cWzekW+6Sv1P7duSjFJrYDyGAoybJ48J/bSNkvJMdfH0J36wLn1fY+VbuJQaK9Y/NKXNNEL7JXYjEwHka2BbaJQ2wRkXwaXaOmoECQwdtgGv8PgX2iyJN2Tr/FCuogtZXaR5hX+XeR9HanSiNowk26Ba7wxaO49o4SNKj1ZBl5QJ40T3ppBSFq0m7BgD",
+                "page_age": null
+              }
+            ],
+            "caller": {
+              "type": "direct"
+            }
+          },
+          {
+            "type": "web_search_tool_result",
+            "tool_use_id": "srvtoolu_015mK31fFqwfMSV35eDKQwdi",
+            "content": [
+              {
+                "type": "web_search_result",
+                "title": "[토리든] 다이브인 저분자 히알루론산 토너 300ml - 마켓컬리",
+                "url": "https://www.kurly.com/goods/5061253",
+                "encrypted_content": "EoYGCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDIsBoSZRwazGZapwtxoM1TdhCTZkT+a8BUR2IjBc1Ff3w9A7zeg2VLtBJrT42EliQwuK1NZVxKuAL9l0YzdErVpvlIT5ULs/37zcrRsqiQW0pDDLIR1zEHQSkrsCYf3wSs6OUHKMqFhBRQehWGnWcwy09hXOt9zacL46ZeI3svEUAQR/qMvFVdmrAPaB7g0O7gYP0s8bX/UuxCDVsH4+P8PrO7RRhQVecJnP9FDAIoeUUsFp841uwlGeDRYwNcPaKyoEpg+j/m7RXKf//3Hxuzp/vvRfRf+cf3Yd3guSG7tHWJ2lyK1CLW8w+fVCWMARD1SR/1QEgR1STrKO6zvLtoo1FSjh+Fv8owByboL4DZPmBIyb/BtsXzqXBzZSDET77PphLnr/4rU79HnuNK6cwS8MCCwufysvPHrKVYWh0WVdK9y/Mn24I+WTzLiTo7YoejQEKL6M9EwoNewzuda76Ty95RChEnrjanXC+mxqekXkyzLyA+gb2QSCgQdSfbL9Tc65suu/zF4k1tjy+Sb88rltUT06XYpub9yCHwxH2O7sAZ44Yz/W+THX7SiNgWznxMd1WLBlqg1Yyl70uXQyHLyfOIjYNvFNsHG1BPNEgecbdo/8eYg6RGfFTdbZ1ynogjKSYVswXtTQzQBB9Bq0c/7sg7cyOTpMpR5MDKISJCXS9szPH1OLvHlIhB2czym8fBi5Oaqh80j1k4VMP+8Rq91nHH6gqLXU9g7eJyg/jhnjxLIyM6sA0rcdoxRvLI32T2BxNajW8KfrxUI61DNHfwaUALg5XEoldkLJzTtNKrNnCD0pZL3IAkGPaFNJRte5saChC+ZtVE70uuLgKKYxe8DJqKW2PzJ8/gfOk9utG/Q+JFcruALV6SnPr1YfjphJHFOl5QuDiaYg1C4DJK6KuSUtCU6QhddQxULf+uxVy5rd0IFTRhzrBcaRlaB0IEztYSlVTXYsNpSoGAM=",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "토리든 다이브인 저분자 히알루론산 토너 - 재재재은 님의 광고 없는 내돈내산 찐리뷰",
+                "url": "https://unpa.me/reviews/370247",
+                "encrypted_content": "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",
+                "page_age": "335 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "토리든 다이브인 저분자 히알루론산 토너 300ml (1개) : 다나와 가격비교",
+                "url": "https://prod.danawa.com/info/?pcode=12814838",
+                "encrypted_content": "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",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "토리든(TORRIDEN) 다이브인 저분자 히알루론산 토너 300ml - 후기",
+                "url": "https://www.musinsa.com/products/2584505",
+                "encrypted_content": "EtADCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDJxgBC9SsMvpJZqNzBoMoFs7GY6UczW1i4lBIjCA9ebB3Tu448BfSPAQLCVHfHIO1uciI1OtR2tn8KISvxUh7kT+4gN71c11gCIIWn8q0wJfTNrULjXqlGws2/qZ8aho/lER6KlPnke1meR7y7Y8IHPbf+LRNW/NMn4ENoeb1/sT3Xt+tQpcYuDsete593g0sl+85k9SGhj2eGB2ygl33Iqt05V6LnM0aPIThkiiJMzjyQjO0qCbDMGgynSDxuyqVl7fPgmEUnPwIB7LS7Lqi2TCFRD3uC5yyvU5ghz1F7qMU0wmuU2v/pEeO+vli9NstGsdv8EIS6xWB7q1Tv3szaYyvBFq4++KaesUHsodg79JgUaK8ksq1e1bJUOgESDghQE8GFvsQGRMbskyDZObOnBiDoX1NoCauIQLbKdXxfrvTNhi6myaz2X2K2LevWhN7tuwP80SoOqz4RjL1MIaFEaIQxJzMRbpMBc3AwzC+yr2OqZFarUJaXpPdLQNQ8tdrcV2P6qeM3SpXMSadzusvzW91DDUjxzCpT+iHga51TK2qxQYAw==",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "다이브인 저분자 히알루론산 토너 300ml",
+                "url": "https://www.torriden.com/goods/goods_view.php?goodsNo=90",
+                "encrypted_content": "EqIHCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDGLPeDL3egpjQf1p5BoMJ6j5WL/mHbScEjA6IjDCVV5RNe6MuOBmBjPuabQPcgusCwR6r2ShI3oHUNuXK3rdJBVWGSSLjkHIBsES+jwqpQZ/2jK9BSNJ6YHyTQ7AvH6lz2tB9bbdeGCoHNA8qdvZxLqaJN5HNN+AldIKQzdY7pjMWwj8ySXRtJr8jHgVFTEVHqgKPcRQguaysBU4BaPj4YPQQHFZvEVjqENNnLl65Ur5nCUmJ1yvV1CZ1DFc1c1R6nVuB++lAITN3ZgpboQmL6JDRD6pUDN4RgvqVilBhoyQ0SFp7LQnAXwUpcJEd9j+msvY8JDGtNSQ3IkA2ZDJc5qYv+Rdj6yZTch2o8Kc/zmq5ntQxZL3sAgWrNOzAAMlQhqiWb4sbqPrb9TsOmk3RcjB34S/aSubIP4rkgFNXlD3HbzuUWcKnFW8FgSiUlU3LqQqiaPFa+WGW8tsxFrVtwmCoUL1FalYXFgOoTqMZXopoJx7Axbx0Uuskfok+ORcGMVLWF2klRtdyW/t9gDqnFw9tDCKnWYrQ2QJ+nKpg5dCipH2x5ZkCtZ/aNe7eqVYLpLHzeAESJKvsDgdJ4j697Ergo1Ec37obtNhxPhVMGqtZQozan0qq40izRNZrm1+foKDsjG0WUNJ+ka7ULZwGHy3Hyg6Uy03FSeoaPd6hnBgJRI6sHCwGoekeowwDvuI93rL2mWJURcXSWQA++XDTcW7pkFKiuyZVVPthtIMXFEmoS5LTepXtF+YxrqqTg+t3Yh9LQOOeBsjOlRTUUBDi5b8RmlS0c4xvF5Tbsa1EfswrGYbqpjmVqEe8oeqLRjOXiheuhahyFPlx9llgU55WNs51hR3qVYh3o4iEqOP0lkCuvhI2RJ3OVturJxNTTJkmpXIAR5ENeSgIipWswn3VOVAXJsfFvxa1zDF4dEp0zCt6RvZUkEZbQFXksdOburZEcPAM2Aw/wyja09Yc4DEhw4CX0pb04gmGLZJ8aMxXa3Lg9JFArkk1bR/jGxpmUtGB8aOQj//L67YzI2SiYG4tgeIGXyBmn5iZKbbDrRkDlGt9j1Xs9/UdNc2d1F3rJcCJouuUiOSw57eXOlkXvkSqhvqac2TbpxMjss+2DzdsJD1caa09AwSxAnjzy9J9oKECm+roDxdrb9sXQR19nsXgqrpEzsEGAM=",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "다이브인 저분자 히알루론산 세럼 50ml",
+                "url": "https://www.torriden.com/goods/goods_view.php?goodsNo=58",
+                "encrypted_content": "EqgICioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDJb4Hc75abuqTit9YxoMX8ddmsjn1s7K/778IjCspgs2nrUcs7hdHCT4eHlEmgrnXgzpvagI+Waa6hdUSo+D2MxM5JQ4wkkibptsklUqqwcxQkiYzP6XoKP9Bane8CSZV0zyNbJxE/n1u6u7HDgwKtN9rANQ9cuu78UBe5UlqFX+FZs5noXi87G5UcG0UfJIpPda6DTSIG3oYT0RHAglvGpGMM0OtO25i+Tgx4hMfpyjW4SmkWVmX+b9MjNxaT3iMTDl90GyaeRSuE4rRFJ5wI+QbuvAQYGTSTulAY+fos/3jlZ0+1CknB6crzXQVIfMyj7W1waMNS3NZxpL7rfBkw/UPFY1aMyJh846qQXnSEsGl2oiiHdNk1jEQi1t3MO0LH9x/+exzckUqRhlopDNaj3TsDsiLEkpmw38I6/23j8kNC9Hc8Yz3YevVJ8zTynxf9f0XSQGzUWd+iF7fok5olcj+QM1azCXvkSNHSBgeoPPTmafg732CMNkU9KwCFD9q8eDV1CEusHMGLmz3Ew5eb213LMV4CGK10yVaEw/WNOF825avxEALh+oj65ezijC2ToXkLIRlRgqsiM080jOfCA5LqZ+DLILRJard6hpSmpWGO+KSkdSWancaa22PjUcgATVWXMuwi0WMYPpvmf7CbIPCxajcb6p8nhrwlv9ZnY9dICLxWcO+6qTt38lG3y64WdAqpTr6JFIza7V00dDpVxsguxUivuzMGWis4z5qLUu/NnQyd+QZ7h7cga7bfMSJppz6GII0hCuyyLRX0YJQ38VilCs4Dic9Kj6IOaPi9RTfCiNP0WtlPEutI33djPTJMjQzosy2fjFl3XwnohcAZi06rArdvTTtHH1H2/CDKgWUhVkNai24AHcI2+duA8v0F6bglwSn5cUdSqOQNO653j3gkZcUl18u2FBBQbtogK852lai48jyCgschoybliy/fG/5++c20YEgS+MOg+oJbpJHGSykdzbov2QLNGaPdUui7APVJUGZ2bvJRSnCCSTlZAsZqVBLAgQyevq8Vz8MYMWyW0OFRxzIyH6wRfnYPxLgI4NAYuRkn3DjcC4entCGFMUGsrbNGLWvCFbK3dxYH0OSIzUjjRsMVJXYdfgVauVyiAQDDW8mQGhQGd6GdxEe/Mckt7wnRltJOXMEgi+Vo2ERWMYp7D/vc9CuQsGLkJQuvXZ83OkoxAxbKvINUaed3LwQGqDlwHqgABhqgWA7iEdDguUBLFvahh+MKx6UJAtw1Z3KV8jU2fDLadZJNSLRUjpnSVsafotqjcsGCneeUyxcrENOPifKBRf5M+4wJJQilk5+WWz5Q5BqhXo5ae94gzbsKPhKmnIsrQYAw==",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "토리든 Torriden",
+                "url": "https://www.torriden.com/",
+                "encrypted_content": "EqoKCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDHerI3Ur3YCOdWAjIRoM5yoc2WSVoA/9sES5IjBYZi9/lfl07c8U53+pKKZfcNmlyZI5IO8bhYNhABeXVx5RG6thswJKJ5Fbwb6mORcqrQnfsEZud1y0LecemcBV9DD8dqwiIhLOk6pWMzAX2YSIptaJNTDiLLo0POotCWvcGk74/o1GXqpPJari61PslDxGkDzkUPVQOlXa+KmdEee5d/A7jzydPd4dcSxs/IxsgOevrBlaPcJB7z8GNQicXN6/BVxlYTuSfLEZR42rDl8O2PVOIaTbLS5Vg8rAbSzv7t9toGJylrqntNKItHRUGA63q1b2+a8phIp6N5lheRQXahCgUKMYOJ0lsS83XuXphSaRFLq1PoPWvVh/IIJ8Hsr69/IHUA75rv4EGkSkMDLC+hg9VrYzgHFJFwRzIEnmn/onq1cNuq8WrLSCvnoO1YBn6Dzugu1kxD36VwiqwHVAlgrKQ4sVyUAqqM0Uf/z2BoLq9bm6BSd4aV7fZe+3sydcloIhQ1ujlwrGH7y+nRc90DQkSx8xRJyYI3/iFuzYipigtdENK5YOaF7T0V8Hs8oBXZXkpZKr2EMSaE4wQE/dDhWgUANuNxgTvPab/brHmr5Pu0D2RJds6Ec3nVsnQuedcSYsj4rmOonn9sLtPc2EB+hB5obuTl0YhYkJ1Pnm3kc7yrHxjMWd7bGpsyAq+DYaqzd/WKd0tlh+keHsPWPfJJeuvL8SI3RYcxLZnzsv2Dd7dRfDxOnSYgDklbWi3vw2I5e/0NdiWhmEQgO1UCTyp1cOc0fFB/hSZSiqMBjJt7NQ6y3yXARywluk602gvyJXkTL7mSvatSd3j4IHEUETZ+iEb7TphYay40cTCkpWHpODuvvqJxjRTNLWZJzvRJtJzrq6gIQpGhb4tda3C5zlH9581arn5dW8josKTrB5sbqa4KdK0MnMrpIaT9NXvEGPySZ5NE6p71CYXHEupUB2QBxwg1pvDwwRNbLBP9Lryp0vnXGfyzmLP4ihISNOAPo9iRZiAZA68L4xqY6FBAR9KSjGg/X4TUsOecrgq+GoqrbWUOqDY2/nP0uLVKkosJ8fa4k3pCQwmQwDzI/4PNIMn2hPUC0aL8jaBx4XMDQbVrUWemL1Z4lDKeIGgmeLg2rV9dLszQOZDSQ9rt6R1sxCAaJCS5MtjlN0Om1nhe7D9CUdAuPxeYJ0dofKxARqFPZXiPq2gcLjPudzUoy8ezyoNLH/oXPM3GVecg8enjQO0DbSDm8ug388V2VYlmpMtCnLUu8pews6pM0SA/LKSQVeF4cRQD3M3OftXvSmykW2hI9jkbt2nhZ/kCz3h1yCzG0514OD4+fNwaEuXxv7cDahkWSpAIVsxDDABGAAbxhq60f950twKs0JCDDR8mS2QZBqdXe9MNL4An24fgfU/J+XFL7O83sokRS9WnMU2qjzbiEn8YLv815hr2Lk/82NR7KrRakX4OpAftGhtSSDtDUglYyBdYg9iKbmzXeD57OjjYjbe+iBu+6N5vdBXV6m3OtTkNet8fq6a1ErKBP4Ngrea8+4+SKzc6xLewJhtvwfFEDMQ9GkfRv9A0HRCeRbKOJaGD+5NZR5Qp4cxxdotg+0jZUA9uBE4cwlwxd6d/B0m5MHLlvwZftyqfrJteCDr6gQhSnqRVL4OCVchzyyk8QEF2Red/Xk3pA7PSlCOAgYAw==",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "스킨/토너/미스트",
+                "url": "https://www.torriden.com/goods/goods_list.php?cateCd=005002",
+                "encrypted_content": "Eu0JCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDOpA0JTk4Bslmj/+nhoMeWuAUv39MwCPqlFZIjDLOj4Fp+MsNVm2TvMzjSHzI1vc8+kq08lQo6hkn4yqcXKrgk9rmt3FjHfw7Sim21Eq8AiL4SdCLtWJfdZzRYXzjdp6OscJSerNiIa8kTfqFkZOJ0WbLoZ+Z6zp6mMJZ7FvHjKcpha7QAZ0bl4vc9QzyFuBnFGhncyPcdogBG8sAiTDsFEpXxeVjMStbMCBNSt+h5yck8X8TYe1jzhbLAESSjzVJW9g4XQcJvv59TqPYwJnvc4/NEi5H3FUhijjsCbol9V8+/G2aDltqGRklBEI/tydt1izLrpkMk/KzdH2aQ/sUeOA5l+P86y/7PnbGT0SiiylBQ+Qt5IqAA9RrfAnnhQQYvxdPKk/FU8K208lpHByq3vrV4ECJCp1D2nr2c54vvdqLCbidbEHxfM7X9HOjUQFH6a+eeDxGGSbtBcdgBueL9cKyvTqI/LwHubxY3cZneE7wQzZ7Ern1NJfTW8Fra6IFM7EUeKjWBdh1au10SFOrQRZhHEWb2HalvOoxR4ZrK2WLuTZfhjtKQqh+skzFYAGu476mL2vrDWKk4H6+ZDPhhusuc5I49+VXny5NEyd8K2+cseRQifS3alkwkU3moVa81yTDuYm6AUqt4IUj2+jUmf3R2oOxTWlxX69aXZGH3ZKTnYHf3q4YMMcJLSeQBLJ4XWApRNUj0IBc1EQTuhieC0U3FQlUMbi2QOrnjODf3vQdwp2af69Hgwiz3Ld6uo7xmJuHyktqexG4gJAw9uHHTi4JbrBnI+FWT3FtI1tnHrXBhESp1kBmGwGGwo2JsG4VwLUqcVjP7HH5Q+79VDw1IKOSy6SdHYKAPZXOq/blL90DJwECKFuk1K0WDdm+MsVxtrhk7gYzpxbuou8cAZUfX/r6Ja07QSCwapDTO+MDsQB9koSY7ZhP7PxgG/ZSLahK0pnuq6c1Ehe7x2qZJ1lF/Zg5Zewfm42lLEyLi4VR8iKCMwO9iLjx+PGrtrhhL/YUEgglRjBlX6xqD0OgyF64i8lEGdCA/WENVtbWgWTgjdx3xyuXp+3w7ofILYBj28qniBj9tkT0FIjS6DnycGCqyVR0gTOBJPxGGBmHrUgrPtwhRXlWGA6Zw5AtrdjWrYmiHljmV6Ma/CoF/JzpBzO2PtFFY7WzfxsODqP6Q0CnZcY5vwQwfpUXgbOod18l0wfvag5sccKMMpa9dqaKtXONvvfykshyIH9T+27GC4cjoqqoi80ZgNbdGdRTcYIOtZ9riNjwl54hKn+R1VvIgVswOEjzyhwNr5QygNNlzXPydfE3kW4m4hl5ddMKAdO/29z0W9ibg5KHqeuq7/KA8FPAxnvIsa+atbSJ+r7TnZg8l9c0k54B9jaUSEd+E5KGdfa7OQ2bu/PK4x5B4p3Dz2HTvGr3RtWlS4IoB3/L5JsBGAqEdMp2AZ5NaTwjSAP8dkfnXuu6kVD2KnC3118QHF0Ic+B0+ZkWxD7Rm+644MANMGicEvIqgtKaul3j3wieqJ15nSUKZ2Vqn/wmK7E+iS+5ixOMRkBJG/SrwNY2gZneP3u0mf6eqs91aAKjhuwrvsSFtroPBNtAWk3TdKr5zwj6RgD",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Diglycerol",
+                "url": "https://en.wikipedia.org/wiki/Diglycerol",
+                "encrypted_content": "EvcBCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDJTzHB9pyDgq8T/FChoMmBqavN9n2oMQeWSiIjAjqUdAor3clWfcBkM0K7L8U8qxyxGn0ceUPyU3f895sNjme2z6Y+yjvhGWvCuGBwwqe0eqDP+D2dPB22d4ZARpKutsFCwmQm0ViaGcL/JRafYunjdtDK+T/Ccu9D1lCu/1RiAylVIY8uWSVIJwM22l+FuynE4Kfh33lpfqDGL5BC37pID2oYxZb5WYTyrJiyGs6f4Qpc0H5DPaMvqNL9LcfacGAbREkyI8zHue1hgD",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Hydroalcoholic",
+                "url": "https://en.wikipedia.org/wiki/Hydroalcoholic",
+                "encrypted_content": "EvsBCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDIp74Enl9znTSy1hVhoMebUu3+Gaqr72kmJrIjCM28zWIVCUXn14BI3WKvxYHIdHB6y4LHPGPNgDK62HVRQsDcosFx4sONrg9LViW6gqf7JDPGr3+0IuRQDtm+AF/W/ILWYXS7sscQ81DTmiEsMbwT8AdpOTYPtNN6o8yXzUVo72kbFHOf1VaG3MMr/09pqz1tV6cdIu3KAJixMEzq0XK2eu2WDVW22zQn6J0mcJwbS/ohkF0GTsLgKhJVzQLCs9Q27/m/E+HPuEVvwMWc8YAw==",
+                "page_age": null
+              }
+            ],
+            "caller": {
+              "type": "direct"
+            }
+          },
+          {
+            "type": "thinking",
+            "thinking": "",
+            "signature": "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"
+          },
+          {
+            "type": "text",
+            "text": "# 민감 피부용 한국 브랜드 토너 비교 (라운드랩 · 아누아 · 토리든)\n\n아래 세 제품은 가나다순으로 나열했습니다. **순서는 우열이나 추천 순위가 아닙니다.** 이 세 개를 고른 기준은 제가 검색 결과에서 잡은 것입니다. 한국에서 널리 유통되고, 민감 피부 후기가 자주 보이고, 접근 방식(각질 정돈 / 진정 / 수분)이 서로 달라 비교하기 좋다고 봤습니다. 시중의 모든 제품을 살펴본 결과는 아닙니다.\n\n## 한눈에 비교\n\n| 항목 | 라운드랩 1025 독도 토너 | 아누아 어성초 77 수딩 토너 | 토리든 다이브인 저분자 히알루론산 토너 |\n|---|---|---|---|\n| 주된 방향 | 보습 + 각질 정돈 | 진정 | 수분 공급 |\n| 가격·유통 | 확인됨 (아래 참고) | **현재 가격·재고 미확인** | 확인됨 (아래 참고) |\n| 민감 피부 관련 근거 | 성분·후기 | 후기 위주 | 일부 성분·후기 |\n\n## 1. 라운드랩 1025 독도 토너\n- **비교 이유:** 각질 정돈 기능이 있는 토너인데도 민감 피부용으로 자주 언급됩니다.\n- **확인된 정보**\n  - "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "브랜드 : 라운드랩 / 용량 : 500ml / 구성 : 단품 / 효과 : 보습, 각질케어 / 용기형태 : 캡용기형 / 피부타입 : 민감성, 모든피부 / 수량 : 1개.\n\n",
+                "url": "https://catalog.11st.co.kr/pc/433291061?sortCds=DLV_INCLUDE&poc=pc",
+                "title": "라운드랩 1025 독도 토너 500ml 1개 - 가격비교-11번가 PC",
+                "encrypted_index": "EpABCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDLYmIMKYOLCTdWgVKRoMuJg8Orb1TxfrAJ7GIjCvzc9b3ujqmncC/HBa5epc7AGob5e7qcPZmexMjsJAC/7PTST54aw5PVxA8VJTPQcqFH2Ib2iSuhWrZyPshz6Dj5Wo/rWtGAQ="
+              }
+            ],
+            "type": "text",
+            "text": "11번가 상품 정보에는 효과가 보습·각질케어, 피부타입이 민감성·모든피부로 표기돼 있습니다."
+          },
+          {
+            "type": "text",
+            "text": "\n  - "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "## 제품정보\n\n### 가격 및 용량\n\n15,000원200ml\n\n## 랭킹\n\n- 워터토너 6위\n\n\n- 라운드랩 2위\n\n## 성분구성\n\n중간 위험도 이상의 성분 0개\n\n## 리뷰\n좋았어요\n\n- 피부에 순해요\n- 데일리로 사용하기 좋아요\n- 수분감이 좋아요\n- 가성비가 좋...",
+                "url": "https://www.glowpick.com/products/81847",
+                "title": "라운드랩 1025 독도 토너",
+                "encrypted_index": "EpEBCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDFg2aBMBlifAk9aMaxoMc2jaa7dvvrCcEMLQIjDjIzjya+OldOZ8UPoqjJZCGDQLBRKB4ywK99aHn5xrjS2Oq2AgOWed69IIrLBkSKMqFfDFhI32dj48KepLex8FstRme6OWbRgE"
+              }
+            ],
+            "type": "text",
+            "text": "글로우픽은 성분 구성에서 중간 위험도 이상의 성분이 0개라고 표시합니다."
+          },
+          {
+            "type": "text",
+            "text": "\n  - "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "제품이 자극이 적고 순하다는 평가가 주를 이루었고, 민감한 피부에도 잘 맞는다는 의견이 많았어요. 하지만 일부 사용자들은 자극을 느꼈다는 부정적인 의견도 있었어요.\n\n",
+                "url": "https://www.glowpick.com/products/81847",
+                "title": "라운드랩 1025 독도 토너",
+                "encrypted_index": "EpIBCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDHUK0qAcCVWS6wEBixoMnFuE/8uoVBwBfq0DIjCQ6cXC+YzDJhu0jy5zL/NA1cANh8leB1X/gDtMa/2sD4UNg+R6E22vWNWSq0kPfagqFjfqzcHdyb1xLsCYBLn+/a0Wn0JmhowYBA=="
+              }
+            ],
+            "type": "text",
+            "text": "글로우픽 AI 리뷰 분석에서는 순하다는 평가가 주를 이뤘지만, 일부 사용자는 자극을 느꼈다고 했습니다."
+          },
+          {
+            "type": "text",
+            "text": "\n  - "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "패션/잡화/뷰티,스킨케어,스킨/토너, 라운드랩 1025 독도 토너 500ml (1개), 요약정보 : 스킨 / 모든피부 / 민감성 / 성분부가기능: 각질제거, 피부보습 / 클린뷰티: 친환경패키지, 착한성분, ...\n\n패션/잡화/뷰티,스킨케어,스킨/토너, 라운드랩 1025...",
+                "url": "https://prod.danawa.com/info/?pcode=5568067",
+                "title": "라운드랩 1025 독도 토너 500ml (1개) : 다나와 가격비교",
+                "encrypted_index": "EpABCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDHMioEWMVC0b0ed7mxoMnJX2IFkSyYc2O9OoIjDD7MJtwU1GPq9VZpVj6Hcm58QeuoThl2OeTqXx6GWm7IDZvReJnYdwR4iSaCuzoXsqFFbsfAa9vxin73t9E+ZCZvKIXwRIGAQ="
+              }
+            ],
+            "type": "text",
+            "text": "다나와 최저가는 500ml 기준 15,870원이었습니다."
+          },
+          {
+            "type": "text",
+            "text": "\n- **아쉬운 점(후기):** "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "## 제품정보\n\n### 가격 및 용량\n\n15,000원200ml\n\n## 랭킹\n\n- 워터토너 6위\n\n\n- 라운드랩 2위\n\n## 성분구성\n\n중간 위험도 이상의 성분 0개\n\n## 리뷰\n좋았어요\n\n- 피부에 순해요\n- 데일리로 사용하기 좋아요\n- 수분감이 좋아요\n- 가성비가 좋...",
+                "url": "https://www.glowpick.com/products/81847",
+                "title": "라운드랩 1025 독도 토너",
+                "encrypted_index": "EpEBCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDBrO0KtE4IB3l1JBBBoMtP66d8NCLZoqo8fhIjCMiWwUo9XuizaU9zeBXv8doA+E2ze+NNLUvhVt5j7xAJ2LnKKBtoiuk1d6oecXUqQqFexJQHvwn/CcTOwvsIxdXFxkTv9aFBgE"
+              }
+            ],
+            "type": "text",
+            "text": "사용 후 건조함이 느껴진다는 의견도 있습니다."
+          },
+          {
+            "type": "text",
+            "text": "\n- **가격 주의:** 판매처마다 차이가 큽니다. 같은 500ml가 "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "모델명: 라운드랩 1025 독도 토너 500ml 1개, 최저가격: 20,520원\n\n## 라운드랩 1025 독도 토너 500ml 1개\n브랜드 : 라운드랩 / 용량 : 500ml / 구성 : 단품 / 효과 : 보습, 각질케어 / 용기형태 : 캡용기형 / 피부타입 : 민감성...",
+                "url": "https://catalog.11st.co.kr/pc/433291061?sortCds=DLV_INCLUDE&poc=pc",
+                "title": "라운드랩 1025 독도 토너 500ml 1개 - 가격비교-11번가 PC",
+                "encrypted_index": "EpABCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDDYidZVyhpAswxxrlBoMSx3S9jKxp776zAjoIjA7L9DfzVu6hrBiTYVGPFabNj6Bgg6kL3TEgHCKJOZdPSYSUYN1DRX+Vv0/JdUGMp8qFFKimXxeEq8ku1eFHX6aau0w5fSLGAQ="
+              }
+            ],
+            "type": "text",
+            "text": "11번가 가격비교에서는 최저 20,520원"
+          },
+          {
+            "type": "text",
+            "text": "으로 표시됩니다. 구매 전에 직접 확인하세요.\n\n## 2. 아누아 어성초 77 수딩 토너\n- **비교 이유:** 후기에서 붉은기와 열감 진정용으로 자주 언급되어, 진정 중심 제품의 대표 사례로 넣었습니다.\n- **확인된 정보(후기 기반)**\n  - "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "제형은 거의 물처럼 가볍고 투명하다. \n\n",
+                "url": "https://unpa.me/community/toner/125215528",
+                "title": "아누아 어성초 77 토너, 예민한 날 진정용으로 좋아 - 언니의파우치 커뮤니티",
+                "encrypted_index": "Eo8BCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDLQ5UVkXhHq75I1m3BoMTACw899PyJ20A0YJIjB/TtPQdz6Jv8OWpYdwvQCE9ASOtSpZgdu5CFivVj5ecGfj0td7wK3uxZ+06IfLlygqE+T8gw6WDEFWpPKBNcL+ZqLwhdEYBA=="
+              },
+              {
+                "type": "web_search_result_location",
+                "cited_text": "화장솜 사용 시에도 자극이 거의 느껴지지 않았다는 점이 인상적이었다. ",
+                "url": "https://unpa.me/community/toner/125215528",
+                "title": "아누아 어성초 77 토너, 예민한 날 진정용으로 좋아 - 언니의파우치 커뮤니티",
+                "encrypted_index": "Eo8BCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDCy85T82+3ddQxkOxBoMnZ3d3hjqGezAhTKDIjBJucLB8GRkJ6GB0tJyx3HjV9q2z1kEm0Ssq0Or6A+Igr5ZTPFBeWefb+WtV/MubhQqEwLG1PBaEI36Z1Gh7DBICvskjKsYBA=="
+              }
+            ],
+            "type": "text",
+            "text": "제형이 물처럼 가볍고, 화장솜을 써도 자극이 거의 없었다는 후기가 있습니다."
+          },
+          {
+            "type": "text",
+            "text": "\n  - 같은 후기는 "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "중간톤 피부 기준으로 붉은기가 확 줄어든다기보다는, 달아오른 기운이 서서히 가라앉는 쪽에 가까웠다. ",
+                "url": "https://unpa.me/community/toner/125215528",
+                "title": "아누아 어성초 77 토너, 예민한 날 진정용으로 좋아 - 언니의파우치 커뮤니티",
+                "encrypted_index": "EpABCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDCxbjqBfqZ+9wKd2choMnmlI0jw+5i/HrYZOIjBrRzMyiEfk3DxjfDuTulT9vNdN3xn4gNPWYm+yi8433GlX5KcxYFgLgQxuQbmK2C8qFBahGDO/W5LWH6LBU+cC6MlQOQUBGAQ="
+              }
+            ],
+            "type": "text",
+            "text": "붉은기가 확 줄기보다는 달아오른 기운이 서서히 가라앉는 쪽에 가까웠다"
+          },
+          {
+            "type": "text",
+            "text": "고 평가합니다.\n- **상반된 의견:** "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "아누아 어성초 77 수딩토너 별점⭐️⭐️⭐️ 좁쌀 없앨려고 구매함 2주정도 사용해봤는데 좁쌀 없애지기는 개뿔 여드름 더 심해짐 민감성은 비추해 사실 걍 일반 피부여도 추천은 안해ㅎ ...\n\n#### Terms & Policies\n아누아 어성초 77 수딩토너 별점⭐️⭐️...",
+                "url": "https://www.tiktok.com/@eoeotod/video/7495015285775158536",
+                "title": "아누아 어성초 77 수딩토너 별점⭐️⭐️⭐️ 좁쌀 없앨려고 구매함 2주정도 사용해봤는데 좁쌀 없애지기는 개뿔 여드름 더 심해짐 민감성은 비추해 사실 걍 일반 피부여도 추천은 안해ㅎ 재구매는 절대 안할듯 나한테는 너무 안맞아#fyp #아누아 #토너 #어성초77토너 #올리브영 #올영세일 #스킨케어",
+                "encrypted_index": "Eo8BCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDFW371leEWcMabYWYxoMxzXWuz3+OJdtMMpgIjBmeFIjC5+PGUF1lp1qsJN2TjiLU79Rn71hk7XsphTtfGEUWWCRRhz1TxTBrtKVgicqE3o1fGUBHpRRJb5/6ygeHNhGhrIYBA=="
+              }
+            ],
+            "type": "text",
+            "text": "한 TikTok 사용자는 2주 사용 후 여드름이 더 심해졌다며 민감성에는 비추천한다고 했습니다."
+          },
+          {
+            "type": "text",
+            "text": " 개인차가 큽니다.\n- **미확인 사항**\n  - 현재 판매 여부와 가격은 이번 검색에서 신뢰할 만한 판매처 정보를 찾지 못했습니다.\n  - 전성분과 자극 테스트 결과도 확인하지 못했습니다.\n  - 후기 중에 올리브영 판매를 언급한 것이 있지만 "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "올리브영 쎄일할때 구매하면 아주 착한 가격에 구매도 가능해요.\n\n",
+                "url": "https://unpa.me/community/toner/112799908",
+                "title": "피부 진정에 좋은 아누아 어성초 77% 토너 사용후기 - 언니의파우치 커뮤니티",
+                "encrypted_index": "EpABCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDAVNRvmZ0N1pzzdk4hoMVxkfazeHH1esFpXPIjAE7MDIkyMAYkh/IK2QgzjbMe6KohnZ+mW6W1VLEWVqI1bYSAJWwkoC7xcZoSNHfhwqFAiwe91fl+OgiQIn8QIRjAHeLKETGAQ="
+              }
+            ],
+            "type": "text",
+            "text": "약 450일 전 글"
+          },
+          {
+            "type": "text",
+            "text": "이라 현재 상황과 다를 수 있습니다.\n\n## 3. 토리든 다이브인 저분자 히알루론산 토너\n- **비교 이유:** 수분 공급 중심이고 향·자극 부담을 줄인 구성으로 자주 언급됩니다. 진정 중심(아누아), 각질 정돈 중심(라운드랩)과 대비되는 유형입니다.\n- **확인된 정보**\n  - "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "… 주소 : [대전 본사] 대전광역시 서구 도안북로93번길 10-3 2층 [서울 지사] 서울시 송파구 올림픽로 300, 롯데월드타워 26층 [토리든 ...\n\n# 상단 로고\n- 다이브인 저분자 히알루론산 토너 300ml\n- 다이브인 저분자 히알루론산 토너 300ml\n\n#...",
+                "url": "https://www.torriden.com/goods/goods_view.php?goodsNo=90",
+                "title": "다이브인 저분자 히알루론산 토너 300ml",
+                "encrypted_index": "EpABCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDEsfZbvn3PLQwJwM5hoMW8cUuQwjUPIi503IIjCMLfa8nsMw/VTtH0yyaQQSpfMxDjr2WbhvfKKZxeKS3s0HOE9FRLrWmgysfq+r71cqFLRe3yizXmJ9rmIXUt/m24E1RqeiGAQ="
+              }
+            ],
+            "type": "text",
+            "text": "공식몰 주요 성분에는 알란토인, 판테놀, 쇠비름추출물, 소듐하이알루로네이트 등이 포함돼 있습니다."
+          },
+          {
+            "type": "text",
+            "text": "\n  - "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "[NEW] 다이브인 저분자 히알루론산 토너 300ml. 23% 16,100원. ",
+                "url": "https://www.torriden.com/goods/goods_list.php?cateCd=005002",
+                "title": "스킨/토너/미스트",
+                "encrypted_index": "EpIBCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDLDwcQQBygQgzngrFhoMIAoqepWhPnZU6KOgIjDogPRE2ATq+nA9ZOXJUrSa1CZgS9tKLn4P1C9l4i1F1M9yUREyukYG09jTwf28bG8qFr6P9GeD2MjoyoarA7hEZaO0Aa46tfgYBA=="
+              }
+            ],
+            "type": "text",
+            "text": "공식몰에서 300ml가 23% 할인된 16,100원으로 표시됩니다."
+          },
+          {
+            "type": "text",
+            "text": " 다른 페이지에는 15,700원으로 나오기도 해서 시점에 따라 다릅니다.\n  - "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "패션/잡화/뷰티,스킨케어,스킨/토너, 토리든 다이브인 저분자 히알루론산 토너 300ml (1개), 요약정보 : 스킨 / 공용 / 피부타입: 지성, 복합성 / 저자극 / 수분공급 / 피부진정\n\n최저가 12,960원\n\n# 토리든 다이브인 저분자 히알루론산 토너 300ml ...",
+                "url": "https://prod.danawa.com/info/?pcode=12814838",
+                "title": "토리든 다이브인 저분자 히알루론산 토너 300ml (1개) : 다나와 가격비교",
+                "encrypted_index": "EpABCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDFDQAvUL+T8Vnpj28xoMemtsGZuN49C6GshcIjBPv7U1qCBQp2Gg7wTbaL1zyRm5+1qYz8nymK1unbnHimqw1XlAnzBnGtziJiSSeQ0qFMIknNq5ztIkQCMSU5YPs0T7xOZrGAQ="
+              }
+            ],
+            "type": "text",
+            "text": "다나와 최저가는 12,960원이었습니다."
+          },
+          {
+            "type": "text",
+            "text": "\n- **주의점**\n  - "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "패션/잡화/뷰티,스킨케어,스킨/토너, 토리든 다이브인 저분자 히알루론산 토너 300ml (1개), 요약정보 : 스킨 / 공용 / 피부타입: 지성, 복합성 / 저자극 / 수분공급 / 피부진정\n\n최저가 12,960원\n\n# 토리든 다이브인 저분자 히알루론산 토너 300ml ...",
+                "url": "https://prod.danawa.com/info/?pcode=12814838",
+                "title": "토리든 다이브인 저분자 히알루론산 토너 300ml (1개) : 다나와 가격비교",
+                "encrypted_index": "EpABCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDCUr5LDXuO6Y5h/baRoMFXS/i4pVCJq2x7qgIjDzz6FJvsFedeJOmlNaOk9gCg+Q74VQmsw6wuJrjH6AMpXjxjR5gPjGt+AOPUnpAQoqFI7Mp6XWXi3IFXJjXHKwV8xzUBBhGAQ="
+              }
+            ],
+            "type": "text",
+            "text": "다나와는 피부타입을 지성·복합성으로 분류하면서 저자극으로 표기합니다."
+          },
+          {
+            "type": "text",
+            "text": " 민감성 전용이라고 확정할 근거는 아닙니다.\n  - 후기 중에는 "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "￼ • 일부는 “눈가에 자극이 있다”고, 또는 “눈에 들어가면 따갑다”고 하네요. ",
+                "url": "https://unpa.me/reviews/370247",
+                "title": "토리든 다이브인 저분자 히알루론산 토너 - 재재재은 님의 광고 없는 내돈내산 찐리뷰",
+                "encrypted_index": "EpABCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDLOmDYNUhfi4mSSsrxoM0zvzZIOaE3FxPKGtIjBxu5glAksBnf4NqCvORouVayRxorg/zlMy3PHHL/MVfHHIObwIlMio27iYYUvEunUqFIxFI8fnoT5W20qDlaaSpHdN7mgXGAQ="
+              }
+            ],
+            "type": "text",
+            "text": "눈가에 자극이 있다는 의견"
+          },
+          {
+            "type": "text",
+            "text": "도 있습니다.\n  - 같은 후기에는 "
+          },
+          {
+            "citations": [
+              {
+                "type": "web_search_result_location",
+                "cited_text": "￼ 단점 👎 • 제형이 너무 묽어서 “물 같다”는 평도 있고, 보습력이 깊은 건성 피부에는 약할 수 있어요.\n\n",
+                "url": "https://unpa.me/reviews/370247",
+                "title": "토리든 다이브인 저분자 히알루론산 토너 - 재재재은 님의 광고 없는 내돈내산 찐리뷰",
+                "encrypted_index": "EpABCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDF/tKmdZtdHGJDYuxhoMEZwqOv5nQmddvHzaIjDsYAfOtJ4XVhIR1EIRNZawhOvuBxvI3rhH7P53Z+aiBqXtPoR87wmMhOobGN9DQF4qFOLe7oROx+X1fFQ66habLYk5KPGoGAQ="
+              }
+            ],
+            "type": "text",
+            "text": "제형이 묽어서 깊은 건성 피부에는 보습력이 약할 수 있다"
+          },
+          {
+            "type": "text",
+            "text": "는 평도 있습니다.\n\n## 확인된 것과 확인되지 않은 것\n- **확인된 것:** 라운드랩과 토리든의 판매처·가격대, 토리든의 일부 성분, 라운드랩의 성분 위험도 표시(글로우픽)입니다.\n- **확인되지 않은 것**\n  - 아누아의 현재 가격과 재고, 전성분.\n  - 세 제품 모두, 제조사나 제3자의 임상·자극 시험으로 \"민감 피부에 안전하다\"는 점을 확인하지 못했습니다. 위에 인용한 민감 피부 적합성은 대부분 사용자 후기와 플랫폼 분류에 근거합니다.\n  - 가격은 판매처와 프로모션에 따라 계속 바뀝니다.\n\n## 구매 전 팁\n- 피부가 매우 예민하거나 질환(아토피, 접촉성 피부염 등)이 있으면 전성분을 직접 확인하세요. 필요하면 피부과 전문의와 상담하는 것이 안전합니다.\n- 처음에는 귀 뒤나 턱선 안쪽에 며칠 시험해 보세요.\n- 원하는 방향에 따라 고르면 됩니다. 각질까지 정돈하고 싶으면 라운드랩, 열감과 붉은기 진정이 목적이면 아누아, 수분 보충이 우선이면 토리든이 맞을 수 있습니다. 이것도 후기 기반의 경향일 뿐입니다.\n\n예산, 피부 타입(건성/지성), 알레르기 성분이 있으면 알려주세요. 그 조건에 맞춰 후보를 다시 좁혀 드릴 수 있습니다."
+          }
+        ],
+        "container": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "stop_details": null,
+        "usage": {
+          "input_tokens": 30410,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "iterations": [
+            {
+              "input_tokens": 3061,
+              "output_tokens": 382,
+              "cache_read_input_tokens": 0,
+              "cache_creation_input_tokens": 0,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 0
+              },
+              "type": "message",
+              "model": null
+            },
+            {
+              "input_tokens": 27349,
+              "output_tokens": 3435,
+              "cache_read_input_tokens": 0,
+              "cache_creation_input_tokens": 0,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 0
+              },
+              "type": "message",
+              "model": null
+            }
+          ],
+          "output_tokens": 3817,
+          "output_tokens_details": {
+            "thinking_tokens": 943
+          },
+          "service_tier": "standard",
+          "inference_geo": "global",
+          "speed": "standard",
+          "server_tool_use": {
+            "web_search_requests": 3,
+            "web_fetch_requests": 0
+          }
+        },
+        "diagnostics": null
+      }
+    ]
+  },
+  "parsed": {
+    "text": "# 민감 피부용 한국 브랜드 토너 비교 (라운드랩 · 아누아 · 토리든)\n\n아래 세 제품은 가나다순으로 나열했습니다. **순서는 우열이나 추천 순위가 아닙니다.** 이 세 개를 고른 기준은 제가 검색 결과에서 잡은 것입니다. 한국에서 널리 유통되고, 민감 피부 후기가 자주 보이고, 접근 방식(각질 정돈 / 진정 / 수분)이 서로 달라 비교하기 좋다고 봤습니다. 시중의 모든 제품을 살펴본 결과는 아닙니다.\n\n## 한눈에 비교\n\n| 항목 | 라운드랩 1025 독도 토너 | 아누아 어성초 77 수딩 토너 | 토리든 다이브인 저분자 히알루론산 토너 |\n|---|---|---|---|\n| 주된 방향 | 보습 + 각질 정돈 | 진정 | 수분 공급 |\n| 가격·유통 | 확인됨 (아래 참고) | **현재 가격·재고 미확인** | 확인됨 (아래 참고) |\n| 민감 피부 관련 근거 | 성분·후기 | 후기 위주 | 일부 성분·후기 |\n\n## 1. 라운드랩 1025 독도 토너\n- **비교 이유:** 각질 정돈 기능이 있는 토너인데도 민감 피부용으로 자주 언급됩니다.\n- **확인된 정보**\n  - 11번가 상품 정보에는 효과가 보습·각질케어, 피부타입이 민감성·모든피부로 표기돼 있습니다.\n  - 글로우픽은 성분 구성에서 중간 위험도 이상의 성분이 0개라고 표시합니다.\n  - 글로우픽 AI 리뷰 분석에서는 순하다는 평가가 주를 이뤘지만, 일부 사용자는 자극을 느꼈다고 했습니다.\n  - 다나와 최저가는 500ml 기준 15,870원이었습니다.\n- **아쉬운 점(후기):** 사용 후 건조함이 느껴진다는 의견도 있습니다.\n- **가격 주의:** 판매처마다 차이가 큽니다. 같은 500ml가 11번가 가격비교에서는 최저 20,520원으로 표시됩니다. 구매 전에 직접 확인하세요.\n\n## 2. 아누아 어성초 77 수딩 토너\n- **비교 이유:** 후기에서 붉은기와 열감 진정용으로 자주 언급되어, 진정 중심 제품의 대표 사례로 넣었습니다.\n- **확인된 정보(후기 기반)**\n  - 제형이 물처럼 가볍고, 화장솜을 써도 자극이 거의 없었다는 후기가 있습니다.\n  - 같은 후기는 붉은기가 확 줄기보다는 달아오른 기운이 서서히 가라앉는 쪽에 가까웠다고 평가합니다.\n- **상반된 의견:** 한 TikTok 사용자는 2주 사용 후 여드름이 더 심해졌다며 민감성에는 비추천한다고 했습니다. 개인차가 큽니다.\n- **미확인 사항**\n  - 현재 판매 여부와 가격은 이번 검색에서 신뢰할 만한 판매처 정보를 찾지 못했습니다.\n  - 전성분과 자극 테스트 결과도 확인하지 못했습니다.\n  - 후기 중에 올리브영 판매를 언급한 것이 있지만 약 450일 전 글이라 현재 상황과 다를 수 있습니다.\n\n## 3. 토리든 다이브인 저분자 히알루론산 토너\n- **비교 이유:** 수분 공급 중심이고 향·자극 부담을 줄인 구성으로 자주 언급됩니다. 진정 중심(아누아), 각질 정돈 중심(라운드랩)과 대비되는 유형입니다.\n- **확인된 정보**\n  - 공식몰 주요 성분에는 알란토인, 판테놀, 쇠비름추출물, 소듐하이알루로네이트 등이 포함돼 있습니다.\n  - 공식몰에서 300ml가 23% 할인된 16,100원으로 표시됩니다. 다른 페이지에는 15,700원으로 나오기도 해서 시점에 따라 다릅니다.\n  - 다나와 최저가는 12,960원이었습니다.\n- **주의점**\n  - 다나와는 피부타입을 지성·복합성으로 분류하면서 저자극으로 표기합니다. 민감성 전용이라고 확정할 근거는 아닙니다.\n  - 후기 중에는 눈가에 자극이 있다는 의견도 있습니다.\n  - 같은 후기에는 제형이 묽어서 깊은 건성 피부에는 보습력이 약할 수 있다는 평도 있습니다.\n\n## 확인된 것과 확인되지 않은 것\n- **확인된 것:** 라운드랩과 토리든의 판매처·가격대, 토리든의 일부 성분, 라운드랩의 성분 위험도 표시(글로우픽)입니다.\n- **확인되지 않은 것**\n  - 아누아의 현재 가격과 재고, 전성분.\n  - 세 제품 모두, 제조사나 제3자의 임상·자극 시험으로 \"민감 피부에 안전하다\"는 점을 확인하지 못했습니다. 위에 인용한 민감 피부 적합성은 대부분 사용자 후기와 플랫폼 분류에 근거합니다.\n  - 가격은 판매처와 프로모션에 따라 계속 바뀝니다.\n\n## 구매 전 팁\n- 피부가 매우 예민하거나 질환(아토피, 접촉성 피부염 등)이 있으면 전성분을 직접 확인하세요. 필요하면 피부과 전문의와 상담하는 것이 안전합니다.\n- 처음에는 귀 뒤나 턱선 안쪽에 며칠 시험해 보세요.\n- 원하는 방향에 따라 고르면 됩니다. 각질까지 정돈하고 싶으면 라운드랩, 열감과 붉은기 진정이 목적이면 아누아, 수분 보충이 우선이면 토리든이 맞을 수 있습니다. 이것도 후기 기반의 경향일 뿐입니다.\n\n예산, 피부 타입(건성/지성), 알레르기 성분이 있으면 알려주세요. 그 조건에 맞춰 후보를 다시 좁혀 드릴 수 있습니다.",
+    "segments": [
+      {
+        "id": "s1",
+        "text": "# 민감 피부용 한국 브랜드 토너 비교 (라운드랩 · 아누아 · 토리든)\n\n아래 세 제품은 가나다순으로 나열했습니다. **순서는 우열이나 추천 순위가 아닙니다.** 이 세 개를 고른 기준은 제가 검색 결과에서 잡은 것입니다. 한국에서 널리 유통되고, 민감 피부 후기가 자주 보이고, 접근 방식(각질 정돈 / 진정 / 수분)이 서로 달라 비교하기 좋다고 봤습니다. 시중의 모든 제품을 살펴본 결과는 아닙니다.\n\n## 한눈에 비교\n\n| 항목 | 라운드랩 1025 독도 토너 | 아누아 어성초 77 수딩 토너 | 토리든 다이브인 저분자 히알루론산 토너 |\n|---|---|---|---|\n| 주된 방향 | 보습 + 각질 정돈 | 진정 | 수분 공급 |\n| 가격·유통 | 확인됨 (아래 참고) | **현재 가격·재고 미확인** | 확인됨 (아래 참고) |\n| 민감 피부 관련 근거 | 성분·후기 | 후기 위주 | 일부 성분·후기 |\n\n## 1. 라운드랩 1025 독도 토너\n- **비교 이유:** 각질 정돈 기능이 있는 토너인데도 민감 피부용으로 자주 언급됩니다.\n- **확인된 정보**\n  - ",
+        "start": 0,
+        "end": 553,
+        "citation_ids": []
+      },
+      {
+        "id": "s2",
+        "text": "11번가 상품 정보에는 효과가 보습·각질케어, 피부타입이 민감성·모든피부로 표기돼 있습니다.",
+        "start": 553,
+        "end": 604,
+        "citation_ids": [
+          "c1"
+        ]
+      },
+      {
+        "id": "s3",
+        "text": "\n  - ",
+        "start": 604,
+        "end": 609,
+        "citation_ids": []
+      },
+      {
+        "id": "s4",
+        "text": "글로우픽은 성분 구성에서 중간 위험도 이상의 성분이 0개라고 표시합니다.",
+        "start": 609,
+        "end": 649,
+        "citation_ids": [
+          "c2"
+        ]
+      },
+      {
+        "id": "s5",
+        "text": "\n  - ",
+        "start": 649,
+        "end": 654,
+        "citation_ids": []
+      },
+      {
+        "id": "s6",
+        "text": "글로우픽 AI 리뷰 분석에서는 순하다는 평가가 주를 이뤘지만, 일부 사용자는 자극을 느꼈다고 했습니다.",
+        "start": 654,
+        "end": 711,
+        "citation_ids": [
+          "c3"
+        ]
+      },
+      {
+        "id": "s7",
+        "text": "\n  - ",
+        "start": 711,
+        "end": 716,
+        "citation_ids": []
+      },
+      {
+        "id": "s8",
+        "text": "다나와 최저가는 500ml 기준 15,870원이었습니다.",
+        "start": 716,
+        "end": 747,
+        "citation_ids": [
+          "c4"
+        ]
+      },
+      {
+        "id": "s9",
+        "text": "\n- **아쉬운 점(후기):** ",
+        "start": 747,
+        "end": 765,
+        "citation_ids": []
+      },
+      {
+        "id": "s10",
+        "text": "사용 후 건조함이 느껴진다는 의견도 있습니다.",
+        "start": 765,
+        "end": 790,
+        "citation_ids": [
+          "c2"
+        ]
+      },
+      {
+        "id": "s11",
+        "text": "\n- **가격 주의:** 판매처마다 차이가 큽니다. 같은 500ml가 ",
+        "start": 790,
+        "end": 829,
+        "citation_ids": []
+      },
+      {
+        "id": "s12",
+        "text": "11번가 가격비교에서는 최저 20,520원",
+        "start": 829,
+        "end": 852,
+        "citation_ids": [
+          "c5"
+        ]
+      },
+      {
+        "id": "s13",
+        "text": "으로 표시됩니다. 구매 전에 직접 확인하세요.\n\n## 2. 아누아 어성초 77 수딩 토너\n- **비교 이유:** 후기에서 붉은기와 열감 진정용으로 자주 언급되어, 진정 중심 제품의 대표 사례로 넣었습니다.\n- **확인된 정보(후기 기반)**\n  - ",
+        "start": 852,
+        "end": 991,
+        "citation_ids": []
+      },
+      {
+        "id": "s14",
+        "text": "제형이 물처럼 가볍고, 화장솜을 써도 자극이 거의 없었다는 후기가 있습니다.",
+        "start": 991,
+        "end": 1033,
+        "citation_ids": [
+          "c6",
+          "c7"
+        ]
+      },
+      {
+        "id": "s15",
+        "text": "\n  - 같은 후기는 ",
+        "start": 1033,
+        "end": 1045,
+        "citation_ids": []
+      },
+      {
+        "id": "s16",
+        "text": "붉은기가 확 줄기보다는 달아오른 기운이 서서히 가라앉는 쪽에 가까웠다",
+        "start": 1045,
+        "end": 1083,
+        "citation_ids": [
+          "c8"
+        ]
+      },
+      {
+        "id": "s17",
+        "text": "고 평가합니다.\n- **상반된 의견:** ",
+        "start": 1083,
+        "end": 1106,
+        "citation_ids": []
+      },
+      {
+        "id": "s18",
+        "text": "한 TikTok 사용자는 2주 사용 후 여드름이 더 심해졌다며 민감성에는 비추천한다고 했습니다.",
+        "start": 1106,
+        "end": 1159,
+        "citation_ids": [
+          "c9"
+        ]
+      },
+      {
+        "id": "s19",
+        "text": " 개인차가 큽니다.\n- **미확인 사항**\n  - 현재 판매 여부와 가격은 이번 검색에서 신뢰할 만한 판매처 정보를 찾지 못했습니다.\n  - 전성분과 자극 테스트 결과도 확인하지 못했습니다.\n  - 후기 중에 올리브영 판매를 언급한 것이 있지만 ",
+        "start": 1159,
+        "end": 1296,
+        "citation_ids": []
+      },
+      {
+        "id": "s20",
+        "text": "약 450일 전 글",
+        "start": 1296,
+        "end": 1306,
+        "citation_ids": [
+          "c10"
+        ]
+      },
+      {
+        "id": "s21",
+        "text": "이라 현재 상황과 다를 수 있습니다.\n\n## 3. 토리든 다이브인 저분자 히알루론산 토너\n- **비교 이유:** 수분 공급 중심이고 향·자극 부담을 줄인 구성으로 자주 언급됩니다. 진정 중심(아누아), 각질 정돈 중심(라운드랩)과 대비되는 유형입니다.\n- **확인된 정보**\n  - ",
+        "start": 1306,
+        "end": 1464,
+        "citation_ids": []
+      },
+      {
+        "id": "s22",
+        "text": "공식몰 주요 성분에는 알란토인, 판테놀, 쇠비름추출물, 소듐하이알루로네이트 등이 포함돼 있습니다.",
+        "start": 1464,
+        "end": 1518,
+        "citation_ids": [
+          "c11"
+        ]
+      },
+      {
+        "id": "s23",
+        "text": "\n  - ",
+        "start": 1518,
+        "end": 1523,
+        "citation_ids": []
+      },
+      {
+        "id": "s24",
+        "text": "공식몰에서 300ml가 23% 할인된 16,100원으로 표시됩니다.",
+        "start": 1523,
+        "end": 1560,
+        "citation_ids": [
+          "c12"
+        ]
+      },
+      {
+        "id": "s25",
+        "text": " 다른 페이지에는 15,700원으로 나오기도 해서 시점에 따라 다릅니다.\n  - ",
+        "start": 1560,
+        "end": 1605,
+        "citation_ids": []
+      },
+      {
+        "id": "s26",
+        "text": "다나와 최저가는 12,960원이었습니다.",
+        "start": 1605,
+        "end": 1627,
+        "citation_ids": [
+          "c13"
+        ]
+      },
+      {
+        "id": "s27",
+        "text": "\n- **주의점**\n  - ",
+        "start": 1627,
+        "end": 1642,
+        "citation_ids": []
+      },
+      {
+        "id": "s28",
+        "text": "다나와는 피부타입을 지성·복합성으로 분류하면서 저자극으로 표기합니다.",
+        "start": 1642,
+        "end": 1680,
+        "citation_ids": [
+          "c13"
+        ]
+      },
+      {
+        "id": "s29",
+        "text": " 민감성 전용이라고 확정할 근거는 아닙니다.\n  - 후기 중에는 ",
+        "start": 1680,
+        "end": 1716,
+        "citation_ids": []
+      },
+      {
+        "id": "s30",
+        "text": "눈가에 자극이 있다는 의견",
+        "start": 1716,
+        "end": 1730,
+        "citation_ids": [
+          "c14"
+        ]
+      },
+      {
+        "id": "s31",
+        "text": "도 있습니다.\n  - 같은 후기에는 ",
+        "start": 1730,
+        "end": 1750,
+        "citation_ids": []
+      },
+      {
+        "id": "s32",
+        "text": "제형이 묽어서 깊은 건성 피부에는 보습력이 약할 수 있다",
+        "start": 1750,
+        "end": 1781,
+        "citation_ids": [
+          "c15"
+        ]
+      },
+      {
+        "id": "s33",
+        "text": "는 평도 있습니다.\n\n## 확인된 것과 확인되지 않은 것\n- **확인된 것:** 라운드랩과 토리든의 판매처·가격대, 토리든의 일부 성분, 라운드랩의 성분 위험도 표시(글로우픽)입니다.\n- **확인되지 않은 것**\n  - 아누아의 현재 가격과 재고, 전성분.\n  - 세 제품 모두, 제조사나 제3자의 임상·자극 시험으로 \"민감 피부에 안전하다\"는 점을 확인하지 못했습니다. 위에 인용한 민감 피부 적합성은 대부분 사용자 후기와 플랫폼 분류에 근거합니다.\n  - 가격은 판매처와 프로모션에 따라 계속 바뀝니다.\n\n## 구매 전 팁\n- 피부가 매우 예민하거나 질환(아토피, 접촉성 피부염 등)이 있으면 전성분을 직접 확인하세요. 필요하면 피부과 전문의와 상담하는 것이 안전합니다.\n- 처음에는 귀 뒤나 턱선 안쪽에 며칠 시험해 보세요.\n- 원하는 방향에 따라 고르면 됩니다. 각질까지 정돈하고 싶으면 라운드랩, 열감과 붉은기 진정이 목적이면 아누아, 수분 보충이 우선이면 토리든이 맞을 수 있습니다. 이것도 후기 기반의 경향일 뿐입니다.\n\n예산, 피부 타입(건성/지성), 알레르기 성분이 있으면 알려주세요. 그 조건에 맞춰 후보를 다시 좁혀 드릴 수 있습니다.",
+        "start": 1781,
+        "end": 2371,
+        "citation_ids": []
+      }
+    ],
+    "citations": [
+      {
+        "id": "c1",
+        "url": "https://catalog.11st.co.kr/pc/433291061?sortCds=DLV_INCLUDE&poc=pc",
+        "title": "라운드랩 1025 독도 토너 500ml 1개 - 가격비교-11번가 PC",
+        "cited_text": "브랜드 : 라운드랩 / 용량 : 500ml / 구성 : 단품 / 효과 : 보습, 각질케어 / 용기형태 : 캡용기형 / 피부타입 : 민감성, 모든피부 / 수량 : 1개.\n\n",
+        "domain": "catalog.11st.co.kr",
+        "in_search_results": true
+      },
+      {
+        "id": "c2",
+        "url": "https://www.glowpick.com/products/81847",
+        "title": "라운드랩 1025 독도 토너",
+        "cited_text": "## 제품정보\n\n### 가격 및 용량\n\n15,000원200ml\n\n## 랭킹\n\n- 워터토너 6위\n\n\n- 라운드랩 2위\n\n## 성분구성\n\n중간 위험도 이상의 성분 0개\n\n## 리뷰\n좋았어요\n\n- 피부에 순해요\n- 데일리로 사용하기 좋아요\n- 수분감이 좋아요\n- 가성비가 좋...",
+        "domain": "glowpick.com",
+        "in_search_results": true
+      },
+      {
+        "id": "c3",
+        "url": "https://www.glowpick.com/products/81847",
+        "title": "라운드랩 1025 독도 토너",
+        "cited_text": "제품이 자극이 적고 순하다는 평가가 주를 이루었고, 민감한 피부에도 잘 맞는다는 의견이 많았어요. 하지만 일부 사용자들은 자극을 느꼈다는 부정적인 의견도 있었어요.\n\n",
+        "domain": "glowpick.com",
+        "in_search_results": true
+      },
+      {
+        "id": "c4",
+        "url": "https://prod.danawa.com/info/?pcode=5568067",
+        "title": "라운드랩 1025 독도 토너 500ml (1개) : 다나와 가격비교",
+        "cited_text": "패션/잡화/뷰티,스킨케어,스킨/토너, 라운드랩 1025 독도 토너 500ml (1개), 요약정보 : 스킨 / 모든피부 / 민감성 / 성분부가기능: 각질제거, 피부보습 / 클린뷰티: 친환경패키지, 착한성분, ...\n\n패션/잡화/뷰티,스킨케어,스킨/토너, 라운드랩 1025...",
+        "domain": "prod.danawa.com",
+        "in_search_results": true
+      },
+      {
+        "id": "c5",
+        "url": "https://catalog.11st.co.kr/pc/433291061?sortCds=DLV_INCLUDE&poc=pc",
+        "title": "라운드랩 1025 독도 토너 500ml 1개 - 가격비교-11번가 PC",
+        "cited_text": "모델명: 라운드랩 1025 독도 토너 500ml 1개, 최저가격: 20,520원\n\n## 라운드랩 1025 독도 토너 500ml 1개\n브랜드 : 라운드랩 / 용량 : 500ml / 구성 : 단품 / 효과 : 보습, 각질케어 / 용기형태 : 캡용기형 / 피부타입 : 민감성...",
+        "domain": "catalog.11st.co.kr",
+        "in_search_results": true
+      },
+      {
+        "id": "c6",
+        "url": "https://unpa.me/community/toner/125215528",
+        "title": "아누아 어성초 77 토너, 예민한 날 진정용으로 좋아 - 언니의파우치 커뮤니티",
+        "cited_text": "제형은 거의 물처럼 가볍고 투명하다. \n\n",
+        "domain": "unpa.me",
+        "in_search_results": true
+      },
+      {
+        "id": "c7",
+        "url": "https://unpa.me/community/toner/125215528",
+        "title": "아누아 어성초 77 토너, 예민한 날 진정용으로 좋아 - 언니의파우치 커뮤니티",
+        "cited_text": "화장솜 사용 시에도 자극이 거의 느껴지지 않았다는 점이 인상적이었다. ",
+        "domain": "unpa.me",
+        "in_search_results": true
+      },
+      {
+        "id": "c8",
+        "url": "https://unpa.me/community/toner/125215528",
+        "title": "아누아 어성초 77 토너, 예민한 날 진정용으로 좋아 - 언니의파우치 커뮤니티",
+        "cited_text": "중간톤 피부 기준으로 붉은기가 확 줄어든다기보다는, 달아오른 기운이 서서히 가라앉는 쪽에 가까웠다. ",
+        "domain": "unpa.me",
+        "in_search_results": true
+      },
+      {
+        "id": "c9",
+        "url": "https://www.tiktok.com/@eoeotod/video/7495015285775158536",
+        "title": "아누아 어성초 77 수딩토너 별점⭐️⭐️⭐️ 좁쌀 없앨려고 구매함 2주정도 사용해봤는데 좁쌀 없애지기는 개뿔 여드름 더 심해짐 민감성은 비추해 사실 걍 일반 피부여도 추천은 안해ㅎ 재구매는 절대 안할듯 나한테는 너무 안맞아#fyp #아누아 #토너 #어성초77토너 #올리브영 #올영세일 #스킨케어",
+        "cited_text": "아누아 어성초 77 수딩토너 별점⭐️⭐️⭐️ 좁쌀 없앨려고 구매함 2주정도 사용해봤는데 좁쌀 없애지기는 개뿔 여드름 더 심해짐 민감성은 비추해 사실 걍 일반 피부여도 추천은 안해ㅎ ...\n\n#### Terms & Policies\n아누아 어성초 77 수딩토너 별점⭐️⭐️...",
+        "domain": "tiktok.com",
+        "in_search_results": true
+      },
+      {
+        "id": "c10",
+        "url": "https://unpa.me/community/toner/112799908",
+        "title": "피부 진정에 좋은 아누아 어성초 77% 토너 사용후기 - 언니의파우치 커뮤니티",
+        "cited_text": "올리브영 쎄일할때 구매하면 아주 착한 가격에 구매도 가능해요.\n\n",
+        "domain": "unpa.me",
+        "in_search_results": true
+      },
+      {
+        "id": "c11",
+        "url": "https://www.torriden.com/goods/goods_view.php?goodsNo=90",
+        "title": "다이브인 저분자 히알루론산 토너 300ml",
+        "cited_text": "… 주소 : [대전 본사] 대전광역시 서구 도안북로93번길 10-3 2층 [서울 지사] 서울시 송파구 올림픽로 300, 롯데월드타워 26층 [토리든 ...\n\n# 상단 로고\n- 다이브인 저분자 히알루론산 토너 300ml\n- 다이브인 저분자 히알루론산 토너 300ml\n\n#...",
+        "domain": "torriden.com",
+        "in_search_results": true
+      },
+      {
+        "id": "c12",
+        "url": "https://www.torriden.com/goods/goods_list.php?cateCd=005002",
+        "title": "스킨/토너/미스트",
+        "cited_text": "[NEW] 다이브인 저분자 히알루론산 토너 300ml. 23% 16,100원. ",
+        "domain": "torriden.com",
+        "in_search_results": true
+      },
+      {
+        "id": "c13",
+        "url": "https://prod.danawa.com/info/?pcode=12814838",
+        "title": "토리든 다이브인 저분자 히알루론산 토너 300ml (1개) : 다나와 가격비교",
+        "cited_text": "패션/잡화/뷰티,스킨케어,스킨/토너, 토리든 다이브인 저분자 히알루론산 토너 300ml (1개), 요약정보 : 스킨 / 공용 / 피부타입: 지성, 복합성 / 저자극 / 수분공급 / 피부진정\n\n최저가 12,960원\n\n# 토리든 다이브인 저분자 히알루론산 토너 300ml ...",
+        "domain": "prod.danawa.com",
+        "in_search_results": true
+      },
+      {
+        "id": "c14",
+        "url": "https://unpa.me/reviews/370247",
+        "title": "토리든 다이브인 저분자 히알루론산 토너 - 재재재은 님의 광고 없는 내돈내산 찐리뷰",
+        "cited_text": "￼ • 일부는 “눈가에 자극이 있다”고, 또는 “눈에 들어가면 따갑다”고 하네요. ",
+        "domain": "unpa.me",
+        "in_search_results": true
+      },
+      {
+        "id": "c15",
+        "url": "https://unpa.me/reviews/370247",
+        "title": "토리든 다이브인 저분자 히알루론산 토너 - 재재재은 님의 광고 없는 내돈내산 찐리뷰",
+        "cited_text": "￼ 단점 👎 • 제형이 너무 묽어서 “물 같다”는 평도 있고, 보습력이 깊은 건성 피부에는 약할 수 있어요.\n\n",
+        "domain": "unpa.me",
+        "in_search_results": true
+      }
+    ],
+    "search": {
+      "used": true,
+      "queries": [
+        "민감성 피부 토너 추천 아누아 어성초 77 수딩 토너 전성분",
+        "라운드랩 1025 독도 토너 민감성 피부 성분 가격",
+        "토리든 다이브인 저분자 히알루론산 토너 민감성 피부 성분 가격"
+      ],
+      "results": [
+        {
+          "url": "https://unpa.me/reviews/331900",
+          "title": "아누아(ANUA) 어성초 77 수딩 토너 - 광고 없는 내돈내산 찐리뷰",
+          "page_age": "481 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://unpa.me/community/toner/125215528",
+          "title": "아누아 어성초 77 토너, 예민한 날 진정용으로 좋아 - 언니의파우치 커뮤니티",
+          "page_age": "254 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://unpa.me/community/toner/112799908",
+          "title": "피부 진정에 좋은 아누아 어성초 77% 토너 사용후기 - 언니의파우치 커뮤니티",
+          "page_age": "452 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://unpa.me/community/toner/19494173",
+          "title": "내돈내산 아누아 어성초 77 수딩 토너 - 언니의파우치 커뮤니티",
+          "page_age": "1055 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://unpa.me/reviews/401545",
+          "title": "아누아(ANUA) 어성초 77 수딩 토너 - 김윤아#4RZ6 님의 광고 없는 내돈내산 찐리뷰",
+          "page_age": "250 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://www.tiktok.com/@eoeotod/video/7495015285775158536",
+          "title": "아누아 어성초 77 수딩토너 별점⭐️⭐️⭐️ 좁쌀 없앨려고 구매함 2주정도 사용해봤는데 좁쌀 없애지기는 개뿔 여드름 더 심해짐 민감성은 비추해 사실 걍 일반 피부여도 추천은 안해ㅎ 재구매는 절대 안할듯 나한테는 너무 안맞아#fyp #아누아 #토너 #어성초77토너 #올리브영 #올영세일 #스킨케어",
+          "page_age": null,
+          "domain": "tiktok.com"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Songhwa-milsu",
+          "title": "Songhwa-milsu",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Hydroalcoholic",
+          "title": "Hydroalcoholic",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Innisfree_(brand)",
+          "title": "Innisfree (brand)",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://catalog.11st.co.kr/pc/433291061?sortCds=DLV_INCLUDE&poc=pc",
+          "title": "라운드랩 1025 독도 토너 500ml 1개 - 가격비교-11번가 PC",
+          "page_age": null,
+          "domain": "catalog.11st.co.kr"
+        },
+        {
+          "url": "https://catalog.11st.co.kr/pc/361885348?sortCds=DLV_INCLUDE&poc=pc",
+          "title": "라운드랩 1025 독도 토너 500ml 3개 - 가격비교-11번가 PC",
+          "page_age": null,
+          "domain": "catalog.11st.co.kr"
+        },
+        {
+          "url": "https://unpa.me/reviews/455118",
+          "title": "라운드랩 1025 독도 토너 - 혜경😜 님의 광고 없는 내돈내산 찐리뷰",
+          "page_age": "97 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://unpa.me/reviews/176983",
+          "title": "라운드랩 1025 독도 토너 - 광고 없는 내돈내산 찐리뷰",
+          "page_age": null,
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://prod.danawa.com/info/?pcode=5568067",
+          "title": "라운드랩 1025 독도 토너 500ml (1개) : 다나와 가격비교",
+          "page_age": null,
+          "domain": "prod.danawa.com"
+        },
+        {
+          "url": "https://prod.danawa.com/info/?pcode=5802548",
+          "title": "라운드랩 1025 독도 토너 200ml + 로션 200ml (1세트) : 다나와 가격비교",
+          "page_age": null,
+          "domain": "prod.danawa.com"
+        },
+        {
+          "url": "https://unpa.me/community/toner/122398032",
+          "title": "라운드랩 독도토너 후기｜2025 올리브영 어워즈 수상템 성분·사용감 정리 - 언니의파우치 커뮤니티",
+          "page_age": "304 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://www.glowpick.com/products/81847",
+          "title": "라운드랩 1025 독도 토너",
+          "page_age": null,
+          "domain": "glowpick.com"
+        },
+        {
+          "url": "https://hanpoom.com/products/%EB%9D%BC%EC%9A%B4%EB%93%9C%EB%9E%A9-1025-%EB%8F%85%EB%8F%84-%ED%86%A0%EB%84%88-200ml",
+          "title": "[라운드랩] 1025 독도 토너 200ml K017",
+          "page_age": null,
+          "domain": "hanpoom.com"
+        },
+        {
+          "url": "https://www.kurly.com/goods/5061253",
+          "title": "[토리든] 다이브인 저분자 히알루론산 토너 300ml - 마켓컬리",
+          "page_age": null,
+          "domain": "kurly.com"
+        },
+        {
+          "url": "https://unpa.me/reviews/370247",
+          "title": "토리든 다이브인 저분자 히알루론산 토너 - 재재재은 님의 광고 없는 내돈내산 찐리뷰",
+          "page_age": "335 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://prod.danawa.com/info/?pcode=12814838",
+          "title": "토리든 다이브인 저분자 히알루론산 토너 300ml (1개) : 다나와 가격비교",
+          "page_age": null,
+          "domain": "prod.danawa.com"
+        },
+        {
+          "url": "https://www.musinsa.com/products/2584505",
+          "title": "토리든(TORRIDEN) 다이브인 저분자 히알루론산 토너 300ml - 후기",
+          "page_age": null,
+          "domain": "musinsa.com"
+        },
+        {
+          "url": "https://www.torriden.com/goods/goods_view.php?goodsNo=90",
+          "title": "다이브인 저분자 히알루론산 토너 300ml",
+          "page_age": null,
+          "domain": "torriden.com"
+        },
+        {
+          "url": "https://www.torriden.com/goods/goods_view.php?goodsNo=58",
+          "title": "다이브인 저분자 히알루론산 세럼 50ml",
+          "page_age": null,
+          "domain": "torriden.com"
+        },
+        {
+          "url": "https://www.torriden.com/",
+          "title": "토리든 Torriden",
+          "page_age": null,
+          "domain": "torriden.com"
+        },
+        {
+          "url": "https://www.torriden.com/goods/goods_list.php?cateCd=005002",
+          "title": "스킨/토너/미스트",
+          "page_age": null,
+          "domain": "torriden.com"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Diglycerol",
+          "title": "Diglycerol",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        }
+      ],
+      "errors": []
+    }
+  },
+  "cost_estimate": {
+    "input_tokens": 37760,
+    "output_tokens": 6783,
+    "web_searches": 3,
+    "usd": 0.1734,
+    "basis": {
+      "input_per_mtok": 2,
+      "output_per_mtok": 10,
+      "search_per_1k": 10
+    }
+  },
+  "analysis": {
+    "status": "succeeded",
+    "version": "a2-support-segments",
+    "analyzed_at": "2026-10-24T04:48:38.659Z",
+    "products": [
+      {
+        "id": "p1",
+        "brand": "라운드랩",
+        "product": "1025 독도 토너",
+        "mention_type": "recommended",
+        "evidence_text": "각질까지 정돈하고 싶으면 라운드랩, 열감과 붉은기 진정이 목적이면 아누아, 수분 보충이 우선이면 토리든이 맞을 수 있습니다.",
+        "evidence_found": true,
+        "start_offset": 2212,
+        "end_offset": 2281,
+        "segment_ids": [
+          "s33"
+        ],
+        "support_segment_ids": [
+          "s2",
+          "s4",
+          "s6",
+          "s8",
+          "s10",
+          "s11",
+          "s12",
+          "s13"
+        ],
+        "citation_ids": [
+          "c1",
+          "c2",
+          "c3",
+          "c4",
+          "c5"
+        ],
+        "list_position": 1,
+        "explicit_rank": null,
+        "review_required": false,
+        "issues": []
+      },
+      {
+        "id": "p2",
+        "brand": "아누아",
+        "product": "어성초 77 수딩 토너",
+        "mention_type": "recommended",
+        "evidence_text": "각질까지 정돈하고 싶으면 라운드랩, 열감과 붉은기 진정이 목적이면 아누아, 수분 보충이 우선이면 토리든이 맞을 수 있습니다.",
+        "evidence_found": true,
+        "start_offset": 2212,
+        "end_offset": 2281,
+        "segment_ids": [
+          "s33"
+        ],
+        "support_segment_ids": [
+          "s14",
+          "s15",
+          "s16",
+          "s17",
+          "s18",
+          "s19",
+          "s20",
+          "s21"
+        ],
+        "citation_ids": [
+          "c6",
+          "c7",
+          "c8",
+          "c9",
+          "c10"
+        ],
+        "list_position": 2,
+        "explicit_rank": null,
+        "review_required": false,
+        "issues": []
+      },
+      {
+        "id": "p3",
+        "brand": "토리든",
+        "product": "다이브인 저분자 히알루론산 토너",
+        "mention_type": "recommended",
+        "evidence_text": "각질까지 정돈하고 싶으면 라운드랩, 열감과 붉은기 진정이 목적이면 아누아, 수분 보충이 우선이면 토리든이 맞을 수 있습니다.",
+        "evidence_found": true,
+        "start_offset": 2212,
+        "end_offset": 2281,
+        "segment_ids": [
+          "s33"
+        ],
+        "support_segment_ids": [
+          "s22",
+          "s24",
+          "s25",
+          "s26",
+          "s28",
+          "s29",
+          "s30",
+          "s31",
+          "s32"
+        ],
+        "citation_ids": [
+          "c11",
+          "c12",
+          "c13",
+          "c14",
+          "c15"
+        ],
+        "list_position": 3,
+        "explicit_rank": null,
+        "review_required": false,
+        "issues": []
+      }
+    ],
+    "usage": {
+      "input_tokens": 3833,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 1599,
+      "output_tokens_details": {
+        "thinking_tokens": 1020
+      },
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    }
+  },
+  "finished_at": "2026-10-24T04:46:30.116Z",
+  "analysis_history": [
+    {
+      "status": "succeeded",
+      "products": [
+        {
+          "id": "p1",
+          "brand": "라운드랩",
+          "product": "1025 독도 토너",
+          "mention_type": "neutral",
+          "evidence_text": "각질까지 정돈하고 싶으면 라운드랩, 열감과 붉은기 진정이 목적이면 아누아, 수분 보충이 우선이면 토리든이 맞을 수 있습니다.",
+          "evidence_found": true,
+          "start_offset": 2212,
+          "end_offset": 2281,
+          "segment_ids": [
+            "s33"
+          ],
+          "citation_ids": [],
+          "list_position": 1,
+          "explicit_rank": null,
+          "review_required": true,
+          "issues": [
+            "연결된 공식 citation 없음"
+          ]
+        },
+        {
+          "id": "p2",
+          "brand": "아누아",
+          "product": "어성초 77 수딩 토너",
+          "mention_type": "uncertain",
+          "evidence_text": "한 TikTok 사용자는 2주 사용 후 여드름이 더 심해졌다며 민감성에는 비추천한다고 했습니다.",
+          "evidence_found": true,
+          "start_offset": 1106,
+          "end_offset": 1159,
+          "segment_ids": [
+            "s18"
+          ],
+          "citation_ids": [
+            "c9"
+          ],
+          "list_position": 2,
+          "explicit_rank": null,
+          "review_required": true,
+          "issues": []
+        },
+        {
+          "id": "p3",
+          "brand": "토리든",
+          "product": "다이브인 저분자 히알루론산 토너",
+          "mention_type": "neutral",
+          "evidence_text": "각질까지 정돈하고 싶으면 라운드랩, 열감과 붉은기 진정이 목적이면 아누아, 수분 보충이 우선이면 토리든이 맞을 수 있습니다.",
+          "evidence_found": true,
+          "start_offset": 2212,
+          "end_offset": 2281,
+          "segment_ids": [
+            "s33"
+          ],
+          "citation_ids": [],
+          "list_position": 3,
+          "explicit_rank": null,
+          "review_required": true,
+          "issues": [
+            "연결된 공식 citation 없음"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens": 3517,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1367,
+        "output_tokens_details": {
+          "thinking_tokens": 917
+        },
+        "service_tier": "standard",
+        "inference_geo": "global",
+        "speed": "standard"
+      }
+    }
+  ]
+}

@@ -39,6 +39,7 @@ function safeLink(url, label) {
   return h("span", { class: "muted" }, label ?? url);
 }
 
+const allSegs = (p) => [...p.segment_ids, ...(p.support_segment_ids ?? [])];
 const truncate = (t, n) => (t.length > n ? t.slice(0, n - 1) + "…" : t);
 
 // SVG 텍스트를 픽셀 폭 기준으로 자른다. 한글·한자·가나는 라틴 문자보다 넓게 계산한다.
@@ -172,7 +173,7 @@ function indexRun(run) {
     sourceByUrl.get(c.url).citation_ids.push(c.id);
   }
   const productsBySeg = new Map();
-  for (const p of products) for (const sid of p.segment_ids) (productsBySeg.get(sid) ?? productsBySeg.set(sid, []).get(sid)).push(p);
+  for (const p of products) for (const sid of allSegs(p)) (productsBySeg.get(sid) ?? productsBySeg.set(sid, []).get(sid)).push(p);
   return { parsed, products, segById, citeById, sources, sourceByUrl, productsBySeg };
 }
 
@@ -187,7 +188,7 @@ function related(idx, sel) {
   if (sel.type === "product") {
     const p = idx.products.find((x) => x.id === sel.id);
     r.products.add(p.id);
-    p.segment_ids.forEach(addSeg);
+    allSegs(p).forEach(addSeg);
   } else if (sel.type === "segment") {
     addSeg(sel.id);
     for (const p of idx.productsBySeg.get(sel.id) ?? []) r.products.add(p.id);
@@ -270,7 +271,7 @@ function renderSummary(run, idx) {
 // 4단 흐름도: 질문 → 제품 → 근거 문장 → 출처
 function renderGraph(idx, rel) {
   const { products, sources } = idx;
-  const usedSegIds = new Set(products.flatMap((p) => p.segment_ids));
+  const usedSegIds = new Set(products.flatMap(allSegs));
   let segs = idx.parsed.segments.filter((x) => usedSegIds.has(x.id));
   if (!products.length) segs = idx.parsed.segments.filter((x) => x.citation_ids.length);
   const segSourceIds = new Set(segs.flatMap((x) => x.citation_ids.map((cid) => idx.sourceByUrl.get(idx.citeById.get(cid).url).id)));
@@ -301,9 +302,10 @@ function renderGraph(idx, rel) {
   for (const p of products) {
     const a = pos.get(p.id);
     edges.push(edge(qPos.x + widths.q, qPos.y + nodeH / 2, a.x, a.y + nodeH / 2, `m-${p.mention_type}${dim("products", p.id)}`));
-    for (const sid of p.segment_ids) {
+    for (const sid of allSegs(p)) {
       const b = pos.get(sid);
-      if (b) edges.push(edge(a.x + widths.p, a.y + nodeH / 2, b.x, b.y + nodeH / 2, `m-${p.mention_type}${rel && !(rel.products.has(p.id) && rel.segments.has(sid)) ? " dim" : ""}`));
+      const kind = p.segment_ids.includes(sid) ? "" : " support";
+      if (b) edges.push(edge(a.x + widths.p, a.y + nodeH / 2, b.x, b.y + nodeH / 2, `m-${p.mention_type}${kind}${rel && !(rel.products.has(p.id) && rel.segments.has(sid)) ? " dim" : ""}`));
     }
   }
   for (const seg of segs) {
@@ -342,7 +344,7 @@ function renderGraph(idx, rel) {
 function renderAnswer(idx, rel) {
   const frag = idx.parsed.segments.map((seg) => {
     const prods = idx.productsBySeg.get(seg.id) ?? [];
-    const mention = prods[0]?.mention_type;
+    const mention = prods.find((p) => p.segment_ids.includes(seg.id))?.mention_type;
     const cls = ["seg", seg.citation_ids.length ? "cited" : "", mention ? `hl-${mention}` : "", rel && !rel.segments.has(seg.id) ? "dim" : "", state.selected?.type === "segment" && state.selected.id === seg.id ? "sel" : ""].filter(Boolean).join(" ");
     return h(
       "span",
@@ -382,6 +384,8 @@ function renderDetail(idx) {
       h("h3", {}, "판정 근거 (원문 발췌)"),
       h("blockquote", { class: p.evidence_found ? "" : "bad" }, p.evidence_text || "—"),
       p.issues.length ? h("ul", { class: "issues" }, p.issues.map((x) => h("li", {}, x))) : h("p", { class: "ok small" }, "근거 문장이 원문에 존재함을 코드로 확인"),
+      (p.support_segment_ids ?? []).length ? h("h3", {}, `제품 설명 문장 (${p.support_segment_ids.length})`) : null,
+      (p.support_segment_ids ?? []).length ? h("ul", { class: "support" }, p.support_segment_ids.map((sid) => { const sg = idx.segById.get(sid); return h("li", { onclick: () => select({ type: "segment", id: sid }) }, sg.text.replace(/\s+/g, " ").trim(), ...sg.citation_ids.map((cid) => h("sup", { class: "cref" }, cid))); })) : null,
       h("h3", {}, `근거를 뒷받침하는 출처 (${p.citation_ids.length})`),
       p.citation_ids.length ? p.citation_ids.map(citeCard) : h("p", { class: "muted" }, "이 근거 문장에는 공식 citation이 붙어 있지 않습니다. 모델의 일반 지식이거나 출처 표시가 누락된 문장일 수 있습니다."),
     );

@@ -1,21 +1,14 @@
 // 의존성 없는 웹 서버: 정적 화면(public/)과 JSON API를 제공한다.
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
-import { existsSync, readFileSync } from "node:fs";
 import { extname, join, normalize } from "node:path";
+import { loadEnv } from "./lib/env.mjs";
 
-// .env.local 의 KEY=VALUE 를 읽는다 (이미 설정된 환경변수가 우선).
-const envFile = join(import.meta.dirname, ".env.local");
-if (existsSync(envFile)) {
-  for (const line of readFileSync(envFile, "utf8").split("\n")) {
-    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/);
-    if (m && !(m[1] in process.env)) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
-  }
-}
+loadEnv();
 
 const { QUESTION, SETTINGS } = await import("./lib/config.mjs");
 const { getRun, listRuns } = await import("./lib/store.mjs");
-const { startRun, activeRunId } = await import("./lib/runner.mjs");
+const { startRun, activeRunId, reanalyzeRun } = await import("./lib/runner.mjs");
 const { hasApiKey } = await import("./lib/providers/claude.mjs");
 
 const PUBLIC = join(import.meta.dirname, "public");
@@ -36,6 +29,11 @@ async function handleApi(req, res, url) {
   if (req.method === "GET" && path === "/api/runs") return json(res, 200, { runs: await listRuns() });
   if (req.method === "POST" && path === "/api/runs") {
     const r = await startRun();
+    return json(res, r.status, r);
+  }
+  const ra = path.match(/^\/api\/runs\/([a-z0-9-]+)\/reanalyze$/);
+  if (req.method === "POST" && ra) {
+    const r = await reanalyzeRun(ra[1]);
     return json(res, r.status, r);
   }
   const m = path.match(/^\/api\/runs\/([a-z0-9-]+)$/);

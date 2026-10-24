@@ -1,0 +1,842 @@
+{
+  "run_id": "run-20261024044130-1e86c9",
+  "data_kind": "api",
+  "status": "succeeded",
+  "created_at": "2026-10-24T04:41:30.997Z",
+  "question": {
+    "question_id": "q01-ko",
+    "intent_id": "01",
+    "language": "ko",
+    "country": "KR",
+    "version": "v1",
+    "text": "한국에서 구매할 수 있는 한국 브랜드 토너 중에서 민감한 피부를 고려한 제품을 비교해줘. 후보 3개와 비교 이유를 알려줘."
+  },
+  "settings": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "web_search_tool": "web_search_20260209",
+    "max_uses": 3,
+    "max_tokens": 4000,
+    "user_location": {
+      "type": "approximate",
+      "country": "KR"
+    },
+    "request_timeout_ms": 90000,
+    "max_pause_continues": 3
+  },
+  "collection": {
+    "collected_at": "2026-10-24T04:42:20.174Z",
+    "model_id": "claude-sonnet-5-5",
+    "stop_reason": "end_turn",
+    "stop_details": null,
+    "latency_ms": 49175,
+    "usage": {
+      "input_tokens": 66969,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 4138,
+      "server_tool_use": {
+        "web_search_requests": 3,
+        "web_fetch_requests": 0
+      }
+    },
+    "sha256": "82149f294f35769c10fa2c49a606a566d792377a495ea1489e9526e42da0870c",
+    "raw_responses": [
+      {
+        "model": "claude-sonnet-5-5",
+        "id": "msg_011CgLSxUaJPAhZvgCK1eWDt",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "thinking",
+            "thinking": "",
+            "signature": "CAQS9gUKEAgTGAI4AUIIdGhpbmtpbmcSDG9WcmkpsTqGrNFmRBoMPQLyPFOtDEqEoK8qIjAsa3IBqhQdJx5FalsRW9zcA2I4pD9TpTlN88iTO1EAy1bke7igxRjk7Az19fwDcEsqkwUmQPjnDtx28zn9Klv8Hn31ffR7X2kDWgKfbYEW6eIO5s337BPzCwf74zmGGJa3cRZSf05b1bO/2llBFS92RC8t+ouNNe2ZinAwCruZjFdTarZ0t/lEX4ptKL6NCmpNjjK1N5WJHPqW93qpqE5iAf/a5SU220sLjqY6LpZLoT/cHXGuAxdIqemZ15kc5VMP/HXIFD7PviejwBrXtNYE66AkQ4AzTlvA3BSWPU0HY/tFHaSFJrgKUmlObUyevk2lHg+1lT6HyCuHPWQ7OxlmNXl/Egoz45kC6Ew/yX2q2fan3XKU1sGvO1LKQTp3ukPVK9DvDhATMLDrEdf6wS4FzveDGVa4JoYh8hRvhjfULULiM6OdSuC5pMxgqz0nx+bmbQX8FROq/zYRQjKRXppZRF1LnvVnRbSjO4eBHQKpQMZrRK3tK8DtEgIdR0JTpKLv8sJlLBCyWndyu502bxKNjOyZOSI9DGfu+OgyneGFpOPL72oQmXGJsMSQqGzRJk/jZ67k2mydGI0Xy3gbCr+hKKnggmoTTKyttLmXvYZHDmJCoX6RHEckEfwauXyJ/YkjFy0QdDDg31NS0/JcwJs9hsM5qflHnkHb472AYEKDXL/wEft9GmY2ZpJwgLcIIt9dgqGV+C/TTouMb8DkI2mdD9wLQGdzfjOqN9ejo/QAtQqFHXjwjIwBVmxMT/QCGaXQue364TvJvLkX8rUxfqbl82E6zCrRCGdd4yLqI9z5hTkSND5A3i2icM1xnEwmUY6P31EoTdhSuKHdCA7TxgARpzTr2u6wxNj6b0g+lxbZ1sy7TY7KDQbUG8FMqY9FG6RUaa6FtmLt681g1n4Eln1JSoQQ8PmUHq5/VKVaJSrNqIGw6yXAYBgB"
+          },
+          {
+            "type": "text",
+            "text": "한국 브랜드 민감성 피부용 토너를 검색해 보겠습니다."
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_01VYjWDAaL4DKUGaDJne8uKh",
+            "name": "code_execution",
+            "input": {
+              "code": "import json\nqs = [\"민감성 피부 토너 추천 한국 브랜드 순한 토너 성분 비교\",\n      \"아누아 어성초 77 수딩 토너 전성분 민감성 피부\",\n      \"라운드랩 1025 독도 토너 민감성 피부 성분\",\n      \"닥터지 레드 블레미쉬 / 이니스프리 / 토리든 다이브인 토너 민감성 피부 성분 가격\",\n      \"토리든 다이브인 저분자 히알루론산 토너 민감성 전성분 가격\"]\nfor q in qs:\n    try:\n        r = await web_search({\"query\": q})\n    except Exception as e:\n        print(q, e); continue\n    print(\"==\", q)\n    for i in r[:5]:\n        if i.get(\"type\")==\"error\": print(i); break\n        print(i[\"title\"], i[\"url\"], (i.get(\"page_age\")))\n        print(i[\"content\"][:300].replace(\"\\n\",\" \"))\n"
+            }
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_013ir5wjkcjFGU58ZJC4s2Fu",
+            "name": "web_search",
+            "input": {
+              "query": "민감성 피부 토너 추천 한국 브랜드 순한 토너 성분 비교"
+            },
+            "caller": {
+              "type": "code_execution_20260120",
+              "tool_id": "srvtoolu_01VYjWDAaL4DKUGaDJne8uKh"
+            }
+          },
+          {
+            "type": "web_search_tool_result",
+            "tool_use_id": "srvtoolu_013ir5wjkcjFGU58ZJC4s2Fu",
+            "content": [
+              {
+                "type": "web_search_result",
+                "title": "스킨/토너 추천 제품 TOP20 ㅣ 소비자가 직접 뽑는 뷰티 랭킹, 글로우픽",
+                "url": "https://www.glowpick.com/categories/1",
+                "encrypted_content": "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",
+                "page_age": "62 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "Branding in Seongsu",
+                "url": "https://en.wikipedia.org/wiki/Branding_in_Seongsu",
+                "encrypted_content": "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",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Beauty and Mr. Romantic",
+                "url": "https://en.wikipedia.org/wiki/Beauty_and_Mr._Romantic",
+                "encrypted_content": "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",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "토너 추천 TOP3",
+                "url": "https://neultwenties.kr/toner-recommendation/",
+                "encrypted_content": "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",
+                "page_age": "653 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "모든 피부 타입을 위한 최고의 한국 토너 10가지 (2026 리뷰)",
+                "url": "https://www.mirai-skin.com/blogs/news/best-korean-toners",
+                "encrypted_content": "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",
+                "page_age": "311 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "Nature Republic",
+                "url": "https://en.wikipedia.org/wiki/Nature_Republic",
+                "encrypted_content": "EqMKCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDI5FO5xh6qEgTsBcoBoMtJLHJWNmkciUPcGaIjADPhci5Rm7/5EtDo3+5DWvZqnkvoqJD00rtmOozsrxhxsUgqSgRcBBHV+yf8qlncgqpgnoidasHdmNtJdZx7AyYIZWXkp61bMbjlZbaavdbwkSfP4CNz3a/qujLUOzTRxLhJfX+Kp3kB16p6mfAgJq7Ymc5MvWz3sVP9a8MPqapXp52tdQWI40RwfsUq88LMU3ia7TcUU2Z0NA/dR09t/D2lzLDScA7QAF8qZfASR/kzLrQglUgfaQXVveWnEg3BTjEvGUiz0C8TgG/GIEV0RW8Fmti1jiRV2E8+R6FADWvspET00RyMonT3yfArQxOmo3O6sxj57vWyLu3UfW4/UiyNM2Hp0weKCsCzyeqpoHDDeib9Poit93YulbEyVukWRPbnYiRhphzKH4s/sJatUTHslIZEK5h5tnGog3BSvF9wQ1IZ+LCOpZifXpGlmiqqRC741pC46HBKOOazC6c1cdfUG23LFxxGEQgrOlqCBCS7pr73JLv9ze/bmdO5NyD4+qT1+DzvzPmFuELFOyRKsFe9qX6Owfe/N2UHE5MpGbL9Xm/ZQoI/Wd9FGwGaO/4P5Itlmd+C8FJQ/Rg8T8X9Jh4Nvai/6NHIsGkhOiC31fcH3n8Lc6o/oHhmxSkAR3foOkCsVSZV7iJeYQD5mv5PT/gaIgcbEA4rziqxPduu6bNiAC/WWFDFpKm8orNnZKsa7vB+szKXU9hxioeOrX2Ymx46m17h1nOQnqLCahi6CWg0TkrvtNXy4qVJPN+pnebrshjrLaKhKniKspj9ECaxOnjZd3XuLJcYyPms6xgnp2LOJC/3Q/KFR54u+nB/bTc1TP6L2SRoXihI5qLkroUapKJESlSIxslJ6wn29lCfAavTCxaIt+LI00NdIjvjTYHYQRQ8OWOGtw5QkrF6Vn93m8sLcSWVqVWaHlKXinn/GRiGBBvJiYQGo5ysCLu22Ges/OyMGE4Lfkw+zUsb6v3VC4ZvlMTTepPz81f/ztEwHEsMvpP4P1bTJIHuHcTeN7FxwK5uj78Lf00gOEXrMCQ/eeFV2EojDRbTQsfkrHJWc+4KpVBT4UDfeiMAl7mDUJOW3fJAJeW08LbNgoBmseMSbMRoHRkef5YEYslSdfapDMihMZgovTjHcY38XfX4Jc9h1IasXNytDl2TrT4qqqohSg1a/SJwpJKZ0OiWWWbvToLdGAoj4YEi5PVMe9ePx5dSV6Ceibl8dwSJlsfw7C4Tl6dzIoEf9P3lETUSP5o8RSANeNSCvH9l9jtQOzxRnsSA/TN1OJroNazH7P9ePrhkk+EIJCfPoNyomouVfozV4PAIDnoR4I1mpueaQ2ndFE2WiM7mlFDNG+Jo/crCq7aEp7YzyyaCqCdJl8eJkoYsTh4CSbuqnTizGF0uG2lvyGofldshhK5PQO7aTcZN8C7zehz+ocKGQGcY0KaNQTARNyCZyMYfmzcHLS8I21QngLy+lhOKfueqS5OrFs+LKJr5k/IH+SZyTzY4zl0IugBWtY/swhKOuuKg8jXdwTmZBkBU99t+83VC6rVNZ/+x82seR0i+07UQpzOKJE+NX//hNAx1/r3YOAAUydWc2oFnmVDis3FHreKfLKk/pNXt6ageUMYN1y9fVHr62XgCSOmjc6x81Cm6LPVJV4ZBgD",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "The House Detox",
+                "url": "https://en.wikipedia.org/wiki/The_House_Detox",
+                "encrypted_content": "EqcLCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDLVcfvKj+yPeMomDmBoM+ak5QgksgDVbKhW5IjCVsVjZD6lYT/2bBZ4jZ2fMSxUGvlBMmEYlujrZfONm7u6uO0fhUvVZvO3bkGPdRkwqqgqusXIl7FkRNQTlEzaPJOnmfgbNHvawTYa8f6i7YiK5hn75roBKC+qwd6i0wK/xw5xU8PbGo98hSnZ5juAMczShOrkWOjlfa0wVV6H2xIuZT4ThVyv6B/SGNJwM7aN6vvz6Z9r/m/wro2z5ZlkYmSLN+jGHzpQLCxG1ST9SxpsT8b7nPKTZLu9UAWU0XYsGvWdJa2IjrTUiSwRKGRXao1OqtYuSoWw+fsud4iVIp2sfR3QuPFSK1SkSnXfxbQ27TX+VHgk5jAu9tCMnM0LxFR1u/FhrVNjmq0EQ5TaAZhNDQipHL5NkzUKgY1n+seSTu+yERJSYEEnQlDW2LFC6v/lpm0m6IPLV8y+M+R7GkR6gpSX5fffZFsaboOccc4VzUppiDEIRIdk5QicsIaUSAPymCXsQiMsVULsIa+Zn2xnf3f5buys9MTDG+4h8LhU8IPtjemwQjVzOp6MX29OZSu0BlD9z3hybEeoOez4/S4kW7k6FlMmDLBb0GGyU1F45KBQcDUenQyXLIInHwQO+5DeJZQTF/WcVLifIpp+Y96oFUeCiTqvN1EA9RgQ5eQ8cQOXD4Bh+ymc5pMQ8BXMKJk/6vyB64tG1FJ85zal30OP6t0jw3SwfHV8C9/PGHxFFp9wjAsQ4+UePnXQKGdWkTnFMrgra6/N+VZGdJ7fd6w3nZUeUIEr5Spp6Hlz4JfgWuBsnHrBSY97KWFiN0oaJcYpSuok4NJFmpFBpZPVEWKecvvLpwxroN/U1WIbtFb5x7K78wqx7IBHLVxR3kL9koCdov1h7m7bYpwLSQRbGelgZX3/LaGbtefAMF1XT87lOOp4sifjT6OlS2KG7KVmyQFx1XrWBR7lwZslINEb0CMVgVseU+qSL90EDzmb3nBdX2Sgz1cKRex4eDQyVqc+7jRi5ZoxF3bqFObn6ycU3+A/eWI0VG1xhQUrdO8G99tWLSrg+LFoEiJq+Lyc0v/XeB/iw8Fxwk3cBGlwAWa9UKtYADsnNHt45aXy4/BwHX+yj+Pan6SQogdv5dMjXg50uQO58unewQB9Aom1eA+PfhjV77WMLoWvoBRRT/J2gmjsseKc6YWProbaeEWgiVRJBJ3fwMVSGW19yLSQK4jnTLqPHTZxzTcT6PEK7EgtoTXsghefLJtIqWJ49BRhrFN35wQkd2KphWysCy5lS1qjUR/48eZL0vcaeQViV+KFxFBmfe0Jh2vDcBYJOhlvrjWV/iaQ6WqMTW3kmrx0DgrN0cd/2nGxyUVke4gWcXztOq9vrxixhu5BBicdoifsZuwWTFvZlipJkY+hzogrJ+7knqnWyrDv3vrnbcNhREaR3Epw1dw+70oHJ4NuOEKHKbGYtIviKszQ3mwcy9HPAaFiSbR8uaPUdeOMuHbQlR9+1W+4UAOamWp+mQVVx1/SqcuY6bunUp5vLrfnkVBZrDMjsR7y4FASUcRrZTejHo0ib0e43vVbALFYsWX4wbjsz0Aup9IVraOl7zB1Hwz5XfmlnQMyBYauaoXkGGhddiuUUyO/sobODq2lwOjyPex/pgE61UOsgtvEj4saCjbiC42klmu4wmrjY4Mh1PsZpHE5cuKK/t2MtAiL5IgyUgnhCIP8eVvUSNLW5LLWZjyQZ12/MunXmVHhj9Lgrn6NA0ds3Ilt1gKv7yHulduX+27O46ZnwEa4i8JrScLzyA8F4uIIIBgBSzefxuaSyayrwKRlS3O4aFoVz5e/Sf+3fXgQoUZBT/i/roI/LAEDmP9RzKhgD",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Tory Food",
+                "url": "https://en.wikipedia.org/wiki/Tory_Food",
+                "encrypted_content": "EvYICioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDDHALLpNqJJi9rju4BoMDbcijHSaoKcPUd/4IjBfhOHn62N6ybQz1+qNMQJwBUd8CWH3+LqKDxZFbVvXAGVFYQuZobeg9PRj4guS7hgq+Qd2TQsmohCH/hQvmrJsQVYMJwViXfMEOAjHhox4oaSigpBKcJaePJs2uScn+dGX96spOCdc07vjzRpqs1GjeVAf4BlUlk2E/eh/NH8wrnWynuEPYYpbcmTaO00e3Ph36lIYKN2UbAibyCFQS20OFWP4jogKjhE/WDA/qZyTxTq0yvQDhvo/fG/Cx4wFJTc6xFuH+ybgDaHbQqn4X07Ob3Ugqn9Hc/62rqhhxrEbeM09J4mneJ02Ik262l+bOJ5lnYI6GnBsaVJttUQT5jNod2BPCx3LO51EAmvpnUr4HW1HUhEvYrYDeM2MYWIct2WzzajJVqHNpo2WeBm/baP3fzeq8hQyRxkXMlw8U28YenHjmUwHv4oTuUqHmMBvgGGAKa2ph9QE2kt4nXvUH7UqV64HNBw9A+Edq5SI9l+zKsLKAwLThh1I0x1qnaaUbAzUwKcGjRj5TFLWAzG9pbvO+qK7BnXJfz2V3RfFWyfI10x2p1XMnG9lBuWRkKM3Xv+kikNwUEj1WMR+Bh/s1WhRleLkg9c/kWsb/MYO9Qro/LBhzVaotSDhqqF7A7JZPA2m5FCPtECshDfmPMf/peqODfK+s6gGJMvArnZtUv7k3O0rp3p480O3ZUm5rljZ0fK7J6EhRIKzuG5Nzxmpe6gDY7IEO95MOr6iInltkM8cT169lvXk6uxdmQw6XPyma+1wP35OEtQU3skRJDGJ53EezbWC3XKfb3UIG0i/9OUT4vZ/XbEDGtNrVtgxK7lKJJaYacs7TPoPA+hJjc2Lbn7xhkkf2BkDmMFcKuJ7/W8weOusYuZlz41xgJ+04O9Xx1jgvGKITi2UjsqgWB/djmdpLG5+rMmI1zp8NqRa+ogiha+uSRoAZlEHdta8yPvRMu7UMObE6QHszQiYE0p+tt/PeJOiUY1rV1rQvvQGx+Ev8Jj33lT58hmg/4mO1cD0m8TBaQD8hpLBVftmaQM39scDsY4/Rpje0XeuFYhsY3Vm9/9X9y7k+Hup9z8eiP57xqRKYTY3AZMChHI7TnuuQoH3HjUcF5aJlSOIqWNBV07ACFVfsFdaTJXLsUdYaYbuu35h+WtivZJF4jL3vFSV0PBBDvZN6mhZTYajxE/J2MpS8bZ4nAvUHnQKCSj6KQyMEvkEFWANQDtTInjpI/MwwoOydZJlfpu3eLPIna68Ox7ZhrTvrtxmm2RMQ7odKNKR1yTO2cJN/hyYNjOzjGp+LrS4x8dot+N/y2zhgVNpaAG8NIm+GJE/OVkITrL/IwjtFqot2VWW9a05Wq0/w/3XPWHBePCVxRdUlt+0m+2AshLvaS7y7bKxMO6iGaK4XPs3Zd7wIIJikxi7fnlMG/gYAw==",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Innisfree (brand)",
+                "url": "https://en.wikipedia.org/wiki/Innisfree_(brand)",
+                "encrypted_content": "EpcHCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDAjwFkRLiK2qECWzQxoM0udc9nqmwFEFK3UsIjBOl6Oi227kpbO+Whib6+0ZKcBSl/jg9Gi6l0zYv0ePARZjgT109WWbJN+2mry/2jYqmgbEBpBeL/qfmvw8i3rRf5VUlD3mTe3JDWmmo6QKfR2cUxrxOQxU3nsqTnZFmYjR9UwprhtqoWW6W22CZ/5EhLkkc6OyUo2G83xATPCyUJPHUtK/ZjDGHen2OzSJJilwFvu5Uin4+2MHwDtUXawo8nk/y0wmPsjOMjQ/iGzuNOs2yqqj+eWSkiTNh57kVFiZV51vEo7Hi3THa/eKp57N1zwR6ljBPDybmaf+2zhCKw85JELL9UNGeq/H+EtIxj6CVeuspsgsAfI7bXORYM7igBcaERBfR7Lz9PSqlxOTjYxLEy8mylzCxP3s0gDjX6x85uDWFYDg+BTQY+QPY1XWn2HutR2/3CWH+p0JoDjuqoYI2Dvugk0+OaTtjyMR4c+j7KyKSN92QFkRcbVeA5FttADN1nMCImUdtuB+lwkTJ6zuzGEmV1S1EQfl+y3/QZkpAnD1qBgYWEd+DfSw2ueIb5fEe8lUlRlBNhycB0FHhAkZMIr6rw1ugTkRzOBEETJs1OvSDd+u0fdEAS/NuxfcbzVuylEKaFkwT2erHaMXR4v7PnMtejOW8JxQLXDdIvEcBpVCIP15CS21H2QsbzNFjgru5KPOusTWYHyzovA3OPHEloFmpW4c5ynXkdyUI1ZM1T5hZ43dFc9Cl8zTkYGclyb0MqGqBl8P85L/CJLY2BaBKfg/4cnn3UZ1704NHwYEnTAHyp122BqGu/NPIdrUzdPe9R2pWqut1SzTUDBr4SW2YlbMEad4CDfjPC3FXYaHeaVvpxwN0I2FHIOxcEUvlFUFUVFX9pidhzhLlqjynbHXwdYnN1M9ORWjr+WXFEtQU683DkiQGK86SMYKgE++PnXYgcfcfMChWjCLSfLjebmVjqmUVkCCizOzAPNEOIBA/bmykNyMNGmBaS2GZgi4UF/1NJ95z6GNZsfKwwzBb2XEfqUdfY9Bn81KyOFlNc2uZqXG/IG69XhVZwSZafi9C9R49bdGr/d0gccGdcMFoXIm+FtjGQ0ZZxDQUjKnBPPhKgPfdoKZqE3fYw5LIFRMXJPAkaX9p2EnXuAb0RgD",
+                "page_age": null
+              }
+            ],
+            "caller": {
+              "type": "code_execution_20260120",
+              "tool_id": "srvtoolu_01VYjWDAaL4DKUGaDJne8uKh"
+            }
+          },
+          {
+            "type": "code_execution_tool_result",
+            "tool_use_id": "srvtoolu_01VYjWDAaL4DKUGaDJne8uKh",
+            "content": {
+              "type": "encrypted_code_execution_result",
+              "encrypted_stdout": "Et0BCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDCQW14jkQsZ3fZwuaRoMBZbtwFy9sn6V1by7IjConXrJsNabv8F4d0NwUFIY3Aqa7rGRmhD2QehA8gPxRUPIPTUpsMK/QgD1iXm4+PcqYW9P8np222MyBkDU8SDXbBcWOwpbT0C9M0WGqDBLGfloAS3GqaXCsBVDgsDC/TQ1+VtlUS0DHwwvlj3eJn3DjcnLDR2f8hzcQBK66AmpF24yWuBuZsRmKPT8biZgjrkGrGUYAw==",
+              "stderr": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.11/asyncio/runners.py\", line 190, in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/asyncio/base_events.py\", line 654, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"/tmp/srvtoolu_01VYjWDAaL4DKUGaDJne8uKh/cell.py\", line 21, in <module>\n    if i.get(\"type\")==\"error\": print(i); break\n       ^^^^^\nAttributeError: 'str' object has no attribute 'get'\n",
+              "return_code": 1,
+              "content": []
+            }
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_01QyGVGnMYXRUr31Rmus9Jgs",
+            "name": "code_execution",
+            "input": {
+              "code": "r = await web_search({\"query\": \"민감성 피부 토너 추천 한국 브랜드 순한 토너\"})\nprint(type(r), str(r)[:1500])\n"
+            }
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_015fKqJ3Z7bBNh8m5hhp8Yth",
+            "name": "web_search",
+            "input": {
+              "query": "민감성 피부 토너 추천 한국 브랜드 순한 토너"
+            },
+            "caller": {
+              "type": "code_execution_20260120",
+              "tool_id": "srvtoolu_01QyGVGnMYXRUr31Rmus9Jgs"
+            }
+          },
+          {
+            "type": "web_search_tool_result",
+            "tool_use_id": "srvtoolu_015fKqJ3Z7bBNh8m5hhp8Yth",
+            "content": [
+              {
+                "type": "web_search_result",
+                "title": "민감·건성 피부가 매일 쓰는 찐 기초템 모음💨💨 - 언니의파우치 커뮤니티",
+                "url": "https://unpa.me/community/beautyroutine/123718658",
+                "encrypted_content": "EpwLCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDHL4huDBMlUYO2ZTshoMlkLzUvl+djojh5CiIjDpYyZnee1jqGzOYXD0RSYUChvcscWM4FPYHqOHJO8fTjDklC5ZPqiabHrMlUyfRBEqnwrEJKbuiLECc7WS2b4DLKzxV2hE1g43ljRYG+JcN31fTijM+WBV/mXXdExEgvITnHLo8UsnKkKmdJ9qqRnwSn40GZjbjiRuVG4p+MoTByU5tSgE99aTUIQc/EuPP0M6tyY3cqDGumFla3uybza07/6LiQxaHd5OQ/QetN4Vo3LrtyGOoCEsgzNzl9JObe6Pf7QxbHlaKxZSFKJUJRTNz+TO4eQHzHcfW1UNkF3dZbAfPHXbwIzzMMhXhi4zjb6GvOZbLp4/CALfggA7geOAgwI04JS/pTOoXQcyj3Y1RGwKg0vpmQN4JfrwgqiLc6sMEHYUeSOa988Trcxeb7QKa+gl8Isqik/jlzNR2ZapeySxhFUZz63pwrrzOGhDRdViEmZmwGq1asPo2Y1UgL8ARUz+lNnEUaKdd47JIa+NRNxl5h5+23D5iIk42Qo1g8RgsG0wbYeLOU9jEDWhxM0nmFa2ulOi0uypeMTPFDYZwQWid1xjjy3alQ5DN9dkBVqtciJZ7E51nJ07ZgTIAEr0DZZu/oUWo9fzer39aa/lNv67wb1FXGjlCZX11kdXvKnZqAZKqpKhK9nU8AluHmhX6N8KFYuoBJDppxk+CWKPo+h+noEpUbtR28PZieIeokE63VF63rkEw9cBgFO0C+lfy/jxi5NB0j/OlrnBRsGpwXhvATaF9yuPAWPZvDwCSDkW8xcLj0mSMBL2GPOPmS3Dff9lP4bFxx1qpVGJi87IUK9DUSiCfVvtZDifRuYiyNhEk55XjLu/kB22xvP+ydQ61tROL/bf5hvWw3LMr+EsRnLhCzlkisDkefg5MB4XAWFG+dmzE8wDMCjDD9PIt3qRnVfqSkgNJ8zwGHXXUPpeqIF8lXcvo94C5T8kQ8E8iElPMGWhUB5utBD+SVHbWexabm8o4ien2v75JAjnJfJr7mvR2WkKz3ba9pWLERd3dL0KhVoeMqjgvoWBf7+zT67O0bVMaZwIP5+H9YJmFHukPLFEfbtMmdpzTdayLifdMeLbo4x6nmvj9Ust3Py4B2FB6cLDoV3QSql5SyQJI9ic/ysPIXuxbmS2u403DP0uI/KUmEI4NJ6+VkqX5qXQs/Ahil2fBQQGTQ0DGwuopEDx6STdc/Bdt6OiH73XR4ZS2kCP5ciDMS+X4vn9L/dNXRmMfBpUyUdRmxdJvDfzXqfvfD9hJWtkR/WJkPamkKJqd+5Z//iIdBJkws20ItuEK7KPuWqV9PW2arGweoqZZHbB1XhqFwMCvnH0hNm2iYPH1de5elgC8H+yk0szeKf0iaBJdHUaXc13FcHEsxQddlZZqx2B+imu8L1euOxJZm9JuiQj6cypURdWPt8IbWP6z66SpSBeCwXWbf4AwTdYBdNxIQU8EaWP/d58IxMcbAg+MF4ALSkH7Lp6EGpAPlZanDSFhvS8py3oBBzSQt/XhkHm8h/VmUzQyPV6vvAfIsUdNtTo2FdSVCGmW58/smDTnXNB2VFz8ri7avv46yqOqkiQHOdYZBNkMgtUAIURShi9EKkEVCygQLXE7dmpzVSJu5wucAZj7gf9KtKWeO/gO1DL3HziSJcdVmZJw+cAbepO+dw05mWgIYt34DzYgsr3AAHzOm9I807WmvZDv/B/WrbSoluX5FJLkYtkS2Kejb1EJzrIOe/PKpb+Geg+PPaKNdiONb4cHT4pkJFf+iHzkEaDO2T5IeLNe3qouY8IFTJkT0k7b3g+QqmS3YhXdMppCjjcrxwYAw==",
+                "page_age": "281 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "Branding in Seongsu",
+                "url": "https://en.wikipedia.org/wiki/Branding_in_Seongsu",
+                "encrypted_content": "EuAQCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDH8iZv/o1nP3D6rLNRoMZjYSXQVDhX19Ab+cIjA3K7PCtS+KIy026RyousoteWLJPNxPQ1CNpvRgyaqMqaJWos9qU8YXEupedHk0zoYq4w95Kc4fN1FDsMmnZBhNSevChkEHO2VSPBqdIsfIqXgPqsdq65h7ho8FR4+S/EBdZlIMku7tEssB4w1UBQK2dIiJJKZ+jl/jLE8OnAnORL1fsP5ERYc8qhc2iIGYjaQe6sDxZObG4p0RQKAU96kj6WHQRA69qyVgzftfRkv22hqhGU57GiEEP2uKfyK0B3GccQXHt/0+626FjVPcz2lec1InO7DT+Y/xkAwdFkcWVma3faF3tz3nVViR7pswrPvQbNMVGdZ45BoWUu2ixSTAJH4L3/Eb73qZXDJehtzv+XgmSQptQnqQEpZ/vL70DVUWLWxyLJSGq3rrAFEnh2e0herBUHcYpZZ04MecKk1xYGFKHHJ64CpcU0Zw2ptQKOObSOP2uizo1Lkpm8R62/DCLf93KiLkl6h0Agw3CZcCIltlmqo5lYEmwOvWquLjuizfKkukXXNLIrpIQTAjv9GW0qQ5Eqq5fwjGIky/ADWh+CJROwB3rtcQVBl9NC2h0ndoJ9vFBZqLeCOm3IzR9Uk+F7W/MWNIwFkBCARWBxAMIkS7mS/SCwg9otJZYbu4YjsmKsARXQwf67+04PeiMzWM6lmpP8Pq3SY46drUaInlV+xjyBMqwJVHLwpWVL6saknIIOoELSk8suL6BCmp6AOsDNVxAdRepuqnUY0lLaR+tiTubSlU7p43VQ59Sl/+9hGksU2I+LXKcJ+Y+SN45yS6hiUffjiRRu3Z+Evb0+74YjVQvBrtDmB1kbaIwKPHXipKA340tLcodBKOyOlSfMKUyRPmPiIJhcnq+1o9zsw465Yb0hNSkilpk0h+lDkOvh6qJ6DnPb/6p4NtZGPXrApTnYDWPyZiKK8295bwwfjL8L1KgJs4yzCd2OEsgV7rDgD0TVwbGh3mDlhnY3IGibrU4VkKicuBXdYfkmpghegeBBb87r+AEqpa0kOh2sFYLI9zH1aKZ90bjYHaNxuDwMcLKBb9w+MO2q8CYq8iO0vByaJmXksMzhgf6NjuE8qoY4jQBPT3B970YCasTEfG0d0irwuVNSvekmnM215Mm5njhUnjNyV5OjHquK/sTOokIfGn3CrWEe9rmFIaXY5/pG6iYni5YvLwtt16TopyaMm7511bfjTBJpEw2xle1tmLjWPxX8rlSZT8jD63QMksR7qjqpnaQ9JObtgYscv26X8iON3eF43GiLXidZuRsKrvjn56LWXznZHzcF6r1ywJtKqUvVIkTb7O2YOPeJYfqvK8IqS+JXPFWyOp5/OpWVyxD6G2VrTa+K1c7RRnONSXsND+NaVkXgs4RefxvBsSnEOCAHTjVPyZhckHn9VEn5qRGbzFFrvSWFEEJShwR/iZ7sP615thfJR+RSTaiiDNtQ2Lxzp/HAQrSa1f1lXyoZuyztBKBbLTpgqA46U4t9ymPErchmoFuxtRGDWDvcmONrqY/72VSENoGdZqxYgIFgNLLNL3OxKB6nSsAGtnwKL/Gd9JIvfn+6PQxCdvP+SEUdyaYYgJpn5u8PjN6tlT8ZOWHlEgHK6qI0HPbocTzQ5vbtaStaT96Ka2dA/86KJc/9tpzWohyExMu5zKQ4uAPv3DTekWoTXIn55sXepLDYQanAZnK5kOpxcDxWNKvrsmELAVQROzkm3N6P3f7m63PhCQ+SF4NpBskP9i+jKX1Exwe+/N63XZTo8new21WAi3wFqMG8lEvsTdJVX1O6WL3O1UQLzGQhnwoauk2FtQgf4fRp5XNcfDpH832flpjYcNhaQ2hSi7lATJ3uDJ6RoJE+pKeIU55SB3djfr0lXXj0FCN6q5kYuMOfbSLyWxJVljJcPcU0pRp4jMw3l5NDlSFtdS8jGkRrSqS91iCmMDholCVUUpFlNYFlMiw7MyWgfncxsiZLLJrttkTlvWdtZFcO6dyfiQHKwoMTBYDQ6xj0TYTwkVvjZhajLqlYBZxz7qqQLQeUzGGDQDAbCFN5HWNgcCp/REIg0IeNLQZSnDyWgh25uwcu1BXapa22OtU/yhDjKJY2JfToYbs640qPc8ilsdgesMjZdJpXrOFpG9RBuIIHgbuuZKroeso7//1lSRgchIQ+VGhWoWhvfoEFKOoShDnLUh6G9ZqlaW777H/UpUigawf4/cgendLVNZ8q8tS93CrbnchEva3YsuiIlHzerm7Z+JsqT2TIeORWFEtlwkdmiKgH+mrWBJntelkVWPaAfA0ZXk0Yf/yEKY1gVhnESNR8xLZ5f3PUN0bVMyvFSlGR8uC5Hrz2KHlmwQw7/lxP/DH3CAZEJBW01OSu3yYbH1Z5LdCcHYVbiATSczR1yCsUi+ag/R5JTqkGIbebvbs6QZZO8um9nQK2az377fEwNFAY49NJLGpFEiAwhuFG2KVKZ+c1ah0AeLfASU5UCC4fy0UHlKabrsN9qCVwLBnHYa68+bQybCqg7rih9xK41U84rdn/V4ZczpCy/WGmdTm0I55iFYEojJgG3Iobuqz6V5+iVJIr8//0bW1j/w5+zJUSrD80LPJ7LufW+zVxFOxg84/fcfH+ZCkyse9ySB3nusQiUuUbEAkF24Ln+q5UMJi7jqzwYnJGbxnSz0AHttaoqdKBiazqJ/T4WQ3GIWulfd3GHpIsm9IgXWSABQLsqGFFdTahLQHym8j0hcPOfuekvouqJFnFvnBwyFUl5Ntnv7ZZs+lRXMqFUYAw==",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "토너 추천 TOP3",
+                "url": "https://neultwenties.kr/toner-recommendation/",
+                "encrypted_content": "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",
+                "page_age": "653 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "Beauty and Mr. Romantic",
+                "url": "https://en.wikipedia.org/wiki/Beauty_and_Mr._Romantic",
+                "encrypted_content": "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",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "모든 피부 타입을 위한 최고의 한국 토너 10가지 (2026 리뷰)",
+                "url": "https://www.mirai-skin.com/blogs/news/best-korean-toners",
+                "encrypted_content": "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",
+                "page_age": "311 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "Songhwa-milsu",
+                "url": "https://en.wikipedia.org/wiki/Songhwa-milsu",
+                "encrypted_content": "EpkKCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDAgsP+t8FaFYX2RSxBoM/2IncbnPyYukNPHsIjBQljcN5kQKw8tKSj25FZCsljniygStkrFOSBFcYuSjvfvTUdDSIXggQ0p9/8vFsuMqnAlE2B6BjqY2UPppMIWtQhkiqR8rDoDp7aDaMw8foj4wfz5u83e4qVKCSIJvAOkWQZ49MKRAp8+kmFfQ3IIOO1cyOoTekTfHK1FZUlhpf4Rf1qucr/Qq7L7YVnmD69AlgmviBKr8DEgzEgMA7RfkWrlkRSHeQOYtMpOWhB1eQgjxFTdtYFA3bysgMoGtALpeJ4qB3fS0gbIrcOSflrba1Zlfkc6Xsn7NVpvsbuzjPzS11R3/VsPOa1q4CK0B1xKxJUyBQksoS0WL1y3Lb4E5GviXKz6MlZwZQNB2kfZxc+7ippugAT98AK95QjH7nMUFVlZYQ+/6yTEkZT2ulCh9/1zy+3DtQQNKJCZ93v0XjW/IWWJ/7eewi7Y61w3rr05sVbREVFktPylkOwR80V+l3FZuqC45OYyJdPcOC2Wde439vte4YYr/BrmSRul1cbewI74nBrNwo2k9nIzYy7Dlb5YJlWaH6B9nvSsBU/ZDeJ1xl36MN6ir9GrjC27ykpuW/10Z+8RhzvVY6Iedge/H5g8rsV6B5KC01cncKNcmSPjue0xqofa9IK3RZHp9pSf5kbEnPzfOIXXyPefAypt6NWM5CubQ/d09a0FCooUrujcAvWdfcLasE/jtqLMi93yT9Ij5vPIIZGrl4ATlHEYYgj8pzi2rcqSoh6ALbIaoRlBl82oEV19DBnL6sooni3in3UOPXQu/5ijIa2qbgyXRHyEYZe4gJf2IqYOqq3pMHKzYWiSSevDoJ4q1jWYrVXa/+7ADTffApbPH1wiUM+jUCWzmbJHpVBaXf+Qu9vsy88BR9VhE99LXJCf+DpgsK/0Hq1F0ZWdZ6loLi+59PVspzO6W3we+rW2mOalr3f393mlqhcUWO6aSO6AXYFpDprLRbDY4f3jmwK67BtORSonM+qjG5sqUIRL3l8ibrpe9+5QFUxb1l4nkj0ZCa2LHfZhOhV/w88XNfh6tFGHOBmCnb0rsifsTbtyZS0kX4koxufnGyxTnLoNlIGrmLCYmMMq14L+Akwox3i7nHl/YgA7CMPLO5HcoOvy8k5Zjy5kdnECgeg9Bnle6gE9UHiP00OhLxx8vUtbbeOKHgSBZpzDQo+OZJpgMuxRrknH2WKtX89w5NftOO8l3r95KDiP4XEDCwbZNPRE24dOyL3anWYqqvA9DK1V+QxfSpaMupzisYD5y6rV2GyMEIeiQJo1cw4lv+sbIYm1Pnymdd4VQBYqU/xJTCuuto0bbjZj2xhldGQK94KCcwcx6AnzsKcE4BrYfCMnX6ZGq/tOGZBixdBsjK01f0hox5uvPfvWKUh1+qjqZmTG/8p7k0C5L+LBW2eUN1ZWhcmAYctiDIst6PPOIPB5/5BT3aVMb4WPD+l0DJpf8WfuVCS+XtTXOv1WqQDpw2yQJiK7gMfGIlYSx9GOWXyxHdWq1geJjPdVxrTHZ6hYDrFijQF2Eyjp6b2Sy1mgfHncErmWoeFgcpJ7xjcT+zdF2r/SPXPJR2NTDZ/DQvbgzgCtYVIFiHeWi31zSK2VeY0fwD/OFelmGd9Y09+b8RxgIu9RlSDh4EMHZlztHGAM=",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Tory Food",
+                "url": "https://en.wikipedia.org/wiki/Tory_Food",
+                "encrypted_content": "EvYICioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDNKPai9WEH5hQIfG/hoMWkABUPt151JT8Q/OIjCiTXdkO2GgUIsVrkMl9VHjP5VlpGlraBjlAyBaRlxK9NtS1EPbJTCaIJLJ52VRIoUq+QeB6b8cexjpIIYszMU9pt+Zw0/ZqQfkMIcfAy9GFCwAO4tetP6pj+SJH7FjnqiUwenvNhDqHs5xC6JYtrolD2+iyW7sfgvTvpg9zyGwn0nV2xN49ZEI9ZuklTdFfQkWhpgwS2i/Z5HQPZwvDByJ3UJpnq4vSGeTnRSLCYruu5Var04qgdQ2IRAH4sBGPCXaTYzzg73gOKaROqwg7Xsm0J9dLX7PgF9wxy3+pOvIijmKpC3S8dx4Jpru8328Y6WvWrnYW8WCNhG34+tN68fFzLAuDijnVjbViKlviLzZT5Nm0e0Bpto8iF0rCvySD3eB3w4rrYcSOAsAIGd8nyCNBhe1gwUnAHlZmAZZCBftQ90wqjP6eYlNFpPH6IzHrKt8F9GaTA1ixef5VhMTRYVB1oJ+UP4f6UUj1dlj9SxsCbyVUDBS7wWhvUjCkdvidljlE9JWdgrUycIi+9O6Dwqo8G43hSNimqLhvMlsBPQWH6J8hKxt+Sn4tVqd0hjO3qNJUZoqU1UcVKRgGQHj+fKVvDmif1ui14hfa+nfD6OHVjDFOR5zn+kjAxxZN9zappWzvpfZn9f5FlBdEzA0WOgY6XvJq2CGdlDf7jUGGe8EMoD9lor9eWYixPZ3vLeAJorRCQofgVMlciIsjk9H00ZWzHzJgKcGEzUt1jnAk6zk5gGMbgNbqijH4F4xy7ksUE5PueoWSIhIzearbwVJ6DzGoyVi/FsR5IDOe6NjoFVABkT3LvzWhi/yjojkN5z0zsRNoJp+pL6oyDast9pELCIS3pYaTpWLkdgfuosQzIPMPYMcVejAt5FXCjq9Xfzi+g4/aqg36nn1hxiimJZsJabYsiU45dpEh2a32lUA5DKSqyazWntwgTw7+Y+4OYVX0mXihVtBwPZXnXieuLgmmeLI4q/+yFtECTy5EBOeR8xAqoHB3xIz0P4TDCnBttS900i2KqtZHkeHMsm/uxpHx+IO2KuSwS/AUSHExGGi/stlQx2JTjVBejFEAGCK67lAPh1JWKZTo5u4JxGBc8rNIkywMP4KjoeJMsoMwgF5xjMNYhfXo/mPJYg3CikYsAchfm6b51rm3ePXPQaLrt2fPNuBC07MO/s7cP7AqsoZ0HKAq/5+X4W4rjeimxLsNOTghFQDONewFZH3h5T6/15Y/xcG4E4VG3kc6tyHOzrFwU0kZKD/8ikGBbUVtt478AvyzVl/115g3yOF8XqbUUa3oYrtvyWiQpd/vSQ0Wv/nmxNPYc7aF6betiDOjmhZngJB7maVq0OxppnW5cCgNuNCLhETwydQLpg3ATmTOluvAjF/Ttkrg78O3BqRAYBnYWpUyOkk9tqSBoxLnQbWLewYAw==",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Innisfree (brand)",
+                "url": "https://en.wikipedia.org/wiki/Innisfree_(brand)",
+                "encrypted_content": "EpcHCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDMwJLySnlgCaPxG1NhoM4UKfMTDRwtD/mlYSIjAlHeR8UJzLTW/LCsMfq6SvLjImLK/l33hNO2jIQQf+hzKQV957/cxY21C7qEbf/PcqmgYxPLxeSq+RBRdTM/FsvxJ2IWtdqT1JD6yHhrDHtorERBm/EG+VZHPVvjsnE6E/1ucCd1hbmAE1a/422bKxuvhLndXr5E6Q7Uu7yD2qry+S0CZfRXukTl49zQPcYNSHE6PSsd1wcbW7VcBciwDS7RMGp8MYcSjM0IhgO87Ts0JQyYhFo6GCWuiU77CIMwUG5bE63hqHkcIszFS6RnPiI/IHL5sk1zWp+fOX5EQIGY+kONLvlDSSDFbc18zbyFDwdnEGNr3zvETgu6iVgmi30jQkOgzNP3WStedHQIu7lWZzRPxG4IdzRkygMScWABPgqdKOmzDsAR3xs7Me0Br2dUyAsXEKae7XvkRmASMimzre9ntmzoahkViddRQUtjOO/21Cf3sQAlGvOzt9a75Iqym7uVGZyLvLTioBcjAL0nOQ7VvNpHKJAuKyvOuDpAscXab7aK69fJZIH9lLyGWNkcKFvJThJ6NNSfP/7fYSqFaloBOZUvUj1Lx/8yV0s07SvfOBx/IAWjYq8v61DsiKARhKVZcbgDlls5Rj10tPsRtAQdbiV78Fq3clm3pc31OkWi9UfVFeS8n4+Zci5Dq2sAylIbt51xatN0mp37BJa0wqWuVlBEi7KsTHqWM25Uzn7Yt4FQ5lRQHJ0cf58pclDFD3Lx6ba36kr978jwLwPqB3OtxO1o+eQ91k8xpHMcIf32WvQ9n1SFWXaAIxtlg4STXolzhacIwvPK/S41ePdphYXNiyxiULwC0MYSbjJtCcuNp77enicQGul3NkZYbFpdO8IIsyQTov0ZGFZR5mXlBxe49FSJbpvZQW7vQ+sUOo/GW9UFqPHIGEURdhSZ81D5TsN1HMUpBwrhr1pmtc4AybRGMsFA4aybxmLg1oCY0mbTHLrvriN3mL/TX8OSrHV6L3jemMfOoRO9n0WVSr+FAAnOckRd9fLrr547QmgTNE5r0ghFhvBsN777tvvjfKKpT76vHB/2TxG/FlwH8A0sL4M3IYO9TqT4/tLCK6t7T5SM284asK8HRI1lT+kBlvRwHfx8jeD45n3GZvlRgD",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Nature Republic",
+                "url": "https://en.wikipedia.org/wiki/Nature_Republic",
+                "encrypted_content": "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",
+                "page_age": null
+              }
+            ],
+            "caller": {
+              "type": "code_execution_20260120",
+              "tool_id": "srvtoolu_01QyGVGnMYXRUr31Rmus9Jgs"
+            }
+          },
+          {
+            "type": "code_execution_tool_result",
+            "tool_use_id": "srvtoolu_01QyGVGnMYXRUr31Rmus9Jgs",
+            "content": {
+              "type": "encrypted_code_execution_result",
+              "encrypted_stdout": "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",
+              "stderr": "",
+              "return_code": 0,
+              "content": []
+            }
+          },
+          {
+            "type": "thinking",
+            "thinking": "",
+            "signature": "CAQSqQgKEAgTGAI4AUIIdGhpbmtpbmcSDL2WVVnElrxQGLbslxoMIFvLfppETvkEO07aIjDxlZ1V1kkH0mnGtYGKhjz1MLRjal/7kUJRxKD2L+uMNZd7dVBCYUXH9LA4sMq3OtsqxgfGCQ1MAIh1jzILjayWHdXXBPIBrcRQvRbWOwkZqHdzJCfe7uF05S92ULH400mxQjavFbpSt6q/W7JTsazjxf04UUWua6dFe5c0sMELjE97mPyiePaBzIHJ+mabyb8yw8o3tG+9qWPlbvdNOMOpEKxxb7Bp6pAxI2OZYX1HbEIptwKZdCG8rYIyVZ/R+hZl3++CKAzR2ApQpJVWUFiYIxMwjRxtKI9yKg8+z2tNn/GMzug6jRIV2svIk3WRpm+4aUbWanFPQnGpZiLaMjOu54NmUFU/u8bA5kWhlAovl/6+95x6ar3i1+SJh8O1DQpuxYcI8rrd+S3qn9nnvxMpu927U7LKzvEVkUdGnjZxTi0rueqrHvTYPKhDHHoWKY4lcqMz4ZpCskwrqnaGYRqFmd+ocucHrMQyAAv0lz70LeeJKK+6b4NkX3NtXuvC0/AHOqZqhWC6fU86NUJzF6OSWARwQq2RS41AATTTGV5YXZ8dlc47ufYnzKG43GLOz9jLjE2wo76fevbNDYM8IY62Em9Ov8hwMfCdnVAGQrCqZ9vhK0RVEGjQzp7smKbwSA42b689G9tFytYLbyRNGzAnQhKAQiE4oa094GogRFZpl8MTsCUWBsBYi3dCtgNUfqF9lg5uA9n70BYT+lDUYjgNWK0p+syyp1pWK2KijAkwE3EH44Ef0KvX50QdMw1EI2a/ElIV4vzcbtiWjQzPKQokhD6OSm2tBvvOYkUnFUvZhJeT72h5jRWjeCAYHQ7fQGx/pBwSERh3DzXRxB9Dqq0FYbEPMeQPxKi11KEebm5aWJEAPKArQkSKsxo+FdaKHktRGU9fCMDPnMzr9HFrvV15BoYl9vFgajBpcmISvAhyzCwaQvtBXb9Jy8FYmfdP1fkUrSg2UWKudAz2IwcvkkU2zsnba3MpWTGNhkmRAyTyyEgvSbkYx2eCAAI82Zhtx8qIAhGlhbEJ0rXnvpu0AohASd3f2qMfub8T8aH7xIrYmS36+3LHO6L/OOlO7t0gDDocSD+axPIb2OGZkrHquim97fmX4mthYrNS+u2IoT/W004QWLCkGQhEA1BZdBseAKySG5UEDZhw+Qf//IgD+YrGbzfEQ35XpbvlRmU6Gy51bcyNsbBqpSV21PSCVU71bfkgv9zHOHvwD92nhsSEJQN51iyaBunr1TzjjaVV8u0CiBKiDP7gz6uTAq+nsGemquwINjGYzUenhoalYDdXg7vBu6O+aRSb5pX49vc8tohbfDvuhZIcOrqdn2qG7CUzziWtCbT/E2/kh0kYAQ=="
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_01Cim9nieiEVzfoqdoogLtsJ",
+            "name": "code_execution",
+            "input": {
+              "code": "import json\ndef parse(r): \n    return json.loads(r) if isinstance(r,str) else r\nres={}\nqs = [\"아누아 어성초 77 수딩 토너 전성분 민감성 피부 올리브영\",\n      \"라운드랩 1025 독도 토너 민감성 피부 성분 올리브영\",\n      \"토리든 다이브인 저분자 히알루론산 토너 민감성 전성분 가격\",\n      \"민감성 피부 토너 추천 한국 브랜드 순한 토너\"]\nfor q in qs:\n    r = parse(await web_search({\"query\": q}))\n    res[q]=r\n    print(\"==\", q)\n    for i in r[:6]:\n        print(i.get(\"title\"), i.get(\"url\"), i.get(\"page_age\"))\n        print(i.get(\"content\",\"\")[:200].replace(\"\\n\",\" \"))\n"
+            }
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_01WojdnwWpYiQG5q9NT3HjT2",
+            "name": "web_search",
+            "input": {
+              "query": "아누아 어성초 77 수딩 토너 전성분 민감성 피부 올리브영"
+            },
+            "caller": {
+              "type": "code_execution_20260120",
+              "tool_id": "srvtoolu_01Cim9nieiEVzfoqdoogLtsJ"
+            }
+          },
+          {
+            "type": "web_search_tool_result",
+            "tool_use_id": "srvtoolu_01WojdnwWpYiQG5q9NT3HjT2",
+            "content": [
+              {
+                "type": "web_search_result",
+                "title": "아누아(ANUA) 어성초 77 수딩 토너 - 김윤아#4RZ6 님의 광고 없는 내돈내산 찐리뷰",
+                "url": "https://unpa.me/reviews/401545",
+                "encrypted_content": "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",
+                "page_age": "250 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "아누아(ANUA) 어성초 77 수딩 토너 - 광고 없는 내돈내산 찐리뷰",
+                "url": "https://unpa.me/reviews/105628",
+                "encrypted_content": "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",
+                "page_age": "2265 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "내돈내산 아누아 어성초 77 수딩 토너 - 언니의파우치 커뮤니티",
+                "url": "https://unpa.me/community/toner/19494173",
+                "encrypted_content": "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",
+                "page_age": "1055 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "피부 진정에 좋은 아누아 어성초 77% 토너 사용후기 - 언니의파우치 커뮤니티",
+                "url": "https://unpa.me/community/toner/112799908",
+                "encrypted_content": "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",
+                "page_age": "452 days ago"
+              },
+              {
+                "type": "web_search_result",
+                "title": "아누아 어성초 77 수딩 토너 250ml",
+                "url": "https://www.odkshop.com/en/products/anua-heartleaf-77-soothing-toner",
+                "encrypted_content": "EtsKCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDJRLJc3Jh704Hdfb0xoMMfNtMt6wg6r146MMIjD6O2IoUnFYZERyN2RdB8rOk8NiaZ/8u7dY4FRCvMXLQqRguQXw4yXxJrepPDteGegq3gksZqIOcusQeWwGxdoO2iMmXXiqcGn49viogw000ePtdzgfAGzETKsafiWrJ0L4ngaHtYd4YhGV99u1kcJyJd2DdwzWfcOIcdog7lksyiKXs2er9jX6jrCcU5capmqfpYSsQg6WeIyxLPKnyb0aeX1Qd3F2QrzRp7+auXyJbLN7RNDp6RBnmKQKmCsog00wDaSc9PqzvB1Wg1OsWxVZS0F5piJonpocpw2ozXJHB4KBbdKIdD4dA+1x2HuBNigyE0ttN7/wih2DtY1/JCz5CRl6zZjgk+KzQ6X/QuDxo6mu4a7uJiMBUmaY8TzsS48KY+HE1ielVaRabhhzHV2Fw2Np3L9sCMR5GD0gWIim7GGf/QuzlqspqFVWhUULrHkCRVOQy/SAw6xYAeJdo+S1GwfarXMJps/AhMp2F+lussN0oLHtzauUQFa6XMxjBhh5b3dIcszb8Z0Dia2XF4J0sgcMwjmPTo/olwDEfgAw2Hv4ySS7eXPY+tvMJ9Lx+FL2xR2IIjySY1xnrmZwTRV60tlMvIIlvLDEn8j6ieuWDLFoVGu4eOJEqtBrQvXDgsERNurcTqruXuybrBfzvkIOo+RiVS7mZNlP/5gsOLT7F5Mdd2l3HPl6vnpaCZG3600F/AnsnAnd3OhN0yrYaO0ZlV791Bbmok66hOa0bHMGKakVM8v64+sjOQOaAJEz/CKr1KGL8xK3exUeFdjjqDGCaFsBDey4zdotjApaddi6j9SzzoDpz5KxEBlygSkgnIcrv/8xUfL57P7AKDzTws2flZpmymjWKw4TismzgVDIJ7Dhq8GqaYDaaYD3jpsvRV55e0eeLGUPd+fzV30dQc3WlzXdWZCcFgdF4eWsKcf2ZNEa2VaMbrz5WQaaFTWK8iZdIrcv6GN0ADPgmIzwtLGPFNWp9AVVTmnvO5GR2DZ+OMxg+aCdONsq2QwKTQXM3YTNwZbb1qbATMum4ecqDixdvzYd5SpSFuW1J4Omux4O0auiFRGibV3HpFVVShizTMJlWow5l0y2AJyx9dig25ZfigSbDnxyhp/bY2gB9aI1glzbquGQR6WcAdtEsHF/tEvLrnzhJD/QcgCVsdi6y2LyEA7ujYAFn7F4aCgaaqSDrLYq0qEACrlP6Or71FuKGwfh3QP6GISyiG6k8GjlITOqVeCVxfJxrb0X43QEsYZL3PlcNJWcfwJh6DjVClvp6iWdM74o54RR3qD1q/sxRgRHnPHX+TI/6Xki2vh91gD4+2+4iLELriemj+OfzfcYSUv3aDwihCTXlZUUiH03C+960FzyjIxD+mNghy1aBeVuArmor7UqFq6uLW8n1s3Vth66xhuIoXAuKY0IVYG7DKzNPJwABo0rHz01HLLeox+A/N4f/DwtXVyokX1J53oMrgAXag6KeExJrU67qUKUXUu4Oxat1pF4E2+d1o8TS/K1AbucGdWSRulGFrrRnzoIh+L3+WTo4VmOsy07atVW+O/R4kqOpT5AjXRRA4J5YOK95yvZ6yKSaBQOgBg9uNACEJgOOC39CFzHxl32O/R0rPXhJH2HcRu8QgoDTRUV8R94J+aED9TGdBSLhV5PWM4ARgaNUNbbHnM4dN48pjBYPYQDCIfS1tP/5Zff17KwvW3jBvFAgmlu7cf9SSdLJfWgaBLlGAM=",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Innisfree (brand)",
+                "url": "https://en.wikipedia.org/wiki/Innisfree_(brand)",
+                "encrypted_content": "EpcHCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDDllSghveLYlv32SJxoMunJBi920hE/oWa5TIjDuE3yMTw/xXxWlmKGy6IkXDehzMmeze+h8DwQtjIN6dSctb7VI7FJF1hESvkmqHEoqmgZBoeQupecemKyYZTxQD6YoMNjsRTy61dNTKHnxop5FFmEfZ9EqlM+OKEkwH5Fq+kkY2TCwN7pog8vXq1ufMd9DapwczPtAn06DVoin9ObbXb4rs4IpkPzj78hNV3D3bLWV+0RvUAlmnpFGw62mp6o7uqGInRs0HSa27OSjamFBaC6ANW6AINC7gBToScBm0uazj/xIx0Ew6SQSD7E+tEaZ5M/cH3igiXtc5w86MibefXKgSgRC9koy34zQvRpadRzxlHz4SRvK9RpDUU71K5nFLhnuDJMjKhS0nZuDUN1KiYnW0bx1Tk+bhb1EkgFl5tbWtF/hvNWbhBUnn2vOnByF8EJpYmAc4wEac/FzH4dDyUvS9n3SWFYffiidEboXEXoebhS58oX4dVQNvXLFr9ap4J0aUCm0lcTA5TMw4Z9mfG9TsNNpbiZmaql/Gjll9q1XTfY1FL+kvcz1rgk2w3tb9Xu0VwI4PWYXU5NYBzoIM5/+FGcA31kO7RI8zDeJQskSibQsjgNQzCP3UBoVY34f4IwdelocxyPb8KbT/B+1il1p5xPTdvyHsxE92rsR34x95PJTKA4wXKmqNevlOQUkuByAa/QB7XXNu90cclcLZ6xFhHhfxcwUtm9pMBBGAJhsYRYe+1cjKxil1ukPxom2YiGyuQE5cb0Pkh/Mli+aieCBs9CE38j0ZLKvmIrAs2Oqqm9QJsoVQWwaHUvGji3UaHt8YazKVXdl3fJyBgRx3VmjHfw66t01hJkxEX4PSJ4QSFcnkVqoZbhtxbmHC0nSfaUIuQLnys+g5qZr7ktl0WhE2389XcdZEBeQa3u9iz0B5i6bRWxgbBeNypf7XjLC88tKht4POCe2eCY4usjOWPb3WYfuCUwl5XhXqouU7wxl1jJLyYhQxdn2rwVL5HJQtIm8uufnGsnGxVST6IMBiMz4U4fAJuOp+ibqmCTcXQxgpwZVVwT308PG5bnwdwxHc6bVIsYhRPz4Hp0FY2dRwIvcmigstkBBO2TJpfLpH2XJuatrzcV06ksHvlRJzJWHLL1Bi7qJ1OVgKRgD",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "The Skin House",
+                "url": "https://en.wikipedia.org/wiki/The_Skin_House",
+                "encrypted_content": "EtwICioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDB6AtTD/Ks6hZrkUkxoMZmvtUDmnHW/9OFpqIjDe3XIAOM8GFPtrv/RqP+vWVYNe3IGhmPImmahRFeWB7x3r2e/XjWdYK6aIWskwYPQq3wf+MGlvaDLOOyipAZ+gxRXa48uC2/a/ZOJLgOO0bA9qgc8BBoZzqZb1Ded8BC5xMaydBJLpCx4os8Hh7vk3F1Na1+8xo/P46YhRmi7oTa3akR6YPKHp4pi7i1fIsBWqQYIJmVsVSQppRjCWu5C9vVRtQBfx0VL6UuJ5xEjsw1kzY1Famn0sqnc5iVTUPudIg4yQ1jSn3ZEWDE2rYLKR5shJ6JkoKuap2phdYfamp7+DLakQ6elrPnr1i25Brecz7/mBoe+sQwQ53stsgIyOnhj0lPALRqLf6XbZ0JwWBRbxVt7jKThayTOCNcx4UT1EynLFz/FJZ/gHKl3Oc/R4Tm0C3YkG4ZtAzyzVWS3CkUegtEljeCSHqeZ8i0oxrvH0OZobhRKbEbyDRGbBk0vrJLq8YdoitWA+ELcUxsNI4DdiNiDqAw8c9ifRXoFRHY56TFzDGk90oisBAHgbJqs6UeMNGz+LFV2R8XZqy93RUWC+CkZ8PshOVDW5+hrNi4mhhPfjb0gzTYkqmfKdrN96cGf/MZ/RPjWjufxbLeeecp8BC4zL9z5OGSfdpxF79JPmTTGRv/7IntC3CqRFBkh1fdIqY9YLJJEPVAPbCHEY2oAvUR5wC7iyL8N05J6TbcPH9Zh++Wrpq6pUDQP2BMidB9iv80ZCNxthl/+xgdDxefoS2CSF8Gyg2fjQc4bXFz03w2pthZHv9StWj8AzFaEz+WOjJPD6CBBweSJVl1/C1/ep8PljP1Nm1Pmg0qwnpl2UZRCjkYuATxSiDPaAZs7gls+AYMhJUWfc4bQsWrg9pn7DZ+5lMHGt6FZkdxn0V5ahcFU60srVNPcPJaDiraSgnnR9tz3RuoiQ5kRF4uAjwBauT4rgFl45ZIm4iXp4G8T+Wl6buiDZlsFrzRaBk5As5z+WF++QKR+i0Z4M9w3T9QEGRB8O10+cqzSBbPXy+fMgxKWejzJIb5iMxEAuEIUVH/FCh86Pf97UwAAVWu+gy7PrtmsjumxDhGXpaiq5ed5MYjtv2FMAjebJymGLFx7jbkdDER0aRyd+FOAfkwf1xcf2/kCojyInbSXnQujTbxMP9v+xRY7/GCKe88lMcunzfXxTc94f2DGb3PLoVEqE1W8m2sDCP8e0JGzcdsXQtPosLujCnwTe1vKfJVJk7jX6XTGrTP9MycWX7IKAho1dPHHKCrbYR6l0Oo6gur08ubL2hZWiB4FxFzoqqO6oWaOf3yukLvKngwGPkZeOEDqJ2Uffbm51JM6v7NNXjK4HKWv7CiLQ6Yhu9gny9EnAan/gbBXXoSL/fSDoPjjLZ2EMEovyGAM=",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Laneige",
+                "url": "https://en.wikipedia.org/wiki/Laneige",
+                "encrypted_content": "EtsECioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDLn4n0//9+rp8s+J+xoM+f/UvUjRXJFB8rrNIjCCrZrrFW6NBBfrrgxafNfMIYHue6ltDxUZnfWPWnqciY2ohvEAZpu01XBjSfTJMGQq3gM51oVi5hhUeTJ7QPsb579I/Y/o4JuKRkYZcVfKpqT/6ENrop1PW8f1BPAuqdF0SFneP8cV1Fnfee1xJ//qTyNsZl1Eo14tjEHlLxFwPmBB8Wd+Cwj+lzp18rh0zy8aphAO9boqwwEfj09N2bo9WRlvCcNf65ekEAvshYJpl+2HCD+n8UbOv9FqDHuhqkvbBIYW1xNOAxKTMuj1keFDerppVyZzfC+VsECjOvUSEEVdeBQzl9tDUbvsOFn8DMK9HM6rHWQJeVBanQNZdTBLBxXSXX2ehFi+cm+LVCMRtuXzEfmaPQ/o6a8iCTmXzOrpqVDIR0s5ja2xdoMCockBsq2/Z/t9TZJm842J93wCly1OzTZZars54ICmOoiBgiuT9WLCHWHriYFzsIgrZy4H3IkykB3G2Ciq/uKq/EeQb8Kc3lcJTRpLsv7h5d51sMIMyIEnBX93BkE0Zzz73BWUV1ARoqMnbrPUsECxlWlmtQ/ehryNru3+L2NWxxfyT8ma50TSPYO1nBSnFb2my7AeE3BxgyTAtwaw7BZvVwJzmGemx68SjOWKNJhzKHiZ2bB4/TvLQg4BJBIzT04UZ9YMPGAisEFbDDIzM02ehxyapbjq1+vXWFX9DkgJqA2wcT8GGAM=",
+                "page_age": null
+              },
+              {
+                "type": "web_search_result",
+                "title": "Dr. Jart%2B",
+                "url": "https://en.wikipedia.org/wiki/Dr._Jart%2B",
+                "encrypted_content": "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",
+                "page_age": null
+              }
+            ],
+            "caller": {
+              "type": "code_execution_20260120",
+              "tool_id": "srvtoolu_01Cim9nieiEVzfoqdoogLtsJ"
+            }
+          },
+          {
+            "type": "code_execution_tool_result",
+            "tool_use_id": "srvtoolu_01Cim9nieiEVzfoqdoogLtsJ",
+            "content": {
+              "type": "encrypted_code_execution_result",
+              "encrypted_stdout": "Eo4BCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDJFGMOZYjsJjOFk8xhoMX1lKRac01JgU0k7kIjB+S5fA4R6IUQUVF3sh7PMHRQbyDVqaRDW8Gci0hg1Q5Dj50QsE6i38mVm0YJeThBIqEqlLzW4w+J5hb1H8KXpmTul/chgD",
+              "stderr": "Server tool use limit exceeded during code execution.",
+              "return_code": 1,
+              "content": []
+            }
+          },
+          {
+            "type": "thinking",
+            "thinking": "",
+            "signature": "CAQSjAYKEAgTGAI4AUIIdGhpbmtpbmcSDAjbiXvAgBcsylb4RxoMMYqrIdMCZKSEYv9BIjBqGt9w5eIssZo1q+hEmok/xVuzRkxBNhrxcpHE+Jcp6KFRx4qwvIUh82oix+UGuzUqqQU5E4sJXGFRN8ip+lDezo1bD9+PdX+IcsTHLT9O8LVkoMIUyM5aFc2bSqhstiXTB50qihTgwHmxRNLvs9MYIDcD4GzCK9d/vL+pCC6DL0Zqqh6CgrQvtis0PanurA7LN+vmLV7pk6Izl3HDmVlkBUeCD309capfxNWpsKm28noKh4ZQhBhHY579iZDH/6duuqE2kx1ZXIbQZ5q7IIYiFRs3UL3y9AMbqo1BAgBoPvEk8jQcvMbJoWcyPmC4cNGbQSMfTrOLonmaz7YYccO6SqpI9CML7VDfHAVVVbg77YmtiOm7Yu594RoifU8un9ONqaBHCqiLqkpEbFZnydzrrZBFA6ccGAkOOMwJfQqwZd0+0hXWpnRXwhDkdtzFmjJil6Ff5hcOFlzfQ0tWkHNpyGnSmFK0m7gW5ZCbCk8GrEj/rgLPkxHcCYK1SHSLTWAs7MTOxxdMsT3NE54Y3K45PMwK9/fdd0b5nXf+2TagWRScEY2NjOXinjnu42O69NEsx9xDct+686gRQJ7xigI2s6Swkeuhnue1zF+wPmPztY9tFndDhXf64RSSUdkrJ36u5lA9zj4f5hXhVkVnWZXtfydOmkEJHQI/5jMbY9U/87389snG5Fm/cm/mqqnfb4kDa0+Pk4xnrzny0Ps7ThkuTjaWSSrpaoBO/SLeFgtbxisG4TmALmOlnYQJXwNa4/M4jBbEbCKpPox+EbiOwTQNIqbI9BngNozlM3kaIpFn8PyCNoRmCaJrrVV1/5/28jLFKhHVV6zMEFkSIe8LOu6HlapLcVgdAssMtIBFSg4a05WXvmRCP0dcOzF6NfohClavhHMklQzyfQgF7nKF/6wMU05eDwQQmudouq4o5Gocj5zdKQYW6iC228LdTovMiIqcUmhWDTH92QFnfL0YAQ=="
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_01NFFW1p4EEnuZjzjiAy1E68",
+            "name": "code_execution",
+            "input": {
+              "code": "print(list(res.keys()))\nfor q,r in res.items():\n    print(\"==\",q)\n    for i in r[:6]:\n        print(i.get(\"title\"), i.get(\"url\"), i.get(\"page_age\"))\n        print(i.get(\"content\",\"\")[:200].replace(\"\\n\",\" \"))\n"
+            }
+          },
+          {
+            "type": "code_execution_tool_result",
+            "tool_use_id": "srvtoolu_01NFFW1p4EEnuZjzjiAy1E68",
+            "content": {
+              "type": "code_execution_result",
+              "stdout": "['아누아 어성초 77 수딩 토너 전성분 민감성 피부 올리브영']\n== 아누아 어성초 77 수딩 토너 전성분 민감성 피부 올리브영\n아누아(ANUA) 어성초 77 수딩 토너 - 김윤아#4RZ6 님의 광고 없는 내돈내산 찐리뷰 https://unpa.me/reviews/401545 250 days ago\n아누아(ANUA) 어성초 77 수딩 토너 [500ml] 리뷰. … 여름철이나 환절기에 피부가 민감해질 때 사용하면 당김이 확 줄어서 만족스러웠습니다.  # 아누아(ANUA) 어성초 77 수딩 토너 \\[500ml\\] 리뷰 ## 리뷰 본문 딱 화장하는 중간에나 시작할 때 건조함을 잡아주기 딱 좋은 제품입니다. 수분만 있는게 아니라 수분막까지 있어서 진짜 속건조\n아누아(ANUA) 어성초 77 수딩 토너 - 광고 없는 내돈내산 찐리뷰 https://unpa.me/reviews/105628 2265 days ago\n께 요 제품을 꼭 소개시켜드리고 싶었답니다 😘 ✔ 가격: 250ml에 25000원 🌿 탁월한 진정 효과 - 피부 진정에 좋은 어성초 추출물을 많이 함유하고 있는 토너랍니다 🌿 최적의 유수분 ...  # 아누아(ANUA) 어성초 77 수딩 토너 리뷰 ## 리뷰 본문 제가 이 제품을 사용하고 홍조가 많이 가라앉고 피부결도 나름 좋아진 것 같아서 유저님덜께 요 \n내돈내산 아누아 어성초 77 수딩 토너 - 언니의파우치 커뮤니티 https://unpa.me/community/toner/19494173 1055 days ago\n조회 131추천 0스크랩 0. https://unpa.me/community/toner/19494173 주소복사. 일단 저는 피부가 약해서 무조건 저자극에 향없는 것을 찾다가 이번에 올리브영에서 아주 딱 맞는 뷰티템인 토너를 ...  # 내돈내산 아누아 어성초 77 수딩 토너 일단 저는 피부가 약해서 무조건 저자극에 향없는 것을 찾다가 이번에 올리브영에서 \n피부 진정에 좋은 아누아 어성초 77% 토너 사용후기 - 언니의파우치 커뮤니티 https://unpa.me/community/toner/112799908 452 days ago\n좋은 성분을 함유한 아누아 어성초77% 수딩 토너 대용량이라 맘에 들었어요. 무려 500ml. 요즘 같이 더운 날씨에 야외 활동 후 열감이 많은 날에는 화장솜에 토너 가득 머금어 냉장고에 ...  제 피부는 전체적으로 건조하고 T존 부위에 유분감이 있는 편입니다.  피부 진정에 도움이 되는 제품 찾으러 올리브영 갔지요.  이 때 눈에 들어온 아누아 어성초7\n아누아 어성초 77 수딩 토너 250ml https://www.odkshop.com/en/products/anua-heartleaf-77-soothing-toner None\nHeartleaf 77% soothing toner is perfectly formulated to soothe, tone, hydrate, and balance the PH level of skin.Anua presents 77% soothing toner with mild ingredients for those who are tired of harsh \nInnisfree (brand) https://en.wikipedia.org/wiki/Innisfree_(brand) None\nInnisfree - Innisfree store in Shenzhen, China - Native name: 이니스프리 - Founded: 2000 in South Korea - Founder: Suh Kyungbae - Headquarters: Yongsan, Seoul, South Korea - Area served: Asia, North Americ\n",
+              "stderr": "",
+              "return_code": 0,
+              "content": [],
+              "abort_reason": null
+            }
+          },
+          {
+            "type": "thinking",
+            "thinking": "",
+            "signature": "CAQSqgYKEAgTGAI4AUIIdGhpbmtpbmcSDKXC+YMDdXoRBNOloBoMmjlpD6OiT6ZTJ+1+IjComks5zBY77zamcnKW0QdivBtopQoSmlNkSf9jPOUleMRWBN080/OKGa/4D4oL5kEqxwWfrhZ7zpLe2SLBqwTiV93wDVcuJbpNsklGIEKwpnHfuN5dEKAw62yWwWAMMA8cZP5fNEElQsIeHyaLaiIR1Qa5CKjTT5GkqoEMWV/whoiUWcbTTD6bNleklPXnlkxEXznGn4/ubFr8HaVIZ7dvVH4TsuoGx4VWonSN45w6zcyhO6LBXjTnWmt9oNky8oALBJTMR4LDH4/qqPxn09raXgyrUe4wB3oyI+N0zXWFeJxUcS0iH/e+iUt3kUpnVoyOyDXuWNHPWSmrb1s6R1n3r8X9kv12Xc1tuJjrlkq8IKrmC/9/+s2pKKk3zXvsyZtqepeJAfNrcq0kx0uF22giv6qy+JfNxunX43Jox3Idy0EVXOnQB+kGrfOUkyjL/9/wM9HuFtGcfC7CTcAWcEIf024uxcSPcqVzsq9sPmCkyg6x9IYpvnG+ADFQgmNPXWHexqkS+2S3QGKN0WsiyRsQIgXYtR3Zhh4ZRH1AHAhKy9gL3xLNBAFIbiUUtYcv5e1NKnh/32imitIsxQBoGFWmtajZ9WPR4SaDEmqScWYoYxsZ7CbNFL1l2V8Ojd0KBxLeobwolQI3vdkwiLUmeweeqmLS5FBTuuLzhlZV4sNpSoYSR29WWFAc3omeg6dhLp3/ppbc8aaTB9BlSJ/AQuuOhE38+1G8JTn7HAEXRbvYbPMJjhzjw4kubUoAmn7G8t4dKs2Wax2NdEBNybjLKyHwB9Z+0dbpoZ12sVPxgwgu4HrBX5lpbWPA3W6duUgOxQlKEGQ3M3pARjIYkI1qWbND0+CRPRWQyHYYNgD4lYsfygp7xwUdnmCBNn+GTguLVl8dOArcdo0E/+I7+ZNztYGW5w3VYeZD0iLEnrV/T2EJkMBdgCg5kNC3ZcNLNHetI8M3SNrjc3JXBnHOG6j91f36NxhBSUOTECFwJ93+OSi5ZREAZ7ZN8srO1ogYAQ=="
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_01P75oC5aHraQZanT4daV3u8",
+            "name": "code_execution",
+            "input": {
+              "code": "res2={}\nfor q in [\"라운드랩 1025 독도 토너 민감성 피부 성분 올리브영\",\"토리든 다이브인 저분자 히알루론산 토너 민감성 성분 가격\"]:\n    try:\n        r = parse(await web_search({\"query\": q}))\n    except Exception as e:\n        print(\"ERR\", e); break\n    res2[q]=r\n    print(\"==\", q)\n    for i in r[:6]:\n        print(i.get(\"title\"), i.get(\"url\"), i.get(\"page_age\"))\n        print(i.get(\"content\",\"\")[:200].replace(\"\\n\",\" \"))\n"
+            }
+          },
+          {
+            "type": "code_execution_tool_result",
+            "tool_use_id": "srvtoolu_01P75oC5aHraQZanT4daV3u8",
+            "content": {
+              "type": "encrypted_code_execution_result",
+              "encrypted_stdout": "Eo4BCioIFRgCIiQ3MzgyYzA1MS1iMGQ4LTQwYTQtOWQzNi0zOTQxY2Y3MWU5NWESDGXI5L06IAcn8U2PRxoMBZAG6ww4Ar43P21XIjDdNJTTUcsUWlTR+YrAez+hpnca4TAO+eyWR5qa3lXog+f4TxDpQ3+C6jp3SUD8PC8qEitDCSSiNvh8xvp8dqv5nUr5kBgD",
+              "stderr": "Server tool use limit exceeded during code execution.",
+              "return_code": 1,
+              "content": []
+            }
+          },
+          {
+            "type": "thinking",
+            "thinking": "",
+            "signature": "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"
+          },
+          {
+            "type": "server_tool_use",
+            "id": "srvtoolu_01NefHxXQGUJqeaJBPphc1z5",
+            "name": "code_execution",
+            "input": {
+              "code": "r=res['아누아 어성초 77 수딩 토너 전성분 민감성 피부 올리브영']\nfor i in r[:5]:\n    print(i['url']); print(i['content'][:1500].replace(\"\\n\",\" \")); print('---')\n"
+            }
+          },
+          {
+            "type": "code_execution_tool_result",
+            "tool_use_id": "srvtoolu_01NefHxXQGUJqeaJBPphc1z5",
+            "content": {
+              "type": "code_execution_result",
+              "stdout": "https://unpa.me/reviews/401545\n아누아(ANUA) 어성초 77 수딩 토너 [500ml] 리뷰. … 여름철이나 환절기에 피부가 민감해질 때 사용하면 당김이 확 줄어서 만족스러웠습니다.  # 아누아(ANUA) 어성초 77 수딩 토너 \\[500ml\\] 리뷰 ## 리뷰 본문 딱 화장하는 중간에나 시작할 때 건조함을 잡아주기 딱 좋은 제품입니다. 수분만 있는게 아니라 수분막까지 있어서 진짜 속건조 깔끔하기 잡을 수 있어요!! 토나 유목민이라면 가격도 착하니 한 번 써보시는 것 추천드립니다. 아 그리고 어성초 기능이 있어서 여드름 진정에 효과가 있다고 해서 전후 비교해 보니까 확실히 줄었더라고요.  ## 김윤아#4RZ6님의 리뷰 생각보다 빔이 강하고 생각보다 유분을 안 잡아줘요. 진짜 딱 생얼에 하이라이터 하나 바르기 좀 부자연스러울 때 딱 바르면 좋은 제품이지 나머지는 별로입니다.   만약 난 화장하는 거 귀찮은데 볼륨감이나 코 높아 보이고 싶으시다면 한 번 구매해 보세요.  - 에스네이처 (SNATURE) 아쿠아 스쿠알란 세럼 환절기가 되면서 피부장벽이 무너지고 스킨케어를 하면 할수록 피부가 따가웠습니다. 근데 이거 사면서 다시 피부가 괜찮아졌어요. 완전 순하고 수분만 채워주면서 끈적임이 없어서 완전 좋아요.  ## 기초케어 인기 리뷰 특히 저분자 히알루론산 덕분에 수분이 피부 속까지 잘 채워지는 느낌이 들고, 바르고 나면 즉각적으로 피부가 편안해지는 수딩 효과가 있어요. 여름철이나 환절기에 피부가 민감해질 때 사용하면 당김이 확 줄어서 만족스러웠습니다. 끈적임 없이 마무리돼서 메이크업 전에 발라도 밀림이 적었고, 꾸준히 쓰니까 피부결도 훨씬 매끈해진 것 같아요.\n---\nhttps://unpa.me/reviews/105628\n께 요 제품을 꼭 소개시켜드리고 싶었답니다 😘 ✔ 가격: 250ml에 25000원 🌿 탁월한 진정 효과 - 피부 진정에 좋은 어성초 추출물을 많이 함유하고 있는 토너랍니다 🌿 최적의 유수분 ...  # 아누아(ANUA) 어성초 77 수딩 토너 리뷰 ## 리뷰 본문 제가 이 제품을 사용하고 홍조가 많이 가라앉고 피부결도 나름 좋아진 것 같아서 유저님덜께 요 제품을 꼭 소개시켜드리고 싶었답니다 😘 ✔ 가격: 250ml에 25000원 🌿 탁월한 진정 효과 - 피부 진정에 좋은 어성초 추출물을 많이 함유하고 있는 토너랍니다 🌿 최적의 유수분 밸런스 - PH 5.5~6 사이의 약산성 토너로    최적화 된 성분 설계를 통해 유수분 밸런스를 맞춰주는 제품이라고 해용 🌿 무자극 각질케어 - 자극 없는 각질케어를 통해서 안심하고 피부를 집중케어 할 수 있답니다 🌿 유해성분 없는 안심 포뮬러 - 11가지 Food Grade 성분을 Base 전 성분 EWG Green 등급으로 구성되어 안심하고 사용할 수 있다고 해요 요롷게 생겼답니다!!  입구가 큰 토너들은 막 콸콸 쏟아져서 눈에 들어가구 그랬었거든요 ㅠㅠㅠ 요 제품은 그렇지 않아서 좋았어영 (*ૂ❛ัᴗ❛ั*ૂ) 성분 이거 진짜 실환가요 ㅠㅠㅠ 너무 좋네요..❤ ✔ 20가지 주의성분&알레르기 유발 성분 0개 ✔ 피부타입별 성분 - 지성피부 관련 성분: X - 건성피부 관련 성분: 글리세린이  보습력을 증가시켜주고 부틸렌글라이콜이 강력보습을 도와준다고 합니당!!    그리고 마트리카리아꽃추출물이 습윤&예민현상을 진정시켜준다고 해욤 마지막으로 판테놀이 컨디셔닝을 도와준다고 합니다 - 민감성 피부 관련 성분: 건성피부 관련 성분과 마찬가지루 마트리카리아꽃추출물이 습윤과 예민현상을 진정시켜준다고 해요!!\n---\nhttps://unpa.me/community/toner/19494173\n조회 131추천 0스크랩 0. https://unpa.me/community/toner/19494173 주소복사. 일단 저는 피부가 약해서 무조건 저자극에 향없는 것을 찾다가 이번에 올리브영에서 아주 딱 맞는 뷰티템인 토너를 ...  # 내돈내산 아누아 어성초 77 수딩 토너 일단 저는 피부가 약해서 무조건 저자극에 향없는 것을 찾다가 이번에 올리브영에서 아주 딱 맞는 뷰티템인 토너를 찾았어요! 바로 아누아 어성초 77 수딩 토너입니다. 쓰면서 전혀 알레르기 반응이 없었고 제형은 완전 물 같아요 그래서 그런지 금방 피부 깊숙히 스며드는 기분이고 끈적임이 전혀 없어요 붉은기 있는 피부가 있는 분들은 꼭 한번 써보세요  내돈내산 아누아 어성초 77 수딩 토너 내돈내산 아누아 어성초 77 수딩 토너  0  0  hub-link  지금 스킨케어를 주제로 57.2만명이 이야기 중  hub-link    지금 민감성을 주제로 6.7만명이 이야기 중  댓글12  ``` 저도 어성초로 트러블 많이 잡았어요  ```  ``` 어성초가 트러블에 좋더라고요~ ```  ``` 덕분에 모르던 정보얻고가요 ```  ``` 아누아 어성초 77 순하고 좋지용 ```  ``` 끈적임도 없다니 너무 괜찮네요 ```  ``` 요거 추천템으로 많이 뽑히더라고요 ㅎㅎ 깔끔한 사용감의 제품이군요 ㅎㅎ ```  ``` 어성초 안써봐서 넘 궁금해요 이거 순하다니 사보고 싶네요! ```  ```  아누아 어성초토너도 좋죠 ```  ``` 저도 피부 민감한데 써봐야겠어요 ```  ``` 용량도 아주 커보이네요~ 가격은 어떻게 될까요? ```  ``` 저도 써봤는데 좋더라구요! ```  ``` 끈적임없이 피부 진정에 좋은가봐요 ```\n---\nhttps://unpa.me/community/toner/112799908\n좋은 성분을 함유한 아누아 어성초77% 수딩 토너 대용량이라 맘에 들었어요. 무려 500ml. 요즘 같이 더운 날씨에 야외 활동 후 열감이 많은 날에는 화장솜에 토너 가득 머금어 냉장고에 ...  제 피부는 전체적으로 건조하고 T존 부위에 유분감이 있는 편입니다.  피부 진정에 도움이 되는 제품 찾으러 올리브영 갔지요.  이 때 눈에 들어온 아누아 어성초77% 토너!! 예전에 엄마가 텃밭에 어성초가 좋다며 키운 기억으로 어성초에 대해 알아 봤어요.  어성초는 건강용 녹즙으로 마시는데 냄새 때문에 섭취가 힘들어 레몬즙이나 매실엑기스를 넣어 마신대요. 일본 히로시마 원자폭탄 이후 가장 먼저 살아난 식물이라고 해요.   이렇게 생명력이 강한 어성초에는 유효성분이 많아 피부나, 비뇨기, 호흡기에 염증 질환을 치료하고 예방하는데 쓰이며 예로부터 민간요법으로 여드름을 비롯한 피부 전반의 개선효과가 있어 환으로 지어 먹거나 달여서바르기도 했답니다.  많은 한방 브랜드의 비누, 팩 등에 함유 할 정도로 어성초 추출물로 많든 화장품은 피부 진정에 효과가 있다고 합니다. 좋은 성분을 함유한 아누아 어성초77% 수딩 토너 대용량이라 맘에 들었어요. 무려 500ml. 요즘 같이 더운 날씨에 야외 활동 후 열감이 많은 날에는 화장솜에 토너 가득 머금어 냉장고에 시원하게 넣어뒀다가 얼굴에 오이팩 하듯이 올려주면 열내리는데 효과가 좋았어요. 자극적이지 않고 향이 순해요.  # 피부 진정에 좋은 아누아 어성초 77% 토너 사용후기 ## 스킨/토너  ## 인기글    제 피부는 전체적으로 건조하고 T존 부위에 유분감이 있는 편입니다.  # 피부 진정에 좋은 아누아 어성초 77% 토너 사용후기 자극적이지 않고 향이 순해요. 끈\n---\nhttps://www.odkshop.com/en/products/anua-heartleaf-77-soothing-toner\nHeartleaf 77% soothing toner is perfectly formulated to soothe, tone, hydrate, and balance the PH level of skin.Anua presents 77% soothing toner with mild ingredients for those who are tired of harsh products.How it works Heartleaf ...  # anua HeartLeaf 77% Soothing Toner anua HeartLeaf 77% Soothing Toner  anua HeartLeaf 77% Soothing Toner -- ODK Premium Membership Only  #### product details Heartleaf 77% soothing toner is perfectly formulated to soothe, tone, hydrate, and balance the PH level of skin. Anua presents 77% soothing toner with mild ingredients for those who are tired of harsh products.  - Heartleaf extract(houttuynia cordata) is well known for its anti-inflammatory, soothing effect on skin. - Anua only uses heartleaf ingredients that were grown and harvested in Korea. - Watery texture to provide layer-able, lightweight hydration. - Without any irritating substance, skin feels clarified, skin tone appears even, and feels hydrated regardless of skin type.    **How to use** Use after cleansing as both morning & night skincare regimen. With mild ingredients, Anua heartleaf 77% soothing toner may be used everyday. You may apply with a cotton pad or pat with your finger all over the face.  Size: 250ml\n---\n",
+              "stderr": "",
+              "return_code": 0,
+              "content": [],
+              "abort_reason": null
+            }
+          },
+          {
+            "type": "thinking",
+            "thinking": "",
+            "signature": "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"
+          },
+          {
+            "type": "text",
+            "text": "한국 브랜드 민감성 피부용 토너 3개를 비교하려고 했지만, 검색 도구의 사용 한도가 중간에 초과됐습니다. 그래서 1개만 웹에서 확인했고, 나머지 2개는 확인하지 못했습니다. 이 점을 구분해서 정리했습니다.\n\n## 후보 3개와 선정 이유\n아래 순서는 우열이 아니고, 특정 브랜드를 더 낫다고 보는 것도 아닙니다. 민감성 피부를 겨냥한 한국 브랜드 토너 중 콘셉트가 서로 다른 제품을 골랐습니다. 수분 진정형, 보습 중심형, 저자극 기본형을 하나씩 두어 선택 기준을 비교할 수 있게 했습니다.\n\n### 1. 아누아 어성초 77 수딩 토너 (진정 중심) — 검색으로 일부 확인\n- **확인된 정보**\n  - 한 리뷰 페이지에는 "
+          },
+          {
+            "citations": [],
+            "type": "text",
+            "text": "250ml에 25,000원"
+          },
+          {
+            "type": "text",
+            "text": "이라는 가격 언급이 있습니다. 다만 이 글은 작성된 지 오래됐고, 현재 가격은 아닐 수 있습니다.\n  - 같은 리뷰에는 약산성(pH 5.5~6), 전성분 EWG 그린 등급, 알레르기 유발 성분 0개라는 설명이 있습니다. 이는 사용자가 제품 설명을 옮겨 적은 것이라 공식 자료로 다시 확인해야 합니다.\n  - 해외 판매 페이지에는 어성초 추출물이 진정 효과로 알려져 있고, 자극 성분 없이 매일 쓸 수 있는 순한 성분이라는 제품 설명이 있습니다.\n  - 올리브영에서 구매했다는 사용자 후기가 있습니다. 500ml 대용량 후기도 있어 용량이 여러 가지로 나오는 것으로 보입니다.\n- **확인되지 않은 정보**: 지금 올리브영이나 공식몰에 재고가 있는지, 현재 가격, 최신 전성분표는 확인하지 못했습니다. 후기는 개인 경험이라 모든 민감성 피부에 맞는다는 근거는 아닙니다.\n- **비교 이유**: 어성초 같은 식물 추출물로 진정을 노리는 유형의 대표 사례입니다.\n\n### 2. 라운드랩 1025 독도 토너 (저자극 기본형) — 검색 미확인\n- 약산성에 가볍고 순한 기초 토너로 알려져 있다는 것은 제 사전 지식입니다. 이번 검색에서는 확인하지 못했습니다.\n- 성분, 가격, 판매처, 현재 구매 가능 여부는 모두 미확인입니다.\n- **비교 이유**: 자극을 줄인 기본 토너라는 점에서 1번과 성격이 달라 비교할 만합니다.\n\n### 3. 토리든 다이브인 저분자 히알루론산 토너 (보습 중심) — 검색 미확인\n- 히알루론산으로 수분을 채우는 보습형 토너로 알려져 있다는 것도 사전 지식입니다. 이번 검색에서는 확인하지 못했습니다.\n- 민감성 피부 대상으로 설계됐는지, 향이나 에센셜오일 같은 자극 가능 성분이 있는지, 가격, 구매처는 모두 미확인입니다.\n- **비교 이유**: 진정이 아니라 수분 공급이 중심이어서 1번과 목적이 다릅니다.\n\n## 구매 전 확인할 것\n- **전성분표**: 향료, 에센셜오일, 알코올(에탄올) 함유 여부를 보세요. 민감성 피부에서는 이 성분들이 자극 요인일 수 있습니다.\n- **현재 판매 정보**: 올리브영이나 브랜드 공식몰에서 가격, 재고, 용량을 직접 확인하세요.\n- **패치 테스트**: 팔 안쪽 등에 먼저 발라 반응을 보세요.\n- **피부과 상담**: 피부 질환이 있거나 증상이 심하면 구매 전에 상담을 받는 편이 안전합니다.\n\n## 출처\n이 환경에서는 인용 기능에 쓸 수 있는 출처 번호가 제공되지 않아 인용 태그를 붙이지 못했습니다. 대신 참고한 페이지 주소를 적습니다.\n- https://unpa.me/reviews/105628\n- https://unpa.me/reviews/401545\n- https://unpa.me/community/toner/19494173\n- https://www.odkshop.com/en/products/anua-heartleaf-77-soothing-toner\n\n원하시면 검색이 다시 가능할 때 2번과 3번의 전성분, 가격, 구매 가능 여부를 같은 기준으로 확인해 드리겠습니다. 피부 고민(홍조, 건조, 트러블)과 예산을 알려주시면 후보도 거기에 맞춰 다시 고르겠습니다."
+          }
+        ],
+        "container": {
+          "id": "container_015vqfYiTk7Ss8ys4CGirzWU",
+          "expires_at": "2026-10-24T05:42:02.526813Z"
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "stop_details": null,
+        "usage": {
+          "input_tokens": 66969,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "iterations": [
+            {
+              "input_tokens": 6209,
+              "output_tokens": 448,
+              "cache_read_input_tokens": 0,
+              "cache_creation_input_tokens": 0,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 0
+              },
+              "type": "message",
+              "model": null
+            },
+            {
+              "input_tokens": 7054,
+              "output_tokens": 103,
+              "cache_read_input_tokens": 0,
+              "cache_creation_input_tokens": 0,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 0
+              },
+              "type": "message",
+              "model": null
+            },
+            {
+              "input_tokens": 8334,
+              "output_tokens": 456,
+              "cache_read_input_tokens": 0,
+              "cache_creation_input_tokens": 0,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 0
+              },
+              "type": "message",
+              "model": null
+            },
+            {
+              "input_tokens": 8831,
+              "output_tokens": 170,
+              "cache_read_input_tokens": 0,
+              "cache_creation_input_tokens": 0,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 0
+              },
+              "type": "message",
+              "model": null
+            },
+            {
+              "input_tokens": 10438,
+              "output_tokens": 277,
+              "cache_read_input_tokens": 0,
+              "cache_creation_input_tokens": 0,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 0
+              },
+              "type": "message",
+              "model": null
+            },
+            {
+              "input_tokens": 10756,
+              "output_tokens": 475,
+              "cache_read_input_tokens": 0,
+              "cache_creation_input_tokens": 0,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 0
+              },
+              "type": "message",
+              "model": null
+            },
+            {
+              "input_tokens": 15347,
+              "output_tokens": 2209,
+              "cache_read_input_tokens": 0,
+              "cache_creation_input_tokens": 0,
+              "cache_creation": {
+                "ephemeral_5m_input_tokens": 0,
+                "ephemeral_1h_input_tokens": 0
+              },
+              "type": "message",
+              "model": null
+            }
+          ],
+          "output_tokens": 4138,
+          "output_tokens_details": {
+            "thinking_tokens": 993
+          },
+          "service_tier": "standard",
+          "inference_geo": "global",
+          "speed": "standard",
+          "server_tool_use": {
+            "web_search_requests": 3,
+            "web_fetch_requests": 0
+          }
+        },
+        "diagnostics": null
+      }
+    ]
+  },
+  "parsed": {
+    "text": "한국 브랜드 민감성 피부용 토너를 검색해 보겠습니다.한국 브랜드 민감성 피부용 토너 3개를 비교하려고 했지만, 검색 도구의 사용 한도가 중간에 초과됐습니다. 그래서 1개만 웹에서 확인했고, 나머지 2개는 확인하지 못했습니다. 이 점을 구분해서 정리했습니다.\n\n## 후보 3개와 선정 이유\n아래 순서는 우열이 아니고, 특정 브랜드를 더 낫다고 보는 것도 아닙니다. 민감성 피부를 겨냥한 한국 브랜드 토너 중 콘셉트가 서로 다른 제품을 골랐습니다. 수분 진정형, 보습 중심형, 저자극 기본형을 하나씩 두어 선택 기준을 비교할 수 있게 했습니다.\n\n### 1. 아누아 어성초 77 수딩 토너 (진정 중심) — 검색으로 일부 확인\n- **확인된 정보**\n  - 한 리뷰 페이지에는 250ml에 25,000원이라는 가격 언급이 있습니다. 다만 이 글은 작성된 지 오래됐고, 현재 가격은 아닐 수 있습니다.\n  - 같은 리뷰에는 약산성(pH 5.5~6), 전성분 EWG 그린 등급, 알레르기 유발 성분 0개라는 설명이 있습니다. 이는 사용자가 제품 설명을 옮겨 적은 것이라 공식 자료로 다시 확인해야 합니다.\n  - 해외 판매 페이지에는 어성초 추출물이 진정 효과로 알려져 있고, 자극 성분 없이 매일 쓸 수 있는 순한 성분이라는 제품 설명이 있습니다.\n  - 올리브영에서 구매했다는 사용자 후기가 있습니다. 500ml 대용량 후기도 있어 용량이 여러 가지로 나오는 것으로 보입니다.\n- **확인되지 않은 정보**: 지금 올리브영이나 공식몰에 재고가 있는지, 현재 가격, 최신 전성분표는 확인하지 못했습니다. 후기는 개인 경험이라 모든 민감성 피부에 맞는다는 근거는 아닙니다.\n- **비교 이유**: 어성초 같은 식물 추출물로 진정을 노리는 유형의 대표 사례입니다.\n\n### 2. 라운드랩 1025 독도 토너 (저자극 기본형) — 검색 미확인\n- 약산성에 가볍고 순한 기초 토너로 알려져 있다는 것은 제 사전 지식입니다. 이번 검색에서는 확인하지 못했습니다.\n- 성분, 가격, 판매처, 현재 구매 가능 여부는 모두 미확인입니다.\n- **비교 이유**: 자극을 줄인 기본 토너라는 점에서 1번과 성격이 달라 비교할 만합니다.\n\n### 3. 토리든 다이브인 저분자 히알루론산 토너 (보습 중심) — 검색 미확인\n- 히알루론산으로 수분을 채우는 보습형 토너로 알려져 있다는 것도 사전 지식입니다. 이번 검색에서는 확인하지 못했습니다.\n- 민감성 피부 대상으로 설계됐는지, 향이나 에센셜오일 같은 자극 가능 성분이 있는지, 가격, 구매처는 모두 미확인입니다.\n- **비교 이유**: 진정이 아니라 수분 공급이 중심이어서 1번과 목적이 다릅니다.\n\n## 구매 전 확인할 것\n- **전성분표**: 향료, 에센셜오일, 알코올(에탄올) 함유 여부를 보세요. 민감성 피부에서는 이 성분들이 자극 요인일 수 있습니다.\n- **현재 판매 정보**: 올리브영이나 브랜드 공식몰에서 가격, 재고, 용량을 직접 확인하세요.\n- **패치 테스트**: 팔 안쪽 등에 먼저 발라 반응을 보세요.\n- **피부과 상담**: 피부 질환이 있거나 증상이 심하면 구매 전에 상담을 받는 편이 안전합니다.\n\n## 출처\n이 환경에서는 인용 기능에 쓸 수 있는 출처 번호가 제공되지 않아 인용 태그를 붙이지 못했습니다. 대신 참고한 페이지 주소를 적습니다.\n- https://unpa.me/reviews/105628\n- https://unpa.me/reviews/401545\n- https://unpa.me/community/toner/19494173\n- https://www.odkshop.com/en/products/anua-heartleaf-77-soothing-toner\n\n원하시면 검색이 다시 가능할 때 2번과 3번의 전성분, 가격, 구매 가능 여부를 같은 기준으로 확인해 드리겠습니다. 피부 고민(홍조, 건조, 트러블)과 예산을 알려주시면 후보도 거기에 맞춰 다시 고르겠습니다.",
+    "segments": [
+      {
+        "id": "s1",
+        "text": "한국 브랜드 민감성 피부용 토너를 검색해 보겠습니다.",
+        "start": 0,
+        "end": 29,
+        "citation_ids": []
+      },
+      {
+        "id": "s2",
+        "text": "한국 브랜드 민감성 피부용 토너 3개를 비교하려고 했지만, 검색 도구의 사용 한도가 중간에 초과됐습니다. 그래서 1개만 웹에서 확인했고, 나머지 2개는 확인하지 못했습니다. 이 점을 구분해서 정리했습니다.\n\n## 후보 3개와 선정 이유\n아래 순서는 우열이 아니고, 특정 브랜드를 더 낫다고 보는 것도 아닙니다. 민감성 피부를 겨냥한 한국 브랜드 토너 중 콘셉트가 서로 다른 제품을 골랐습니다. 수분 진정형, 보습 중심형, 저자극 기본형을 하나씩 두어 선택 기준을 비교할 수 있게 했습니다.\n\n### 1. 아누아 어성초 77 수딩 토너 (진정 중심) — 검색으로 일부 확인\n- **확인된 정보**\n  - 한 리뷰 페이지에는 ",
+        "start": 29,
+        "end": 377,
+        "citation_ids": []
+      },
+      {
+        "id": "s3",
+        "text": "250ml에 25,000원",
+        "start": 377,
+        "end": 391,
+        "citation_ids": []
+      },
+      {
+        "id": "s4",
+        "text": "이라는 가격 언급이 있습니다. 다만 이 글은 작성된 지 오래됐고, 현재 가격은 아닐 수 있습니다.\n  - 같은 리뷰에는 약산성(pH 5.5~6), 전성분 EWG 그린 등급, 알레르기 유발 성분 0개라는 설명이 있습니다. 이는 사용자가 제품 설명을 옮겨 적은 것이라 공식 자료로 다시 확인해야 합니다.\n  - 해외 판매 페이지에는 어성초 추출물이 진정 효과로 알려져 있고, 자극 성분 없이 매일 쓸 수 있는 순한 성분이라는 제품 설명이 있습니다.\n  - 올리브영에서 구매했다는 사용자 후기가 있습니다. 500ml 대용량 후기도 있어 용량이 여러 가지로 나오는 것으로 보입니다.\n- **확인되지 않은 정보**: 지금 올리브영이나 공식몰에 재고가 있는지, 현재 가격, 최신 전성분표는 확인하지 못했습니다. 후기는 개인 경험이라 모든 민감성 피부에 맞는다는 근거는 아닙니다.\n- **비교 이유**: 어성초 같은 식물 추출물로 진정을 노리는 유형의 대표 사례입니다.\n\n### 2. 라운드랩 1025 독도 토너 (저자극 기본형) — 검색 미확인\n- 약산성에 가볍고 순한 기초 토너로 알려져 있다는 것은 제 사전 지식입니다. 이번 검색에서는 확인하지 못했습니다.\n- 성분, 가격, 판매처, 현재 구매 가능 여부는 모두 미확인입니다.\n- **비교 이유**: 자극을 줄인 기본 토너라는 점에서 1번과 성격이 달라 비교할 만합니다.\n\n### 3. 토리든 다이브인 저분자 히알루론산 토너 (보습 중심) — 검색 미확인\n- 히알루론산으로 수분을 채우는 보습형 토너로 알려져 있다는 것도 사전 지식입니다. 이번 검색에서는 확인하지 못했습니다.\n- 민감성 피부 대상으로 설계됐는지, 향이나 에센셜오일 같은 자극 가능 성분이 있는지, 가격, 구매처는 모두 미확인입니다.\n- **비교 이유**: 진정이 아니라 수분 공급이 중심이어서 1번과 목적이 다릅니다.\n\n## 구매 전 확인할 것\n- **전성분표**: 향료, 에센셜오일, 알코올(에탄올) 함유 여부를 보세요. 민감성 피부에서는 이 성분들이 자극 요인일 수 있습니다.\n- **현재 판매 정보**: 올리브영이나 브랜드 공식몰에서 가격, 재고, 용량을 직접 확인하세요.\n- **패치 테스트**: 팔 안쪽 등에 먼저 발라 반응을 보세요.\n- **피부과 상담**: 피부 질환이 있거나 증상이 심하면 구매 전에 상담을 받는 편이 안전합니다.\n\n## 출처\n이 환경에서는 인용 기능에 쓸 수 있는 출처 번호가 제공되지 않아 인용 태그를 붙이지 못했습니다. 대신 참고한 페이지 주소를 적습니다.\n- https://unpa.me/reviews/105628\n- https://unpa.me/reviews/401545\n- https://unpa.me/community/toner/19494173\n- https://www.odkshop.com/en/products/anua-heartleaf-77-soothing-toner\n\n원하시면 검색이 다시 가능할 때 2번과 3번의 전성분, 가격, 구매 가능 여부를 같은 기준으로 확인해 드리겠습니다. 피부 고민(홍조, 건조, 트러블)과 예산을 알려주시면 후보도 거기에 맞춰 다시 고르겠습니다.",
+        "start": 391,
+        "end": 1922,
+        "citation_ids": []
+      }
+    ],
+    "citations": [],
+    "search": {
+      "used": true,
+      "queries": [
+        "민감성 피부 토너 추천 한국 브랜드 순한 토너 성분 비교",
+        "민감성 피부 토너 추천 한국 브랜드 순한 토너",
+        "아누아 어성초 77 수딩 토너 전성분 민감성 피부 올리브영"
+      ],
+      "results": [
+        {
+          "url": "https://www.glowpick.com/categories/1",
+          "title": "스킨/토너 추천 제품 TOP20 ㅣ 소비자가 직접 뽑는 뷰티 랭킹, 글로우픽",
+          "page_age": "62 days ago",
+          "domain": "glowpick.com"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Branding_in_Seongsu",
+          "title": "Branding in Seongsu",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Beauty_and_Mr._Romantic",
+          "title": "Beauty and Mr. Romantic",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://neultwenties.kr/toner-recommendation/",
+          "title": "토너 추천 TOP3",
+          "page_age": "653 days ago",
+          "domain": "neultwenties.kr"
+        },
+        {
+          "url": "https://www.mirai-skin.com/blogs/news/best-korean-toners",
+          "title": "모든 피부 타입을 위한 최고의 한국 토너 10가지 (2026 리뷰)",
+          "page_age": "311 days ago",
+          "domain": "mirai-skin.com"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Nature_Republic",
+          "title": "Nature Republic",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/The_House_Detox",
+          "title": "The House Detox",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Tory_Food",
+          "title": "Tory Food",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Innisfree_(brand)",
+          "title": "Innisfree (brand)",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://unpa.me/community/beautyroutine/123718658",
+          "title": "민감·건성 피부가 매일 쓰는 찐 기초템 모음💨💨 - 언니의파우치 커뮤니티",
+          "page_age": "281 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Songhwa-milsu",
+          "title": "Songhwa-milsu",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://unpa.me/reviews/401545",
+          "title": "아누아(ANUA) 어성초 77 수딩 토너 - 김윤아#4RZ6 님의 광고 없는 내돈내산 찐리뷰",
+          "page_age": "250 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://unpa.me/reviews/105628",
+          "title": "아누아(ANUA) 어성초 77 수딩 토너 - 광고 없는 내돈내산 찐리뷰",
+          "page_age": "2265 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://unpa.me/community/toner/19494173",
+          "title": "내돈내산 아누아 어성초 77 수딩 토너 - 언니의파우치 커뮤니티",
+          "page_age": "1055 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://unpa.me/community/toner/112799908",
+          "title": "피부 진정에 좋은 아누아 어성초 77% 토너 사용후기 - 언니의파우치 커뮤니티",
+          "page_age": "452 days ago",
+          "domain": "unpa.me"
+        },
+        {
+          "url": "https://www.odkshop.com/en/products/anua-heartleaf-77-soothing-toner",
+          "title": "아누아 어성초 77 수딩 토너 250ml",
+          "page_age": null,
+          "domain": "odkshop.com"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/The_Skin_House",
+          "title": "The Skin House",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Laneige",
+          "title": "Laneige",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Dr._Jart%2B",
+          "title": "Dr. Jart%2B",
+          "page_age": null,
+          "domain": "en.wikipedia.org"
+        }
+      ],
+      "errors": []
+    }
+  },
+  "cost_estimate": {
+    "input_tokens": 69681,
+    "output_tokens": 5175,
+    "web_searches": 3,
+    "usd": 0.2211,
+    "basis": {
+      "input_per_mtok": 2,
+      "output_per_mtok": 10,
+      "search_per_1k": 10
+    }
+  },
+  "analysis": {
+    "status": "succeeded",
+    "products": [
+      {
+        "id": "p1",
+        "brand": "아누아",
+        "product": "어성초 77 수딩 토너",
+        "mention_type": "recommended",
+        "evidence_text": "어성초 같은 식물 추출물로 진정을 노리는 유형의 대표 사례입니다.",
+        "evidence_found": true,
+        "start_offset": 834,
+        "end_offset": 870,
+        "segment_ids": [
+          "s2",
+          "s4"
+        ],
+        "citation_ids": [],
+        "list_position": 1,
+        "explicit_rank": null,
+        "review_required": true,
+        "issues": [
+          "연결된 공식 citation 없음"
+        ]
+      },
+      {
+        "id": "p2",
+        "brand": "라운드랩",
+        "product": "1025 독도 토너",
+        "mention_type": "recommended",
+        "evidence_text": "자극을 줄인 기본 토너라는 점에서 1번과 성격이 달라 비교할 만합니다.",
+        "evidence_found": true,
+        "start_offset": 1031,
+        "end_offset": 1070,
+        "segment_ids": [
+          "s2",
+          "s4"
+        ],
+        "citation_ids": [],
+        "list_position": 2,
+        "explicit_rank": null,
+        "review_required": true,
+        "issues": [
+          "연결된 공식 citation 없음"
+        ]
+      },
+      {
+        "id": "p3",
+        "brand": "토리든",
+        "product": "다이브인 저분자 히알루론산 토너",
+        "mention_type": "recommended",
+        "evidence_text": "진정이 아니라 수분 공급이 중심이어서 1번과 목적이 다릅니다.",
+        "evidence_found": true,
+        "start_offset": 1268,
+        "end_offset": 1302,
+        "segment_ids": [
+          "s2",
+          "s4"
+        ],
+        "citation_ids": [],
+        "list_position": 3,
+        "explicit_rank": null,
+        "review_required": true,
+        "issues": [
+          "연결된 공식 citation 없음"
+        ]
+      }
+    ],
+    "usage": {
+      "input_tokens": 2712,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 1037,
+      "output_tokens_details": {
+        "thinking_tokens": 677
+      },
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    }
+  },
+  "finished_at": "2026-10-24T04:42:28.671Z"
+}

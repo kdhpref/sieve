@@ -90,6 +90,7 @@ code { background: var(--neu-bg); padding: 1px 6px; border-radius: 4px; margin-r
 .edge.m-discouraged { stroke: var(--dis); }
 .edge.m-neutral { stroke: var(--neu); }
 .edge.m-uncertain { stroke: var(--unc); }
+.edge.support { stroke-width: 1.2; opacity: .45; }
 .edge.cite { stroke: var(--cite); stroke-dasharray: 5 4; }
 .edge.dim { opacity: .08; }
 .node { cursor: pointer; transition: opacity .15s; }
@@ -130,6 +131,9 @@ code { background: var(--neu-bg); padding: 1px 6px; border-radius: 4px; margin-r
 .cite-h { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .cite blockquote { font-size: 12px; }
 .issues { margin: 6px 0; padding-left: 18px; color: var(--dis); font-size: 12px; }
+.support { margin: 4px 0; padding-left: 18px; font-size: 13px; }
+.support li { cursor: pointer; margin-bottom: 4px; }
+.support li:hover { color: var(--accent); }
 .plist { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
 .plist li { cursor: pointer; padding: 6px 8px; border-radius: 6px; }
 .plist li:hover { background: var(--bg); }
