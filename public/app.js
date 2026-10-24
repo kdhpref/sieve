@@ -1,8 +1,9 @@
 import { GROUPS, CATEGORY_VERSION } from "./categories.js";
+import { lang, t, pick, setLang, applyStatic, onLangChange } from "./i18n.js";
 import { productSVG } from "./illustrations.js";
-import { startRecommend, bindRecommend } from "./recommend.js";
+import { startRecommend, bindRecommend, rerenderRecommend } from "./recommend.js";
 import { share, initShare, pasteProblem, aboutProblem, resultProblem, preOfferSlots, preOfferRecord,
-  postOfferSlots, postOfferRecord, shareSummary, setShareLocked } from "./share.js";
+  postOfferSlots, postOfferRecord, shareSummary, setShareLocked, rerenderShare } from "./share.js";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
@@ -10,8 +11,8 @@ const allItems = GROUPS.flatMap((g) => g.items);
 
 // 제품 종류를 고른 뒤 두 갈래로 나뉜다. 각 갈래의 화면 순서.
 const FLOWS = {
-  share: [["product", "제품 종류"], ["paste", "대화 붙여넣기"], ["about", "간단 질문"], ["result", "결과"], ["confirm", "확인"]],
-  recommend: [["product", "제품 종류"], ["recommend", "제품 추천"]],
+  share: [["product", "stepProduct"], ["paste", "stepPaste"], ["about", "stepAbout"], ["result", "stepResult"], ["confirm", "stepConfirm"]],
+  recommend: [["product", "stepProduct"], ["recommend", "stepRecommend"]],
 };
 const VIEWS = ["product", "paste", "recommend", "about", "result", "confirm"];
 
@@ -28,7 +29,7 @@ function objectParticle(word) {
 
 function pickedName() {
   if (state.code === "OTHER") return state.otherText;
-  return allItems.find((i) => i.code === state.code)?.ko ?? "";
+  return pick(allItems.find((i) => i.code === state.code));
 }
 
 /* ---------- 1단계: 제품 종류 ---------- */
@@ -37,20 +38,21 @@ function renderGroups() {
   $("groups").innerHTML = GROUPS.map((g) => {
     const open = g.items.some((i) => i.active);
     return `<button type="button" class="group" data-group="${g.code}" aria-pressed="${g.code === state.group}">
-      ${g.ko}${open ? "" : `<span class="soon">준비 중</span>`}
+      ${pick(g)}${open ? "" : `<span class="soon">${t("soon")}</span>`}
     </button>`;
   }).join("");
 }
 
 function renderShelf() {
   const group = GROUPS.find((g) => g.code === state.group);
+  const sub = lang === "ko" ? "en" : "ko"; // 다른 언어 이름을 작게 함께 보여준다
   $("shelf").innerHTML = group.items.map((item) => `
     <button type="button" role="radio" class="item" data-code="${item.code}"
         aria-checked="${item.code === state.code}" ${item.active ? "" : `aria-disabled="true" tabindex="-1"`}>
       ${productSVG(item)}
-      <span class="name">${item.ko}</span>
-      <span class="name-en" lang="en">${item.en}</span>
-      ${item.active ? "" : `<span class="soon">준비 중</span>`}
+      <span class="name">${pick(item)}</span>
+      <span class="name-sub" lang="${sub}">${item[sub]}</span>
+      ${item.active ? "" : `<span class="soon">${t("soon")}</span>`}
     </button>`).join("");
 }
 
@@ -105,29 +107,30 @@ function renderDock() {
   if (v === "product") {
     const item = allItems.find((i) => i.code === state.code);
     const other = state.code === "OTHER";
-    $("picked").textContent = item ? `${item.ko}${objectParticle(item.ko)} 골랐어요`
-      : other ? (state.otherText ? `직접 입력: ${state.otherText}` : "어떤 제품인지 적어 주세요")
-      : "제품 종류를 먼저 골라 주세요";
-    setNext("구매 과정 공유하기", !productReady());
+    $("picked").textContent = item ? t("picked", pick(item), objectParticle(item.ko))
+      : other ? (state.otherText ? t("pickedOther", state.otherText) : t("otherNeeded"))
+      : t("pickFirst");
+    setNext(t("shareBtn"), !productReady());
+    $("next-alt").textContent = t("recommendBtn");
     $("next-alt").disabled = !productReady();
   } else if (v === "paste") {
     const problem = pasteProblem();
-    $("picked").textContent = problem ?? `${share.excerpt.trim().length.toLocaleString()}자 붙여 넣었어요`;
-    setNext("다음: 간단 질문", problem);
+    $("picked").textContent = problem ?? t("pasted", share.excerpt.trim().length.toLocaleString());
+    setNext(t("nextAbout"), problem);
   } else if (v === "about") {
     const problem = aboutProblem();
-    $("picked").textContent = problem ?? "다 골랐어요";
-    setNext("다음: 무엇을 샀나요", problem);
+    $("picked").textContent = problem ?? t("allPicked");
+    setNext(t("nextResult"), problem);
   } else if (v === "result") {
     const problem = resultProblem();
-    $("picked").textContent = problem ?? "필수 항목을 모두 채웠어요";
-    setNext("다음: 확인하기", problem);
+    $("picked").textContent = problem ?? t("requiredDone");
+    setNext(t("nextConfirm"), problem);
   } else if (v === "recommend") {
     $("picked").textContent = "";
     $("next").hidden = true;
   } else {
-    $("picked").textContent = state.locked ? "제출했어요" : $("consent").checked ? "제출하면 잠겨요" : "동의에 체크해 주세요";
-    setNext(state.locked ? "제출 완료" : "확인하고 제출하기", state.locked || !$("consent").checked);
+    $("picked").textContent = state.locked ? t("submitted") : $("consent").checked ? t("willLock") : t("checkConsent");
+    setNext(state.locked ? t("submitDone") : t("submitBtn"), state.locked || !$("consent").checked);
   }
   $("back").hidden = v === "product" || state.locked;
 }
@@ -135,27 +138,35 @@ function renderDock() {
 function renderSteps() {
   const steps = flow();
   const at = steps.findIndex(([v]) => v === state.view);
-  $("steps").innerHTML = steps.map(([, ko], i) =>
-    `<li class="${i === at ? "is-current" : i < at ? "is-done" : ""}" ${i === at ? `aria-current="step"` : ""}>${ko}</li>`).join("");
+  $("steps").innerHTML = steps.map(([, key], i) =>
+    `<li class="${i === at ? "is-current" : i < at ? "is-done" : ""}" ${i === at ? `aria-current="step"` : ""}>${t(key)}</li>`).join("");
+}
+
+function renderRecommendTitle() {
+  $("recommend-title").innerHTML = t("recTitle", esc(pickedName()));
 }
 
 function renderRecommend() {
   const item = allItems.find((i) => i.code === state.code);
   $("recommend-product").innerHTML = item ? productSVG(item, "-rec") : "";
   const name = pickedName();
-  $("recommend-title").innerHTML = `${esc(name)} 추천을 위해<br>몇 가지 여쭤볼게요`;
-  const lang = document.querySelector('.lang-switch [aria-pressed="true"]')?.lang === "en" ? "en" : "ko";
+  renderRecommendTitle();
   startRecommend({
     product: { code: state.code, other: state.code === "OTHER" ? state.otherText : null },
     productLabel: name, lang,
   });
 }
 
+function setTitle() {
+  const key = flow().find(([v]) => v === state.view)?.[1];
+  document.title = `Sieve: ${key ? t(key) : ""}`;
+}
+
 function goTo(view) {
   state.view = view;
   for (const v of VIEWS) $(`step-${v}`).hidden = v !== view;
   renderSteps();
-  document.title = `Sieve: ${flow().find(([v]) => v === view)?.[1] ?? ""}`;
+  setTitle();
   if (view === "about") {
     const item = allItems.find((i) => i.code === state.code);
     $("picked-product").innerHTML = item ? productSVG(item, "-picked") : "";
@@ -191,7 +202,7 @@ function productFields() {
 /* ---------- 확인과 제출 ---------- */
 
 function summaryRows() {
-  return [["찾던 제품", pickedName()], ...shareSummary()];
+  return [[t("sumProduct"), pickedName()], ...shareSummary()];
 }
 
 function renderSummary(rows = summaryRows()) {
@@ -228,10 +239,10 @@ function showLocked(record) {
   setShareLocked(true);
   $("consent-wrap").hidden = true;
   $("locked").hidden = false;
-  $("confirm-title").textContent = "제출했어요, 고마워요";
-  $("confirm-lead").textContent = "이제 이 기록은 고칠 수 없어요.";
-  const at = new Date(record.locked_at).toLocaleString("ko-KR");
-  $("locked-stamp").textContent = `${at} 제출 · 확인값 ${record.sha256.slice(0, 12)}`;
+  $("confirm-title").textContent = t("doneTitle");
+  $("confirm-lead").textContent = t("doneLead");
+  const at = new Date(record.locked_at).toLocaleString(lang === "ko" ? "ko-KR" : "en-US");
+  $("locked-stamp").textContent = t("stamp", at, record.sha256.slice(0, 12));
   renderDock();
 }
 
@@ -263,12 +274,23 @@ $("restart").addEventListener("click", () => {
 
 document.querySelectorAll(".page h1").forEach((h) => h.setAttribute("tabindex", "-1"));
 
-// 언어 스위치: 아직 표시만 바꾸고 화면 문구는 번역하지 않는다.
+// 언어 스위치. 이미 잠긴 요약과 추천 대화 기록은 쓴 언어 그대로 둔다.
 document.querySelector(".lang-switch").addEventListener("click", (e) => {
-  const btn = e.target.closest("button");
-  if (!btn) return;
-  for (const b of e.currentTarget.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b === btn));
+  const btn = e.target.closest("button[lang]");
+  if (btn) setLang(btn.lang);
 });
+onLangChange(() => {
+  renderGroups();
+  renderShelf();
+  renderSteps();
+  setTitle();
+  rerenderShare();
+  if (state.view === "recommend") { renderRecommendTitle(); rerenderRecommend(); }
+  if (state.view === "confirm" && !state.locked) renderSummary();
+  if (state.locked) showLocked(JSON.parse(localStorage.getItem("sieve.pre_offer.locked")));
+  renderDock();
+});
+applyStatic();
 renderGroups();
 renderShelf();
 state.codebookVersion = await initShare(renderDock);

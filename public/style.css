@@ -138,7 +138,7 @@ button { font: inherit; color: inherit; }
 }
 
 .name { font-weight: 500; font-size: .9375rem; line-height: 1.35; }
-.name-en { font-size: .75rem; color: var(--ink-soft); }
+.name-sub { font-size: .75rem; color: var(--ink-soft); }
 .item .soon {
   position: absolute;
   top: .75rem;
@@ -166,7 +166,7 @@ button { font: inherit; color: inherit; }
 .item[aria-disabled="true"] { cursor: not-allowed; }
 .item[aria-disabled="true"] .product,
 .item[aria-disabled="true"] .name,
-.item[aria-disabled="true"] .name-en { opacity: .38; filter: grayscale(.6); }
+.item[aria-disabled="true"] .name-sub { opacity: .38; filter: grayscale(.6); }
 
 .other { margin-top: 2.5rem; padding: 1rem 1.125rem; background: var(--paper); border-radius: .75rem; }
 .other summary { cursor: pointer; font-weight: 500; }

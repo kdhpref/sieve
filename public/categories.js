@@ -4,7 +4,7 @@ export const CATEGORY_VERSION = "v0.1";
 
 export const GROUPS = [
   {
-    code: "SK", ko: "스킨케어", items: [
+    code: "SK", ko: "스킨케어", en: "Skincare", items: [
       { code: "SK-TONER", ko: "토너·스킨", en: "Toner", shape: "bottle", tint: "#BFE3DC", active: true },
       { code: "SK-PAD", ko: "토너패드", en: "Toner pad", shape: "padjar", tint: "#D9E8F5", active: true },
       { code: "SK-MIST", ko: "미스트", en: "Face mist", shape: "mist", tint: "#D6EEF0" },
@@ -17,7 +17,7 @@ export const GROUPS = [
     ],
   },
   {
-    code: "CL", ko: "클렌징", items: [
+    code: "CL", ko: "클렌징", en: "Cleansing", items: [
       { code: "CL-OIL", ko: "클렌징 오일·밤", en: "Cleansing oil / balm", shape: "pump", tint: "#EFD58C" },
       { code: "CL-WATER", ko: "클렌징 워터", en: "Cleansing water", shape: "bottle", tint: "#E3F1F7" },
       { code: "CL-FOAM", ko: "클렌징 폼", en: "Foam cleanser", shape: "tube", tint: "#F7F7F7" },
@@ -25,21 +25,21 @@ export const GROUPS = [
     ],
   },
   {
-    code: "SU", ko: "선케어", items: [
+    code: "SU", ko: "선케어", en: "Sun care", items: [
       { code: "SU-CREAM", ko: "선크림", en: "Sunscreen", shape: "tube", tint: "#FFF3C9" },
       { code: "SU-STICK", ko: "선스틱", en: "Sun stick", shape: "stick", tint: "#FFE7A8" },
       { code: "SU-TONEUP", ko: "톤업 선크림", en: "Tone-up sunscreen", shape: "tube", tint: "#F8E1EA" },
     ],
   },
   {
-    code: "MA", ko: "마스크·팩", items: [
+    code: "MA", ko: "마스크·팩", en: "Masks", items: [
       { code: "MA-SHEET", ko: "시트 마스크", en: "Sheet mask", shape: "sheet", tint: "#DCEBF7" },
       { code: "MA-WASH", ko: "워시오프 팩", en: "Wash-off mask", shape: "jar", tint: "#D9D4CC" },
       { code: "MA-SLEEP", ko: "슬리핑 팩", en: "Sleeping mask", shape: "jar", tint: "#DCD6F2" },
     ],
   },
   {
-    code: "BM", ko: "베이스", items: [
+    code: "BM", ko: "베이스", en: "Base", items: [
       { code: "BM-CUSHION", ko: "쿠션", en: "Cushion", shape: "compact", tint: "#EFD3BF" },
       { code: "BM-FOUND", ko: "파운데이션", en: "Foundation", shape: "pump", tint: "#E6C2A6" },
       { code: "BM-PRIMER", ko: "프라이머", en: "Primer", shape: "tube", tint: "#E5EEDF" },
@@ -48,7 +48,7 @@ export const GROUPS = [
     ],
   },
   {
-    code: "CM", ko: "색조", items: [
+    code: "CM", ko: "색조", en: "Color", items: [
       { code: "CM-LIP", ko: "립·틴트", en: "Lip / tint", shape: "lip", tint: "#E0727A" },
       { code: "CM-EYE", ko: "아이 메이크업", en: "Eye makeup", shape: "compact", tint: "#B9A3C9" },
       { code: "CM-CHEEK", ko: "치크", en: "Cheek", shape: "compact", tint: "#F2A7A0" },

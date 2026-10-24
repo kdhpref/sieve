@@ -3,11 +3,11 @@
 export const CONCERN_GROUPS = [
   {
     ko: "피부 타입", hint: "하나만 골라 주세요. 민감한 편이라면 함께 고를 수 있어요.", items: [
-      { code: "skin_dry", ko: "건성", sub: "건조하고 당겨요", intent: "04", skinType: true },
-      { code: "skin_oily", ko: "지성", sub: "유분이 많아요", intent: "06", skinType: true },
-      { code: "skin_combo", ko: "복합성", sub: "부위마다 달라요", intent: "07", skinType: true },
-      { code: "skin_unknown", ko: "잘 모름", sub: "질문으로 찾아볼게요", intent: null, skinType: true },
-      { code: "skin_sensitive", ko: "민감한 편", sub: "자극에 예민해요", intent: "01" },
+      { code: "skin_dry", ko: "건성", en: "Dry", sub: { ko: "건조하고 당겨요", en: "Feels dry and tight" }, intent: "04", skinType: true },
+      { code: "skin_oily", ko: "지성", en: "Oily", sub: { ko: "유분이 많아요", en: "Gets oily" }, intent: "06", skinType: true },
+      { code: "skin_combo", ko: "복합성", en: "Combination", sub: { ko: "부위마다 달라요", en: "Varies by area" }, intent: "07", skinType: true },
+      { code: "skin_unknown", ko: "잘 모름", en: "Not sure", sub: { ko: "질문으로 찾아볼게요", en: "We'll help you find out" }, intent: null, skinType: true },
+      { code: "skin_sensitive", ko: "민감한 편", en: "Sensitive", sub: { ko: "자극에 예민해요", en: "Reacts easily" }, intent: "01" },
     ],
   },
   {
@@ -52,12 +52,15 @@ export const CONCERN_GROUPS = [
 
 // 명세 3.2 피부 타입 유도 질문
 export const SKIN_GUIDE = {
-  question: "오후 2~3시쯤 거울을 보거나 얼굴을 만졌을 때 기름기가 얼마나 도나요?",
+  question: {
+    ko: "오후 2~3시쯤 거울을 보거나 얼굴을 만졌을 때 기름기가 얼마나 도나요?",
+    en: "Around 2–3 pm, when you look in the mirror or touch your face, how oily is it?",
+  },
   answers: [
-    { code: "guide_oily", text: "기름종이나 수정 화장이 꼭 필요하고, 얼굴 전체가 번들거려요", result: "skin_oily" },
-    { code: "guide_combo", text: "코와 이마 주변만 번들거리고, 볼 쪽은 여전히 건조해요", result: "skin_combo" },
-    { code: "guide_dry", text: "유분감은 거의 없고, 오히려 화장이 들뜨거나 각질이 일어나요", result: "skin_dry" },
-    { code: "guide_none", text: "어느 쪽도 아니거나 잘 모르겠어요", result: "skin_unknown" },
+    { code: "guide_oily", text: { ko: "기름종이나 수정 화장이 꼭 필요하고, 얼굴 전체가 번들거려요", en: "I need blotting paper or touch-ups, and my whole face is shiny" }, result: "skin_oily" },
+    { code: "guide_combo", text: { ko: "코와 이마 주변만 번들거리고, 볼 쪽은 여전히 건조해요", en: "Only my nose and forehead are shiny; my cheeks still feel dry" }, result: "skin_combo" },
+    { code: "guide_dry", text: { ko: "유분감은 거의 없고, 오히려 화장이 들뜨거나 각질이 일어나요", en: "Barely any oil; my makeup lifts or my skin gets flaky" }, result: "skin_dry" },
+    { code: "guide_none", text: { ko: "어느 쪽도 아니거나 잘 모르겠어요", en: "None of these, or I'm not sure" }, result: "skin_unknown" },
   ],
 };
 

@@ -1,10 +1,10 @@
 // 구매 과정 공유 갈래: 대화 붙여넣기 → 간단 질문(피부 타입·사용한 AI) → 결과(산 제품·만족도 / 사지 않은 이유).
 // 보기는 코드북(docs/interview-guideline.md 3.1)과 concerns.js를 따른다. Claude 호출은 하지 않는다.
 import { ALL_CONCERNS, SKIN_GUIDE } from "./concerns.js";
+import { t, pick } from "./i18n.js";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
-const LANG = "ko";
 
 // 피부 타입 보기. 민감한 편은 다른 피부 타입과 함께 고를 수 있다.
 const SKIN = ALL_CONCERNS.filter((c) => c.code.startsWith("skin_"));
@@ -24,7 +24,7 @@ export const share = {
 let book;
 let onChange = () => {};
 
-const label = (opt) => opt[LANG] ?? opt.en ?? opt.code;
+const label = (opt) => pick(opt);
 export const bought = () => BOUGHT.has(share.outcome);
 
 export async function initShare(changed) {
@@ -32,6 +32,7 @@ export async function initShare(changed) {
   book = (await (await fetch("/codebook.json")).json());
   renderAbout();
   renderResult();
+  renderPasteCount();
   bind();
   return book.codebook_version;
 }
@@ -48,20 +49,20 @@ function renderAbout() {
     const on = c.code === "skin_sensitive" ? share.sensitive : share.skin === c.code;
     const guided = on && share.skinSource === "guided" && c.code !== "skin_unknown" && c.code !== "skin_sensitive";
     return `<button type="button" class="chip" data-concern="${c.code}" aria-pressed="${on}">
-      <span class="chip-label">${c.ko}</span><span class="chip-sub">${guided ? "질문으로 골랐어요" : c.sub}</span>
+      <span class="chip-label">${pick(c)}</span><span class="chip-sub">${guided ? t("guidedPick") : pick(c.sub)}</span>
     </button>`;
   }).join("");
   // 잘 모름을 고르면 유도 질문을 보여준다. 답하면 결과 피부 타입으로 바뀌고, 다시 고를 수 있게 남겨 둔다.
   const open = share.skin === "skin_unknown" || share.skinSource === "guided";
   $("skin-guide").innerHTML = !open ? "" : `<div class="guide" role="group" aria-labelledby="guide-q">
-    <p class="guide-q" id="guide-q">${SKIN_GUIDE.question}</p>
+    <p class="guide-q" id="guide-q">${pick(SKIN_GUIDE.question)}</p>
     <div class="guide-answers">
       ${SKIN_GUIDE.answers.map((a) => `
         <button type="button" class="guide-answer" data-guide="${a.code}" aria-pressed="${share.guideAnswer === a.code}">
-          ${a.text}<span class="guide-result">${a.result === "skin_unknown" ? "잘 모름으로 둘게요" : skinOf(a.result).ko}</span>
+          ${pick(a.text)}<span class="guide-result">${a.result === "skin_unknown" ? t("keepUnknown") : pick(skinOf(a.result))}</span>
         </button>`).join("")}
     </div>
-    <p class="guide-note">피부 진단이 아니라, 고르기 쉽게 돕는 질문이에요.</p>
+    <p class="guide-note">${t("guideNote")}</p>
   </div>`;
   // 대화를 붙여 넣었으니 "사용하지 않음"은 보여주지 않는다
   const ais = book.slots.ai_service.options.filter((o) => o.code !== "ai_none");
@@ -82,9 +83,9 @@ function answerGuide(code) {
 }
 
 export function aboutProblem() {
-  if (!share.skin) return "피부 타입을 골라 주세요";
-  if (!share.ai.size) return "대화를 나눈 AI를 골라 주세요";
-  if (share.ai.has("ai_other") && !share.aiOther) return "어떤 AI였는지 적어 주세요";
+  if (!share.skin) return t("needSkin");
+  if (!share.ai.size) return t("needAi");
+  if (share.ai.has("ai_other") && !share.aiOther) return t("needAiOther");
   return null;
 }
 
@@ -98,11 +99,11 @@ function renderResult() {
     </button>`).join("");
   $("bought").hidden = !bought();
   $("not-bought").hidden = !share.outcome || bought();
-  $("reason-title").textContent = share.outcome === "out_undecided" ? "아직 사지 않은 이유는?" : "사지 않은 이유는?";
+  $("reason-title").textContent = t(share.outcome === "out_undecided" ? "reasonUndecided" : "reasonNotBought");
   $("reasons").innerHTML = chipsHTML(s.reason_codes.options, (c) => share.reasons.has(c), "reason");
   $("reason-text-hint").textContent = share.reasons.has("r_other")
-    ? "기타를 골랐다면 어떤 이유였는지 적어 주세요."
-    : "무엇이 걸렸는지, 대신 어떻게 할 생각인지 편하게 적어 주세요. (선택)";
+    ? t("reasonOtherHint")
+    : t("reasonHint");
   renderSatisfaction();
 }
 
@@ -111,21 +112,21 @@ function renderSatisfaction() {
   const items = [];
   for (let n = sl.min; n <= sl.max; n++) {
     items.push(`<button type="button" role="radio" class="scale-point" data-scale="${n}" aria-checked="${share.satisfaction === n}">
-      <span class="scale-num">${n}</span><span class="scale-label">${sl.labels[n] ? esc(sl.labels[n][LANG]) : ""}</span>
+      <span class="scale-num">${n}</span><span class="scale-label">${sl.labels[n] ? esc(pick(sl.labels[n])) : ""}</span>
     </button>`);
   }
   $("satisfaction-scale").innerHTML = items.join("");
 }
 
 export function resultProblem() {
-  if (!share.outcome) return "결국 어떻게 했는지 골라 주세요";
+  if (!share.outcome) return t("needOutcome");
   if (bought()) {
-    if (!share.chosen) return "산 제품 이름을 적어 주세요";
-    if (share.satisfaction === null) return "만족도를 골라 주세요";
+    if (!share.chosen) return t("needChosen");
+    if (share.satisfaction === null) return t("needSat");
     return null;
   }
-  if (!share.reasons.size) return "사지 않은 이유를 하나 이상 골라 주세요";
-  if (share.reasons.has("r_other") && !share.reasonText) return "기타 이유를 적어 주세요";
+  if (!share.reasons.size) return t("needReason");
+  if (share.reasons.has("r_other") && !share.reasonText) return t("needReasonOther");
   return null;
 }
 
@@ -134,11 +135,11 @@ export function resultProblem() {
 // 개인정보로 보이는 문자열을 알려 주기만 한다. 자동으로 지우지 않는다.
 function piiCheck(text) {
   const found = [];
-  if (/[\w.+-]+@[\w-]+\.[\w.]+/.test(text)) found.push("이메일");
-  if (/(\+?\d{1,3}[-\s]?)?0\d{1,2}[-\s]?\d{3,4}[-\s]?\d{4}/.test(text)) found.push("전화번호");
-  if (/(주문\s?번호|注文番号)\s*[:：]?\s*\w+/.test(text)) found.push("주문번호");
+  if (/[\w.+-]+@[\w-]+\.[\w.]+/.test(text)) found.push(t("piiEmail"));
+  if (/(\+?\d{1,3}[-\s]?)?0\d{1,2}[-\s]?\d{3,4}[-\s]?\d{4}|\(?\b\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}\b/.test(text)) found.push(t("piiPhone"));
+  if (/(주문\s?번호|order\s?(no\.?|number|#))\s*[:：#]?\s*\w+/i.test(text)) found.push(t("piiOrder"));
   $("pii-warning").hidden = !found.length;
-  $("pii-warning").textContent = found.length ? `${found.join("·")}처럼 보이는 내용이 있어요. 가리거나 지워 주세요.` : "";
+  $("pii-warning").textContent = found.length ? t("piiWarn", found) : "";
 }
 
 function bind() {
@@ -173,7 +174,7 @@ function bind() {
   $("ai-excerpt").addEventListener("input", (e) => {
     share.excerpt = e.target.value;
     piiCheck(e.target.value);
-    $("paste-count").textContent = `${e.target.value.length.toLocaleString()} / 8,000자`;
+    renderPasteCount();
     onChange();
   });
 }
@@ -182,9 +183,9 @@ function bind() {
 export const PASTE_MIN = 20;
 export function pasteProblem() {
   const len = share.excerpt.trim().length;
-  if (!len) return "대화를 붙여 넣어 주세요";
-  if (len < PASTE_MIN) return `조금 더 붙여 넣어 주세요 (${PASTE_MIN}자 이상)`;
-  if (!$("pii-warning").hidden) return "개인정보처럼 보이는 내용을 가려 주세요";
+  if (!len) return t("needPaste");
+  if (len < PASTE_MIN) return t("pasteMore", PASTE_MIN);
+  if (!$("pii-warning").hidden) return t("maskPii");
   return null;
 }
 
@@ -249,23 +250,36 @@ export function postOfferRecord() {
 export function shareSummary() {
   const s = book.slots;
   const name = (slot, code) => label(s[slot].options.find((o) => o.code === code));
-  const skin = [skinOf(share.skin).ko, ...(share.sensitive ? ["민감한 편"] : [])].join(", ");
+  const skin = [pick(skinOf(share.skin)), ...(share.sensitive ? [t("sensitiveToo")] : [])].join(", ");
   const out = [
-    ["붙여 넣은 대화", `${share.excerpt.trim().length.toLocaleString()}자`],
-    ["피부 타입", share.skinSource === "guided" ? `${skin} (질문으로 고름)` : skin],
-    ["대화를 나눈 AI", [...share.ai].map((c) => c === "ai_other" ? `기타(${share.aiOther})` : name("ai_service", c)).join(", ")],
-    ["결과", name("outcome", share.outcome)],
+    [t("sumPaste"), t("sumChars", share.excerpt.trim().length.toLocaleString())],
+    [t("sumSkin"), share.skinSource === "guided" ? t("guidedSuffix", skin) : skin],
+    [t("sumAi"), [...share.ai].map((c) => c === "ai_other" ? t("aiOtherValue", share.aiOther) : name("ai_service", c)).join(", ")],
+    [t("sumOutcome"), name("outcome", share.outcome)],
   ];
   if (bought()) {
     const sl = s.satisfaction.labels[share.satisfaction];
-    out.push(["산 제품", share.chosen]);
-    out.push(["만족도", `${share.satisfaction} / ${s.satisfaction.max}${sl ? ` (${sl[LANG]})` : ""}`]);
-    out.push(["좋았던 점·아쉬운 점", share.boughtNote || "적지 않음"]);
+    out.push([t("sumChosen"), share.chosen]);
+    out.push([t("sumSat"), `${share.satisfaction} / ${s.satisfaction.max}${sl ? ` (${pick(sl)})` : ""}`]);
+    out.push([t("sumNote"), share.boughtNote || t("notWritten")]);
   } else {
-    out.push(["사지 않은 이유", [...share.reasons].map((c) => name("reason_codes", c)).join(", ")]);
-    out.push(["자세한 이유", share.reasonText || "적지 않음"]);
+    out.push([t("sumReasons"), [...share.reasons].map((c) => name("reason_codes", c)).join(", ")]);
+    out.push([t("sumReasonText"), share.reasonText || t("notWritten")]);
   }
   return out;
+}
+
+function renderPasteCount() {
+  $("paste-count").textContent = t("pasteCount", share.excerpt.length.toLocaleString());
+}
+
+// 언어가 바뀌면 보기·안내 문구를 다시 그린다. 입력값은 그대로 둔다.
+export function rerenderShare() {
+  if (!book) return;
+  renderAbout();
+  renderResult();
+  renderPasteCount();
+  piiCheck(share.excerpt);
 }
 
 export function setShareLocked(locked) {
