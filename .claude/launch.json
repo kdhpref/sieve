@@ -6,6 +6,18 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["server.mjs", "3100"],
       "port": 3100
+    },
+    {
+      "name": "sieve-interview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.mjs", "3200"],
+      "port": 3200
+    },
+    {
+      "name": "sieve-en",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.mjs", "3300"],
+      "port": 3300
     }
   ]
 }

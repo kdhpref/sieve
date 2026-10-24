@@ -1,108 +1,108 @@
 {
   "codebook_version": "v0.1",
   "status": "draft",
-  "note": "docs/interview-guideline.md 3장 슬롯 정의. 일본어 표시명·문구는 현지 언어 검수 전. 예산 구간 금액은 임시값.",
+  "note": "docs/interview-guideline.md 3장 슬롯 정의. 영어 표시명·문구는 현지 언어 검수 전. 예산 구간 금액은 임시값.",
   "slots": {
     "trigger": {
       "stage": "pre_offer", "type": "single", "required": true,
-      "fallback_question": { "ko": "이번에 이 제품을 찾게 된 계기가 무엇인가요?", "ja": "今回この商品を探し始めたきっかけは何ですか?" },
+      "fallback_question": { "ko": "이번에 이 제품을 찾게 된 계기가 무엇인가요?", "en": "What made you start looking for this product?" },
       "options": [
-        { "code": "trg_first", "ko": "처음 써보려고", "ja": "初めて使ってみたい" },
-        { "code": "trg_replenish", "ko": "쓰던 제품을 다 써서", "ja": "使っていた商品がなくなった" },
-        { "code": "trg_switch", "ko": "쓰던 제품을 바꾸고 싶어서", "ja": "今の商品から変えたい" },
-        { "code": "trg_season", "ko": "계절·피부 상태가 바뀌어서", "ja": "季節や肌の状態が変わった" },
-        { "code": "trg_content", "ko": "SNS·광고·리뷰를 보고", "ja": "SNS・広告・口コミを見て" },
-        { "code": "trg_gift", "ko": "선물하려고", "ja": "プレゼント用" },
-        { "code": "trg_other", "ko": "기타", "ja": "その他" }
+        { "code": "trg_first", "ko": "처음 써보려고", "en": "I wanted to try it for the first time" },
+        { "code": "trg_replenish", "ko": "쓰던 제품을 다 써서", "en": "I ran out of my current product" },
+        { "code": "trg_switch", "ko": "쓰던 제품을 바꾸고 싶어서", "en": "I wanted to switch from my current product" },
+        { "code": "trg_season", "ko": "계절·피부 상태가 바뀌어서", "en": "The season or my skin changed" },
+        { "code": "trg_content", "ko": "SNS·광고·리뷰를 보고", "en": "I saw it on social media, ads or reviews" },
+        { "code": "trg_gift", "ko": "선물하려고", "en": "As a gift" },
+        { "code": "trg_other", "ko": "기타", "en": "Other" }
       ]
     },
     "concern_codes": {
       "stage": "pre_offer", "type": "multi", "required": true,
       "source_spec": "docs/cosmetics-category-spec.md 3장 (intent_id 매핑 포함)",
-      "fallback_question": { "ko": "피부나 사용감에서 신경 쓰이는 점을 모두 골라 주세요.", "ja": "肌や使用感で気になることをすべて選んでください。" },
+      "fallback_question": { "ko": "피부나 사용감에서 신경 쓰이는 점을 모두 골라 주세요.", "en": "Select everything you care about for your skin or the feel of the product." },
       "options": [
-        { "code": "skin_sensitive", "ko": "민감성", "ja": "敏感肌", "intent_id": "01" },
-        { "code": "skin_dry", "ko": "건성(건조함)", "ja": "乾燥肌", "intent_id": "04" },
-        { "code": "skin_oily", "ko": "지성", "ja": "脂性肌", "intent_id": "06" },
-        { "code": "skin_combo", "ko": "복합성", "ja": "混合肌", "intent_id": "07" },
-        { "code": "skin_unknown", "ko": "잘 모름", "ja": "わからない", "intent_id": null },
-        { "code": "avoid_fragrance", "ko": "향료를 피하고 싶음", "ja": "香料を避けたい", "intent_id": "02" },
-        { "code": "avoid_ethanol", "ko": "에탄올을 피하고 싶음", "ja": "エタノールを避けたい", "intent_id": "03" },
-        { "code": "avoid_other", "ko": "피하고 싶은 다른 성분", "ja": "避けたい他の成分", "intent_id": null },
-        { "code": "feel_nonsticky", "ko": "끈적임 적음", "ja": "べたつきが少ない", "intent_id": "05" },
-        { "code": "feel_light", "ko": "가벼운 사용감", "ja": "軽い使用感", "intent_id": "06" },
-        { "code": "use_premakeup", "ko": "화장 전에 쓰기", "ja": "メイク前に使う", "intent_id": "08" },
-        { "code": "use_night", "ko": "저녁 보습", "ja": "夜の保湿", "intent_id": "09" },
-        { "code": "use_beginner", "ko": "스킨케어 입문", "ja": "スキンケア初心者", "intent_id": "10" },
-        { "code": "price_per_volume", "ko": "용량당 가격", "ja": "容量当たりの価格", "intent_id": "11" },
-        { "code": "size_trial", "ko": "소용량으로 먼저 써보기", "ja": "少量サイズで試したい", "intent_id": "12" },
-        { "code": "size_refill", "ko": "리필·대용량", "ja": "詰め替え・大容量", "intent_id": "13" },
-        { "code": "buy_official", "ko": "공식 판매처·배송 확인", "ja": "公式販売店・配送", "intent_id": "14" },
-        { "code": "info_local_lang", "ko": "현지어 전성분·사용법", "ja": "現地語の全成分・使用方法", "intent_id": "15" },
-        { "code": "other", "ko": "기타", "ja": "その他", "intent_id": null }
+        { "code": "skin_sensitive", "ko": "민감성", "en": "Sensitive", "intent_id": "01" },
+        { "code": "skin_dry", "ko": "건성(건조함)", "en": "Dry", "intent_id": "04" },
+        { "code": "skin_oily", "ko": "지성", "en": "Oily", "intent_id": "06" },
+        { "code": "skin_combo", "ko": "복합성", "en": "Combination", "intent_id": "07" },
+        { "code": "skin_unknown", "ko": "잘 모름", "en": "Not sure", "intent_id": null },
+        { "code": "avoid_fragrance", "ko": "향료를 피하고 싶음", "en": "Want to avoid fragrance", "intent_id": "02" },
+        { "code": "avoid_ethanol", "ko": "에탄올을 피하고 싶음", "en": "Want to avoid alcohol (ethanol)", "intent_id": "03" },
+        { "code": "avoid_other", "ko": "피하고 싶은 다른 성분", "en": "Other ingredients to avoid", "intent_id": null },
+        { "code": "feel_nonsticky", "ko": "끈적임 적음", "en": "Not sticky", "intent_id": "05" },
+        { "code": "feel_light", "ko": "가벼운 사용감", "en": "Lightweight feel", "intent_id": "06" },
+        { "code": "use_premakeup", "ko": "화장 전에 쓰기", "en": "Use before makeup", "intent_id": "08" },
+        { "code": "use_night", "ko": "저녁 보습", "en": "Night-time hydration", "intent_id": "09" },
+        { "code": "use_beginner", "ko": "스킨케어 입문", "en": "New to skincare", "intent_id": "10" },
+        { "code": "price_per_volume", "ko": "용량당 가격", "en": "Price per volume", "intent_id": "11" },
+        { "code": "size_trial", "ko": "소용량으로 먼저 써보기", "en": "Try a small size first", "intent_id": "12" },
+        { "code": "size_refill", "ko": "리필·대용량", "en": "Refill or large size", "intent_id": "13" },
+        { "code": "buy_official", "ko": "공식 판매처·배송 확인", "en": "Official seller and shipping", "intent_id": "14" },
+        { "code": "info_local_lang", "ko": "현지어 전성분·사용법", "en": "Full ingredients and directions in my language", "intent_id": "15" },
+        { "code": "other", "ko": "기타", "en": "Other", "intent_id": null }
       ]
     },
     "skin_guide_answer": {
       "stage": "pre_offer", "type": "single", "required": false,
       "condition": "concern_codes contains skin_unknown",
       "source_spec": "docs/cosmetics-category-spec.md 3.2",
-      "fallback_question": { "ko": "오후 2~3시쯤 얼굴을 만졌을 때 기름기가 얼마나 도나요?", "ja": "午後2〜3時ごろ、顔に触れたときの皮脂はどのくらいですか?" },
+      "fallback_question": { "ko": "오후 2~3시쯤 얼굴을 만졌을 때 기름기가 얼마나 도나요?", "en": "Around 2–3 pm, how oily does your face feel when you touch it?" },
       "options": [
-        { "code": "guide_oily", "ko": "얼굴 전체가 번들거린다", "ja": "顔全体がテカる", "maps_to": "skin_oily" },
-        { "code": "guide_combo", "ko": "코·이마만 번들거리고 볼은 건조하다", "ja": "鼻・額だけテカり、頬は乾燥する", "maps_to": "skin_combo" },
-        { "code": "guide_dry", "ko": "유분은 거의 없고 들뜨거나 각질이 생긴다", "ja": "皮脂はほとんどなく、粉をふく", "maps_to": "skin_dry" },
-        { "code": "guide_none", "ko": "어느 쪽도 아니거나 잘 모르겠다", "ja": "どれでもない・わからない", "maps_to": null }
+        { "code": "guide_oily", "ko": "얼굴 전체가 번들거린다", "en": "My whole face is shiny", "maps_to": "skin_oily" },
+        { "code": "guide_combo", "ko": "코·이마만 번들거리고 볼은 건조하다", "en": "Only my nose and forehead are shiny; my cheeks are dry", "maps_to": "skin_combo" },
+        { "code": "guide_dry", "ko": "유분은 거의 없고 들뜨거나 각질이 생긴다", "en": "Almost no oil; my skin feels tight or flaky", "maps_to": "skin_dry" },
+        { "code": "guide_none", "ko": "어느 쪽도 아니거나 잘 모르겠다", "en": "None of these / not sure", "maps_to": null }
       ]
     },
     "current_status": {
       "stage": "pre_offer", "type": "single", "required": true,
-      "fallback_question": { "ko": "지금 쓰고 있는 같은 종류의 제품이 있나요?", "ja": "今お使いの同じ種類の商品はありますか?" },
+      "fallback_question": { "ko": "지금 쓰고 있는 같은 종류의 제품이 있나요?", "en": "Do you currently use a product of the same type?" },
       "options": [
-        { "code": "cur_none", "ko": "없다", "ja": "ない" },
-        { "code": "cur_satisfied", "ko": "있고 만족한다", "ja": "あり、満足している" },
-        { "code": "cur_unsatisfied", "ko": "있지만 아쉬운 점이 있다", "ja": "あるが不満がある" }
+        { "code": "cur_none", "ko": "없다", "en": "No" },
+        { "code": "cur_satisfied", "ko": "있고 만족한다", "en": "Yes, and I'm happy with it" },
+        { "code": "cur_unsatisfied", "ko": "있지만 아쉬운 점이 있다", "en": "Yes, but something could be better" }
       ]
     },
     "dissatisfaction": {
       "stage": "pre_offer", "type": "multi", "required": false,
       "condition": "current_status == cur_unsatisfied",
-      "fallback_question": { "ko": "지금 제품에서 아쉬운 점을 모두 골라 주세요.", "ja": "今の商品で物足りない点をすべて選んでください。" },
+      "fallback_question": { "ko": "지금 제품에서 아쉬운 점을 모두 골라 주세요.", "en": "Select everything you find lacking in your current product." },
       "options": [
-        { "code": "diss_irritation", "ko": "따갑거나 자극이 느껴진다", "ja": "しみる・刺激を感じる" },
-        { "code": "diss_sticky", "ko": "끈적인다", "ja": "べたつく" },
-        { "code": "diss_moisture", "ko": "보습이 부족하게 느껴진다", "ja": "保湿が物足りない" },
-        { "code": "diss_scent", "ko": "향이 맞지 않는다", "ja": "香りが合わない" },
-        { "code": "diss_price", "ko": "가격이 부담된다", "ja": "価格が高い" },
-        { "code": "diss_volume", "ko": "용량이 맞지 않는다", "ja": "容量が合わない" },
-        { "code": "diss_availability", "ko": "사기 어렵다", "ja": "手に入りにくい" },
-        { "code": "diss_other", "ko": "기타", "ja": "その他" }
+        { "code": "diss_irritation", "ko": "따갑거나 자극이 느껴진다", "en": "It stings or irritates" },
+        { "code": "diss_sticky", "ko": "끈적인다", "en": "It feels sticky" },
+        { "code": "diss_moisture", "ko": "보습이 부족하게 느껴진다", "en": "Not hydrating enough" },
+        { "code": "diss_scent", "ko": "향이 맞지 않는다", "en": "I don't like the scent" },
+        { "code": "diss_price", "ko": "가격이 부담된다", "en": "Too expensive" },
+        { "code": "diss_volume", "ko": "용량이 맞지 않는다", "en": "Wrong size" },
+        { "code": "diss_availability", "ko": "사기 어렵다", "en": "Hard to buy" },
+        { "code": "diss_other", "ko": "기타", "en": "Other" }
       ]
     },
     "decision_factors": {
       "stage": "pre_offer", "type": "rank", "max_rank": 3, "required": true,
-      "fallback_question": { "ko": "고를 때 가장 중요한 기준을 순서대로 3개까지 골라 주세요.", "ja": "選ぶときに重視する点を、重要な順に3つまで選んでください。" },
+      "fallback_question": { "ko": "고를 때 가장 중요한 기준을 순서대로 3개까지 골라 주세요.", "en": "Pick up to 3 things that matter most when choosing, in order of importance." },
       "options": [
-        { "code": "f_ingredients", "ko": "성분", "ja": "成分" },
-        { "code": "f_texture", "ko": "사용감", "ja": "使用感" },
-        { "code": "f_price", "ko": "가격", "ja": "価格" },
-        { "code": "f_size", "ko": "용량·리필", "ja": "容量・詰め替え" },
-        { "code": "f_brand_trust", "ko": "브랜드 신뢰", "ja": "ブランドへの信頼" },
-        { "code": "f_reviews", "ko": "리뷰·평점", "ja": "口コミ・評価" },
-        { "code": "f_channel", "ko": "구매처·배송", "ja": "購入先・配送" },
-        { "code": "f_local_info", "ko": "현지어 정보", "ja": "日本語/韓国語の情報" },
-        { "code": "f_package", "ko": "디자인·패키지", "ja": "デザイン・パッケージ" },
-        { "code": "f_other", "ko": "기타", "ja": "その他" }
+        { "code": "f_ingredients", "ko": "성분", "en": "Ingredients" },
+        { "code": "f_texture", "ko": "사용감", "en": "Texture and feel" },
+        { "code": "f_price", "ko": "가격", "en": "Price" },
+        { "code": "f_size", "ko": "용량·리필", "en": "Size and refills" },
+        { "code": "f_brand_trust", "ko": "브랜드 신뢰", "en": "Brand trust" },
+        { "code": "f_reviews", "ko": "리뷰·평점", "en": "Reviews and ratings" },
+        { "code": "f_channel", "ko": "구매처·배송", "en": "Where to buy and shipping" },
+        { "code": "f_local_info", "ko": "현지어 정보", "en": "Info in my language" },
+        { "code": "f_package", "ko": "디자인·패키지", "en": "Design and packaging" },
+        { "code": "f_other", "ko": "기타", "en": "Other" }
       ]
     },
     "primary_concern_code": {
       "stage": "pre_offer", "type": "single", "required": false,
       "condition": "count(concern_codes) >= 2 (1개면 자동으로 그 값)",
       "options_from": "concern_codes 중 참여자가 고른 것",
-      "fallback_question": { "ko": "고르신 고민 중 가장 중요한 하나는 무엇인가요?", "ja": "選んだ中で一番重要なものはどれですか?" }
+      "fallback_question": { "ko": "고르신 고민 중 가장 중요한 하나는 무엇인가요?", "en": "Of the ones you picked, which matters most?" }
     },
     "budget_band": {
       "stage": "pre_offer", "type": "single", "required": true,
-      "fallback_question": { "ko": "1개 기준으로 생각하는 예산은 어느 정도인가요?", "ja": "1本あたりの予算はどのくらいですか?" },
+      "fallback_question": { "ko": "1개 기준으로 생각하는 예산은 어느 정도인가요?", "en": "What is your budget for one product?" },
       "options_by_market": {
         "KR": [
           { "code": "bud_1", "ko": "1만 원 미만" },
@@ -111,70 +111,70 @@
           { "code": "bud_4", "ko": "3만 원 이상" },
           { "code": "bud_none", "ko": "정하지 않음" }
         ],
-        "JP": [
-          { "code": "bud_1", "ja": "1,500円未満" },
-          { "code": "bud_2", "ja": "1,500〜3,000円" },
-          { "code": "bud_3", "ja": "3,000〜4,500円" },
-          { "code": "bud_4", "ja": "4,500円以上" },
-          { "code": "bud_none", "ja": "決めていない" }
+        "US": [
+          { "code": "bud_1", "en": "Under $10" },
+          { "code": "bud_2", "en": "$10–20" },
+          { "code": "bud_3", "en": "$20–30" },
+          { "code": "bud_4", "en": "$30 or more" },
+          { "code": "bud_none", "en": "Not decided" }
         ]
       }
     },
     "ai_service": {
       "stage": "pre_offer", "type": "multi", "required": true,
-      "fallback_question": { "ko": "제품을 알아볼 때 어떤 AI를 사용했나요?", "ja": "商品を調べるときにどのAIを使いましたか?" },
+      "fallback_question": { "ko": "제품을 알아볼 때 어떤 AI를 사용했나요?", "en": "Which AI did you use to research the product?" },
       "options": [
-        { "code": "ai_chatgpt", "ko": "ChatGPT", "ja": "ChatGPT" },
-        { "code": "ai_gemini", "ko": "Gemini", "ja": "Gemini" },
-        { "code": "ai_claude", "ko": "Claude", "ja": "Claude" },
-        { "code": "ai_copilot", "ko": "Copilot", "ja": "Copilot" },
-        { "code": "ai_perplexity", "ko": "Perplexity", "ja": "Perplexity" },
-        { "code": "ai_search_overview", "ko": "검색엔진의 AI 요약", "ja": "検索エンジンのAI要約" },
-        { "code": "ai_other", "ko": "기타", "ja": "その他" },
-        { "code": "ai_none", "ko": "사용하지 않음", "ja": "使っていない" }
+        { "code": "ai_chatgpt", "ko": "ChatGPT", "en": "ChatGPT" },
+        { "code": "ai_gemini", "ko": "Gemini", "en": "Gemini" },
+        { "code": "ai_claude", "ko": "Claude", "en": "Claude" },
+        { "code": "ai_copilot", "ko": "Copilot", "en": "Copilot" },
+        { "code": "ai_perplexity", "ko": "Perplexity", "en": "Perplexity" },
+        { "code": "ai_search_overview", "ko": "검색엔진의 AI 요약", "en": "AI summary in a search engine" },
+        { "code": "ai_other", "ko": "기타", "en": "Other" },
+        { "code": "ai_none", "ko": "사용하지 않음", "en": "Didn't use one" }
       ]
     },
     "ai_question_raw": {
       "stage": "pre_offer", "type": "text", "required": false,
       "condition": "ai_service does not contain only ai_none",
-      "fallback_question": { "ko": "AI에게 실제로 어떻게 물어보셨나요? 기억나는 대로 적어 주세요.", "ja": "AIに実際どのように質問しましたか?覚えている範囲で書いてください。" }
+      "fallback_question": { "ko": "AI에게 실제로 어떻게 물어보셨나요? 기억나는 대로 적어 주세요.", "en": "How did you actually ask the AI? Write it as best you remember." }
     },
     "ai_candidates_raw": {
       "stage": "pre_offer", "type": "text_list", "required": false,
       "condition": "ai_service does not contain only ai_none",
-      "fallback_question": { "ko": "AI가 알려준 제품 이름을 기억나는 만큼 적어 주세요.", "ja": "AIが挙げた商品名を覚えている範囲で書いてください。" },
+      "fallback_question": { "ko": "AI가 알려준 제품 이름을 기억나는 만큼 적어 주세요.", "en": "Write down the product names the AI suggested, as many as you remember." },
       "note": "원문 그대로 저장. 제품 키 매핑은 검수자가 수행"
     },
     "verify_channels": {
       "stage": "pre_offer", "type": "multi", "required": false,
       "condition": "ai_service does not contain only ai_none",
-      "fallback_question": { "ko": "AI 답을 본 뒤 따로 확인한 곳이 있나요?", "ja": "AIの回答を見たあと、ほかに確認した所はありますか?" },
+      "fallback_question": { "ko": "AI 답을 본 뒤 따로 확인한 곳이 있나요?", "en": "After reading the AI's answer, did you check anywhere else?" },
       "options": [
-        { "code": "v_official", "ko": "공식 사이트", "ja": "公式サイト" },
-        { "code": "v_review_site", "ko": "리뷰 사이트·앱", "ja": "口コミサイト・アプリ" },
-        { "code": "v_marketplace", "ko": "쇼핑몰 상품 페이지", "ja": "通販サイトの商品ページ" },
-        { "code": "v_sns", "ko": "SNS·동영상", "ja": "SNS・動画" },
-        { "code": "v_store", "ko": "오프라인 매장", "ja": "店舗" },
-        { "code": "v_none", "ko": "확인하지 않음", "ja": "確認していない" }
+        { "code": "v_official", "ko": "공식 사이트", "en": "Official website" },
+        { "code": "v_review_site", "ko": "리뷰 사이트·앱", "en": "Review sites or apps" },
+        { "code": "v_marketplace", "ko": "쇼핑몰 상품 페이지", "en": "Online store product page" },
+        { "code": "v_sns", "ko": "SNS·동영상", "en": "Social media or video" },
+        { "code": "v_store", "ko": "오프라인 매장", "en": "In-store" },
+        { "code": "v_none", "ko": "확인하지 않음", "en": "Didn't check" }
       ]
     },
     "intent_scale": {
       "stage": "pre_offer", "type": "scale", "min": 1, "max": 5, "required": true,
-      "fallback_question": { "ko": "2주 안에 이 제품 종류를 살 가능성은 어느 정도인가요?", "ja": "2週間以内にこの種類の商品を買う可能性はどのくらいですか?" },
+      "fallback_question": { "ko": "2주 안에 이 제품 종류를 살 가능성은 어느 정도인가요?", "en": "How likely are you to buy this type of product within 2 weeks?" },
       "labels": {
-        "1": { "ko": "거의 없음", "ja": "ほとんどない" },
-        "3": { "ko": "반반", "ja": "半々" },
-        "5": { "ko": "거의 확실", "ja": "ほぼ確実" }
+        "1": { "ko": "거의 없음", "en": "Very unlikely" },
+        "3": { "ko": "반반", "en": "50/50" },
+        "5": { "ko": "거의 확실", "en": "Almost certain" }
       }
     },
     "leading_candidate_raw": {
       "stage": "pre_offer", "type": "text", "required": false,
       "condition": "intent_scale >= 3",
-      "fallback_question": { "ko": "지금 가장 마음이 가는 제품이 있다면 적어 주세요.", "ja": "今いちばん気になっている商品があれば書いてください。" }
+      "fallback_question": { "ko": "지금 가장 마음이 가는 제품이 있다면 적어 주세요.", "en": "If there's a product you're leaning toward right now, write it here." }
     },
     "planned_channel": {
       "stage": "pre_offer", "type": "single", "required": true,
-      "fallback_question": { "ko": "산다면 어디서 살 생각인가요?", "ja": "買うとしたらどこで買う予定ですか?" },
+      "fallback_question": { "ko": "산다면 어디서 살 생각인가요?", "en": "If you buy, where do you plan to buy it?" },
       "options_by_market": {
         "KR": [
           { "code": "ch_official", "ko": "브랜드 공식몰" },
@@ -185,54 +185,54 @@
           { "code": "ch_undecided", "ko": "아직 모름" },
           { "code": "ch_other", "ko": "기타" }
         ],
-        "JP": [
-          { "code": "ch_official", "ja": "ブランド公式サイト" },
-          { "code": "ch_qoo10", "ja": "Qoo10" },
-          { "code": "ch_amazon_jp", "ja": "Amazon" },
-          { "code": "ch_rakuten", "ja": "楽天市場" },
-          { "code": "ch_cosme", "ja": "@cosme SHOPPING" },
-          { "code": "ch_drugstore", "ja": "ドラッグストア" },
-          { "code": "ch_variety", "ja": "Loft・PLAZAなど" },
-          { "code": "ch_undecided", "ja": "まだ決めていない" },
-          { "code": "ch_other", "ja": "その他" }
+        "US": [
+          { "code": "ch_official", "en": "Brand's official site" },
+          { "code": "ch_amazon_us", "en": "Amazon" },
+          { "code": "ch_sephora", "en": "Sephora" },
+          { "code": "ch_ulta", "en": "Ulta Beauty" },
+          { "code": "ch_target", "en": "Target" },
+          { "code": "ch_yesstyle", "en": "YesStyle·Stylevana" },
+          { "code": "ch_tiktok_shop", "en": "TikTok Shop" },
+          { "code": "ch_undecided", "en": "Not sure yet" },
+          { "code": "ch_other", "en": "Other" }
         ]
       }
     },
     "outcome": {
       "stage": "post_offer", "type": "single", "required": true,
-      "fallback_question": { "ko": "결국 어떻게 하셨나요?", "ja": "最終的にどうしましたか?" },
+      "fallback_question": { "ko": "결국 어떻게 하셨나요?", "en": "What did you end up doing?" },
       "options": [
-        { "code": "out_bought_ai_candidate", "ko": "AI가 알려준 제품 중 하나를 샀다", "ja": "AIが挙げた商品の中から買った" },
-        { "code": "out_bought_other", "ko": "다른 제품을 샀다", "ja": "別の商品を買った" },
-        { "code": "out_not_bought", "ko": "사지 않았다", "ja": "買わなかった" },
-        { "code": "out_undecided", "ko": "아직 고민 중", "ja": "まだ迷っている" }
+        { "code": "out_bought_ai_candidate", "ko": "AI가 알려준 제품 중 하나를 샀다", "en": "Bought one of the products the AI suggested" },
+        { "code": "out_bought_other", "ko": "다른 제품을 샀다", "en": "Bought a different product" },
+        { "code": "out_not_bought", "ko": "사지 않았다", "en": "Didn't buy" },
+        { "code": "out_undecided", "ko": "아직 고민 중", "en": "Still deciding" }
       ]
     },
     "chosen_product_raw": {
       "stage": "post_offer", "type": "text", "required": false,
       "condition": "outcome in [out_bought_ai_candidate, out_bought_other]",
-      "fallback_question": { "ko": "실제로 산 제품 이름을 적어 주세요.", "ja": "実際に買った商品名を書いてください。" }
+      "fallback_question": { "ko": "실제로 산 제품 이름을 적어 주세요.", "en": "Write the name of the product you bought." }
     },
     "reason_codes": {
       "stage": "post_offer", "type": "multi", "required": true,
       "input": "reason_text (자유 답변) → Claude 분류 + 근거 구간",
       "source_spec": "착수 문서 5장: 가격·배송·판매처·제품 특성·기타",
-      "fallback_question": { "ko": "그렇게 결정한 이유를 편하게 적어 주세요.", "ja": "そう決めた理由を自由に書いてください。" },
+      "fallback_question": { "ko": "그렇게 결정한 이유를 편하게 적어 주세요.", "en": "Tell us in your own words why you decided that." },
       "options": [
-        { "code": "r_price", "ko": "가격", "ja": "価格" },
-        { "code": "r_shipping", "ko": "배송", "ja": "配送" },
-        { "code": "r_seller", "ko": "판매처", "ja": "販売店" },
-        { "code": "r_product", "ko": "제품 특성", "ja": "商品の特徴" },
-        { "code": "r_other", "ko": "기타", "ja": "その他" }
+        { "code": "r_price", "ko": "가격", "en": "Price" },
+        { "code": "r_shipping", "ko": "배송", "en": "Shipping" },
+        { "code": "r_seller", "ko": "판매처", "en": "Seller" },
+        { "code": "r_product", "ko": "제품 특성", "en": "Product features" },
+        { "code": "r_other", "ko": "기타", "en": "Other" }
       ]
     },
     "changed_after_offer": {
       "stage": "post_offer", "type": "single", "required": false,
       "condition": "offer_shown_at is not null",
-      "fallback_question": { "ko": "혜택 안내를 본 뒤 고르려던 제품이 바뀌었나요?", "ja": "特典の案内を見たあと、選ぶ商品は変わりましたか?" },
+      "fallback_question": { "ko": "혜택 안내를 본 뒤 고르려던 제품이 바뀌었나요?", "en": "After seeing the offer, did the product you planned to pick change?" },
       "options": [
-        { "code": "chg_yes", "ko": "바뀌었다", "ja": "変わった" },
-        { "code": "chg_no", "ko": "바뀌지 않았다", "ja": "変わらなかった" }
+        { "code": "chg_yes", "ko": "바뀌었다", "en": "Yes, it changed" },
+        { "code": "chg_no", "ko": "바뀌지 않았다", "en": "No, it didn't change" }
       ]
     }
   },

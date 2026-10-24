@@ -2,13 +2,13 @@
 
 버전 v0.1 (초안) | 2026-10-24 | 기준 문서: [K_Brand_GEO_Demo_Kickoff_20261024.md](K_Brand_GEO_Demo_Kickoff_20261024.md)
 
-소비자 제출의 ‘원래 고민’(pre_offer)과 API 테스트 질문집을 같은 기준으로 분류하기 위한 체계다. 본 문서의 분류·코드는 개발용 초안이며, 일본어 표시명은 현지 언어 검수 전이다.
+소비자 제출의 ‘원래 고민’(pre_offer)과 API 테스트 질문집을 같은 기준으로 분류하기 위한 체계다. 본 문서의 분류·코드는 개발용 초안이며, 영어 표시명은 현지 언어 검수 전이다.
 
 ## 1 설계 원칙
 
 1. **두 축 분리.** 무엇을 사는가(축 A 제품 유형)와 왜 찾는가(축 B 구매 기준·고민)를 별도로 기록한다. “민감 피부용 토너” 같은 결합 항목을 만들지 않는다.
 2. **구매 의도 ID 공유.** 축 B의 각 항목은 질문집([data/question-set-v1.json](../data/question-set-v1.json))의 구매 의도 ID(01~15)에 매핑한다. 이 매핑으로 API 테스트와 소비자 제출을 의도 단위로 나란히 본다(착수 문서 12장).
-3. **고정 코드 + 다국어 표시명.** 저장·집계는 코드로 하고, 화면에는 한국어·일본어·영어 표시명을 쓴다. 표시명을 바꿔도 코드는 바꾸지 않는다.
+3. **고정 코드 + 다국어 표시명.** 저장·집계는 코드로 하고, 화면에는 한국어·영어 표시명을 쓴다. 표시명을 바꿔도 코드는 바꾸지 않는다.
 4. **P0는 토너만 활성.** 나머지 제품 유형은 코드만 정의하고 화면에 노출하지 않는다.
 5. **효능이 아니라 진술로 기록.** 축 B는 소비자가 말한 고민이다. 제품이 그 고민에 맞는지, 효능이 있는지 판정하지 않는다(착수 문서 12장: 피부 적합성·의료적 효능 판정 도구로 확장하지 않음).
 
@@ -18,87 +18,87 @@
 
 `active`는 소비자가 선택할 수 있는지를 뜻한다. P0에서는 `SK-TONER`와 `SK-PAD`만 선택할 수 있다. `SK-PAD`는 별도 코드이지만 토너 캠페인 안의 선택지로 함께 받는다(5장 결정 사항 1). 비활성 유형은 화면에 “준비 중”으로 흐리게 표시하며 선택할 수 없다.
 
-| 대분류 | 중분류 코드 | 한국어 | 日本語 | English | P0 active |
-| --- | --- | --- | --- | --- | --- |
-| SK 스킨케어 | `SK-TONER` | 토너·스킨 | 化粧水 | Toner | ✅ |
-| | `SK-PAD` | 토너패드 | 拭き取りパッド・トナーパッド | Toner pad | ✅ (토너 캠페인 내) |
-| | `SK-MIST` | 미스트 | ミスト化粧水 | Face mist | |
-| | `SK-SERUM` | 에센스·세럼·앰플 | 美容液 | Essence / Serum / Ampoule | |
-| | `SK-EMUL` | 로션·에멀전 | 乳液 | Emulsion | |
-| | `SK-CREAM` | 크림 | クリーム | Cream | |
-| | `SK-EYE` | 아이크림 | アイクリーム | Eye cream | |
-| | `SK-OIL` | 페이스 오일 | フェイスオイル | Face oil | |
-| | `SK-AIO` | 올인원 | オールインワン | All-in-one | |
-| CL 클렌징 | `CL-OIL` | 클렌징 오일·밤 | クレンジングオイル・バーム | Cleansing oil / balm | |
-| | `CL-WATER` | 클렌징 워터 | クレンジングウォーター | Cleansing water | |
-| | `CL-FOAM` | 클렌징 폼 | 洗顔フォーム | Foam cleanser | |
-| | `CL-PEEL` | 필링·각질 제거 | ピーリング | Peeling | |
-| SU 선케어 | `SU-CREAM` | 선크림 | 日焼け止めクリーム | Sunscreen | |
-| | `SU-STICK` | 선스틱 | 日焼け止めスティック | Sun stick | |
-| | `SU-TONEUP` | 톤업 선크림 | トーンアップUV | Tone-up sunscreen | |
-| MA 마스크·팩 | `MA-SHEET` | 시트 마스크 | シートマスク | Sheet mask | |
-| | `MA-WASH` | 워시오프 팩 | 洗い流すパック | Wash-off mask | |
-| | `MA-SLEEP` | 슬리핑 팩 | スリーピングパック | Sleeping mask | |
-| BM 베이스 메이크업 | `BM-CUSHION` | 쿠션 | クッションファンデ | Cushion | |
-| | `BM-FOUND` | 파운데이션 | ファンデーション | Foundation | |
-| | `BM-PRIMER` | 프라이머 | 化粧下地 | Primer | |
-| | `BM-CONCEAL` | 컨실러 | コンシーラー | Concealer | |
-| | `BM-POWDER` | 파우더 | パウダー | Powder | |
-| CM 색조 메이크업 | `CM-LIP` | 립(틴트 등) | リップ・ティント | Lip | |
-| | `CM-EYE` | 아이 | アイメイク | Eye makeup | |
-| | `CM-CHEEK` | 치크 | チーク | Cheek | |
-| — | `OTHER` | 기타(직접 입력) | その他 | Other | ✅ |
+| 대분류 | 중분류 코드 | 한국어 | English | P0 active |
+| --- | --- | --- | --- | --- |
+| SK 스킨케어 | `SK-TONER` | 토너·스킨 | Toner | ✅ |
+| | `SK-PAD` | 토너패드 | Toner pad | ✅ (토너 캠페인 내) |
+| | `SK-MIST` | 미스트 | Face mist | |
+| | `SK-SERUM` | 에센스·세럼·앰플 | Essence / serum / ampoule | |
+| | `SK-EMUL` | 로션·에멀전 | Lotion / emulsion | |
+| | `SK-CREAM` | 크림 | Cream | |
+| | `SK-EYE` | 아이크림 | Eye cream | |
+| | `SK-OIL` | 페이스 오일 | Face oil | |
+| | `SK-AIO` | 올인원 | All-in-one | |
+| CL 클렌징 | `CL-OIL` | 클렌징 오일·밤 | Cleansing oil / balm | |
+| | `CL-WATER` | 클렌징 워터 | Cleansing water | |
+| | `CL-FOAM` | 클렌징 폼 | Foam cleanser | |
+| | `CL-PEEL` | 필링·각질 제거 | Peeling | |
+| SU 선케어 | `SU-CREAM` | 선크림 | Sunscreen | |
+| | `SU-STICK` | 선스틱 | Sun stick | |
+| | `SU-TONEUP` | 톤업 선크림 | Tone-up sunscreen | |
+| MA 마스크·팩 | `MA-SHEET` | 시트 마스크 | Sheet mask | |
+| | `MA-WASH` | 워시오프 팩 | Wash-off mask | |
+| | `MA-SLEEP` | 슬리핑 팩 | Sleeping mask | |
+| BM 베이스 메이크업 | `BM-CUSHION` | 쿠션 | Cushion | |
+| | `BM-FOUND` | 파운데이션 | Foundation | |
+| | `BM-PRIMER` | 프라이머 | Primer | |
+| | `BM-CONCEAL` | 컨실러 | Concealer | |
+| | `BM-POWDER` | 파우더 | Powder | |
+| CM 색조 메이크업 | `CM-LIP` | 립(틴트 등) | Lip / tint | |
+| | `CM-EYE` | 아이 | Eye makeup | |
+| | `CM-CHEEK` | 치크 | Cheek | |
+| — | `OTHER` | 기타(직접 입력) | Other | ✅ |
 
-바디·헤어는 초기 범위(일본 K뷰티 토너 캠페인) 밖이므로 정의하지 않는다.
+바디·헤어는 초기 범위(미국 K뷰티 토너 캠페인) 밖이므로 정의하지 않는다.
 
 ### 2.2 토너 속성 태그 (P0)
 
 토너는 하위 유형으로 더 나누지 않고 속성 태그로 구분한다. 소비자는 아는 것만 고르며, 모든 속성은 선택 사항이다.
 
-| 속성 키 | 값 코드 | 한국어 | 日本語 |
+| 속성 키 | 값 코드 | 한국어 | English |
 | --- | --- | --- | --- |
-| `texture` | `water` | 워터(묽은) 타입 | さっぱり・水タイプ |
-| | `essence` | 에센스(점도 있는) 타입 | とろみタイプ |
-| | `pad` | 패드 | パッド |
-| | `mist` | 미스트 | ミスト |
-| `usage` | `absorb` | 흡수용 | なじませる |
-| | `wipe` | 닦아내기용 | 拭き取り |
-| | `layering` | 여러 번 레이어링 | 重ね付け |
-| | `pack` | 토너팩(화장솜 팩) | ローションパック |
-| `size` | `mini` | 소용량·미니 | ミニサイズ |
-| | `regular` | 일반 | 通常サイズ |
-| | `large` | 대용량 | 大容量 |
-| | `refill` | 리필 | 詰め替え |
-| `jp_class` | `cosmetic` | 일반 화장품 | 化粧品 |
-| | `quasi_drug` | 의약부외품(약용) | 医薬部外品(薬用) |
+| `texture` | `water` | 워터(묽은) 타입 | Watery |
+| | `essence` | 에센스(점도 있는) 타입 | Essence-like (slightly thick) |
+| | `pad` | 패드 | Pad |
+| | `mist` | 미스트 | Mist |
+| `usage` | `absorb` | 흡수용 | Pat in |
+| | `wipe` | 닦아내기용 | Wipe off |
+| | `layering` | 여러 번 레이어링 | Layering |
+| | `pack` | 토너팩(화장솜 팩) | Toner mask (soaked cotton pads) |
+| `size` | `mini` | 소용량·미니 | Mini / travel size |
+| | `regular` | 일반 | Regular size |
+| | `large` | 대용량 | Large size |
+| | `refill` | 리필 | Refill |
+| `us_class` | `cosmetic` | 일반 화장품 | Cosmetic |
+| | `otc_drug` | 일반의약품(OTC) | OTC drug |
 
-`jp_class`는 일본 판매 상품의 표시·광고 표현 범위가 달라지는 구분이다. 소비자 입력이 아니라 Product 엔터티(착수 문서 9장)에 공식 상품 정보로 등록하는 값이며, 근거 URL 없이 저장하지 않는다.
+`us_class`는 미국 판매 상품이 FDA 기준으로 일반 화장품(cosmetic, MoCRA 적용 대상)인지 OTC 의약품(예: 미국에서는 자외선 차단제가 OTC 의약품으로 분류됨)인지에 따라 표시·광고 표현 범위가 달라지는 구분이다. 토너가 어느 쪽에 해당하는지는 제품별 성분·효능 표방에 따라 달라질 수 있으므로 확정값이 아니라 검토 항목으로 둔다. 소비자 입력이 아니라 Product 엔터티(착수 문서 9장)에 공식 상품 정보로 등록하는 값이며, 근거 URL 없이 저장하지 않는다.
 
 ## 3 축 B. 구매 기준·고민
 
 복수 선택이다. 단, 피부 타입(`skin_dry`·`skin_oily`·`skin_combo`·`skin_unknown`)은 그중 하나만 고를 수 있고 `skin_sensitive`는 함께 고를 수 있다. 코드는 화면 선택지 단위이고, `intent_id`는 질문집 매핑이다. 서로 다른 선택지가 같은 `intent_id`를 가질 수 있다(06).
 
-| 그룹 | 선택지 코드 | 한국어 | 日本語 | intent_id |
+| 그룹 | 선택지 코드 | 한국어 | English | intent_id |
 | --- | --- | --- | --- | --- |
-| 피부 타입 | `skin_sensitive` | 민감성 | 敏感肌 | 01 |
-| | `skin_dry` | 건성(건조함) | 乾燥肌 | 04 |
-| | `skin_oily` | 지성 | 脂性肌 | 06 |
-| | `skin_combo` | 복합성 | 混合肌 | 07 |
-| | `skin_unknown` | 잘 모름 | わからない | — |
-| 피하고 싶은 성분 | `avoid_fragrance` | 향료 | 香料 | 02 |
-| | `avoid_ethanol` | 에탄올 | エタノール | 03 |
-| | `avoid_other` | 기타(직접 입력) | その他 | — |
-| 사용감 | `feel_nonsticky` | 끈적임 적음 | べたつきが少ない | 05 |
-| | `feel_light` | 가벼운 사용감 | 軽い使用感 | 06 |
-| 사용 상황 | `use_premakeup` | 화장 전 | メイク前 | 08 |
-| | `use_night` | 저녁 보습 | 夜の保湿 | 09 |
-| | `use_beginner` | 스킨케어 입문 | スキンケア初心者 | 10 |
-| 가격·용량 | `price_per_volume` | 용량당 가격 | 容量当たりの価格 | 11 |
-| | `size_trial` | 소용량으로 먼저 써보기 | 少量サイズで試したい | 12 |
-| | `size_refill` | 리필·대용량 | 詰め替え・大容量 | 13 |
-| 구매 정보 | `buy_official` | 공식 판매처·배송 확인 | 公式販売店・配送 | 14 |
-| | `info_local_lang` | 현지어 전성분·사용법 | 現地語の全成分・使用方法 | 15 |
-| 기타 | `other` | 직접 입력 | その他(自由記述) | — |
+| 피부 타입 | `skin_sensitive` | 민감성 | Sensitive | 01 |
+| | `skin_dry` | 건성(건조함) | Dry | 04 |
+| | `skin_oily` | 지성 | Oily | 06 |
+| | `skin_combo` | 복합성 | Combination | 07 |
+| | `skin_unknown` | 잘 모름 | Not sure | — |
+| 피하고 싶은 성분 | `avoid_fragrance` | 향료 | Fragrance | 02 |
+| | `avoid_ethanol` | 에탄올 | Alcohol (ethanol) | 03 |
+| | `avoid_other` | 기타(직접 입력) | Other ingredients | — |
+| 사용감 | `feel_nonsticky` | 끈적임 적음 | Not sticky | 05 |
+| | `feel_light` | 가벼운 사용감 | Lightweight feel | 06 |
+| 사용 상황 | `use_premakeup` | 화장 전 | Before makeup | 08 |
+| | `use_night` | 저녁 보습 | Night-time hydration | 09 |
+| | `use_beginner` | 스킨케어 입문 | New to skincare | 10 |
+| 가격·용량 | `price_per_volume` | 용량당 가격 | Price per volume | 11 |
+| | `size_trial` | 소용량으로 먼저 써보기 | Try a small size first | 12 |
+| | `size_refill` | 리필·대용량 | Refill or large size | 13 |
+| 구매 정보 | `buy_official` | 공식 판매처·배송 확인 | Official seller and shipping | 14 |
+| | `info_local_lang` | 현지어 전성분·사용법 | Full ingredients and directions in my language | 15 |
+| 기타 | `other` | 직접 입력 | Other (free text) | — |
 
 ### 3.1 질문집에 없는 고민
 
@@ -120,7 +120,7 @@
 - 보기를 고르면 `concern_codes`의 `skin_unknown`을 결과 선택지로 바꾸고, `skin_type_source`=`guided`, `skin_guide_answer`=답 코드로 저장한다.
 - 이 질문은 유분 기준이라 민감성을 판단하지 않는다. `skin_sensitive`는 피부 타입과 함께 따로 고를 수 있다.
 - 질문은 건너뛸 수 있다. 건너뛰면 `skin_unknown`을 유지한다.
-- 일본어 문구는 현지 언어 검수 대상이다.
+- 영어 문구는 현지 언어 검수 대상이다.
 
 ### 3.3 질문집 매핑 확인
 
@@ -166,7 +166,7 @@
 | # | 항목 | 현재 결정 | 상태 |
 | --- | --- | --- | --- |
 | 1 | 토너패드를 토너에 포함할지 | 별도 코드 `SK-PAD`로 두되 P0 토너 캠페인에서 함께 받는다. 집계는 `SK-TONER`와 분리해 표시 | 결정 |
-| 2 | “토너” ↔ “化粧水” 대응 | 일본의 化粧水는 범위가 넓고 乳液·ローション과 경계가 겹친다. 일본어 표시명 전체를 현지 언어 검수 | 보류 (현재 표시명으로 진행) |
+| 2 | “토너” ↔ “toner” 대응 | 영어권에서 “toner”는 수렴·각질 제거용(astringent, exfoliating toner)을 떠올리게 할 수 있고, K뷰티의 보습형 토너는 “essence”·“hydrating toner”·“lotion”(아시아 브랜드가 묽은 화장수를 부르는 표현)과 경계가 겹친다. 영어 표시명 전체를 현지 언어 검수 | 보류 (현재 표시명으로 진행) |
 | 3 | `skin_unknown` 처리 | 유지하되, 고르면 3.2 유도 질문으로 피부 타입 선택을 돕는다. 유도로 고른 값은 `skin_type_source`로 구분 | 결정 |
 | 4 | 질문집에 없는 고민의 편입 | 자유 입력 검수 후 질문집 v2에서 검토. 데모 중 코드 추가 없음 | 결정 |
-| 5 | `jp_class` 입력 주체 | 소비자가 아니라 공식 상품 정보 등록 시 근거 URL과 함께 | 결정 |
+| 5 | `us_class` 입력 주체 | 소비자가 아니라 공식 상품 정보 등록 시 근거 URL과 함께. cosmetic/OTC 구분 자체는 제품별 검토 항목 | 결정 |

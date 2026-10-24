@@ -14,19 +14,20 @@
 
   <header class="top">
     <span class="wordmark">Sieve</span>
-    <ol class="steps" aria-label="참여 단계" id="steps">
-      <li>제품 종류</li>
-      <li>원래 고민</li>
-      <li>대화 공유</li>
-      <li>확인</li>
-    </ol>
+    <div class="top-right">
+      <ol class="steps" aria-label="참여 단계" id="steps"></ol>
+      <div class="lang-switch" role="group" aria-label="언어 선택 · Language">
+        <button type="button" lang="ko" aria-pressed="true">한국어</button>
+        <button type="button" lang="en" aria-pressed="false">English</button>
+      </div>
+    </div>
   </header>
 
-  <main class="page" id="step-product" data-step="1">
+  <main class="page" id="step-product">
     <section class="intro">
       <h1>어떤 화장품을<br>찾고 있었나요?</h1>
-      <p>AI에게 물어보며 알아본 제품 종류를 하나 골라 주세요.
-        사지 않았거나 다른 브랜드를 골랐어도 보상은 같아요.</p>
+      <p>제품 종류를 하나 고른 뒤, AI로 알아본 구매 과정을 공유하거나
+        제품 추천을 받을 수 있어요.</p>
     </section>
 
     <nav class="groups" aria-label="제품 분류" id="groups"></nav>
@@ -42,7 +43,57 @@
     </details>
   </main>
 
-  <main class="page" id="step-concern" data-step="2" hidden>
+  <main class="page" id="step-paste" hidden>
+    <section class="intro">
+      <h1>AI와 나눈 대화를<br>붙여 넣어 주세요</h1>
+      <p>ChatGPT·Gemini 같은 AI에게 제품을 물어본 대화를 복사해서 아래에 붙여 넣어 주세요.
+        사지 않았거나 다른 브랜드를 골랐어도 조사 보상은 같아요.</p>
+    </section>
+
+    <section class="block">
+      <h2><label for="ai-excerpt">구매 과정 대화</label></h2>
+      <ol class="howto">
+        <li>AI 앱이나 웹에서 제품을 물어본 대화를 열어요.</li>
+        <li>내 질문과 AI 답변 중 제품을 비교·추천한 부분을 길게 눌러 복사해요.</li>
+        <li>여기에 붙여 넣어요. 여러 번 나눠 붙여도 괜찮아요.</li>
+      </ol>
+      <textarea id="ai-excerpt" class="paste" rows="12" maxlength="8000"
+        placeholder="나: 지성 피부인데 끈적이지 않는 토너 추천해 줘&#10;AI: 끈적임이 적은 토너로는 다음 세 가지를 비교해 볼 수 있어요…"></textarea>
+      <div class="paste-meta">
+        <p class="hint">쇼핑과 관계없는 대화나 이름·연락처·주소·주문번호는 지우거나 ***로 가려 주세요.</p>
+        <span class="count" id="paste-count">0 / 8,000자</span>
+      </div>
+      <p class="pii-warning" id="pii-warning" role="alert" hidden></p>
+    </section>
+  </main>
+
+  <main class="page" id="step-recommend" hidden>
+    <section class="intro intro-concern">
+      <div class="picked-product" id="recommend-product"></div>
+      <div>
+        <h1 id="recommend-title">추천을 위해<br>몇 가지 여쭤볼게요</h1>
+        <p>버튼을 누르거나 편하게 적어서 답해 주세요. 한 번에 하나씩 물어볼게요.</p>
+      </div>
+    </section>
+
+    <section class="chat" aria-label="추천 대화">
+      <ol class="chat-log" id="chat-log" aria-live="polite"></ol>
+      <div class="chat-options" id="chat-options"></div>
+      <form class="composer" id="composer" autocomplete="off">
+        <label class="visually-hidden" for="chat-input">답 적기</label>
+        <textarea id="chat-input" rows="1" maxlength="1000" placeholder="편하게 적어 주세요"></textarea>
+        <button type="submit" class="send" id="chat-send">보내기</button>
+      </form>
+      <div class="chat-tools">
+        <button type="button" class="link" id="chat-skip">이 질문 건너뛰기</button>
+        <button type="button" class="link" id="chat-restart">처음부터 다시</button>
+        <button type="button" class="link" id="to-share">대신 구매 과정 공유하기</button>
+      </div>
+      <p class="chat-error" id="chat-error" role="alert" hidden></p>
+    </section>
+  </main>
+
+  <main class="page" id="step-concern" hidden>
     <section class="intro intro-concern">
       <div class="picked-product" id="picked-product"></div>
       <div>
@@ -67,11 +118,10 @@
       혜택 안내는 그다음에 보여 드려요.</p>
   </main>
 
-  <main class="page" id="step-share" data-step="3" hidden>
+  <main class="page" id="step-share" hidden>
     <section class="intro">
-      <h1>AI와 나눈 대화를<br>알려 주세요</h1>
-      <p>기억나는 만큼만 적어도 괜찮아요. 쇼핑과 관계없는 대화나
-        이름·연락처·주소·주문번호는 빼 주세요.</p>
+      <h1>AI 답을<br>정리해 주세요</h1>
+      <p>붙여 넣은 대화를 보며 아래 항목을 골라 주세요. 기억나는 만큼만 적어도 괜찮아요.</p>
     </section>
 
     <section class="block">
@@ -101,13 +151,6 @@
       </section>
 
       <section class="block">
-        <h2><label for="ai-excerpt">대화에서 필요한 부분 (선택)</label></h2>
-        <p class="hint">AI 답변 중 제품을 비교하거나 추천한 부분만 붙여 넣어 주세요.</p>
-        <textarea id="ai-excerpt" rows="6" maxlength="4000"></textarea>
-        <p class="pii-warning" id="pii-warning" role="alert" hidden></p>
-      </section>
-
-      <section class="block">
         <h2>AI 답을 본 뒤 따로 확인한 곳</h2>
         <p class="hint">여러 개를 고를 수 있어요.</p>
         <div class="chips" id="verify-channels"></div>
@@ -132,7 +175,7 @@
     </section>
   </main>
 
-  <main class="page" id="step-confirm" data-step="4" hidden>
+  <main class="page" id="step-confirm" hidden>
     <section class="intro">
       <h1 id="confirm-title">이대로 기록할까요?</h1>
       <p id="confirm-lead">확인하면 지금까지 적은 내용이 잠기고, 그 뒤에는 고칠 수 없어요.
@@ -155,7 +198,8 @@
   <footer class="dock">
     <button class="back" id="back" type="button" hidden>이전</button>
     <p class="picked" id="picked">아직 고르지 않았어요</p>
-    <button class="next" id="next" type="button" disabled>다음: 원래 고민 고르기</button>
+    <button class="next next-alt" id="next-alt" type="button" hidden disabled>제품 추천 받기</button>
+    <button class="next" id="next" type="button" disabled>구매 과정 공유하기</button>
   </footer>
 
 

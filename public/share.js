@@ -17,7 +17,7 @@ let book;
 let onChange = () => {};
 
 const usedAI = () => share.ai.size > 0 && !share.ai.has("ai_none");
-const label = (opt) => opt[LANG] ?? opt.ja ?? opt.code;
+const label = (opt) => opt[LANG] ?? opt.en ?? opt.code;
 
 export async function initShare(changed) {
   onChange = changed;
@@ -121,14 +121,28 @@ function bind() {
   });
   $("ai-other").addEventListener("input", (e) => { share.aiOther = e.target.value.trim(); onChange(); });
   $("ai-question").addEventListener("input", (e) => { share.question = e.target.value.trim(); });
-  $("ai-excerpt").addEventListener("input", (e) => { share.excerpt = e.target.value; piiCheck(e.target.value); onChange(); });
+  $("ai-excerpt").addEventListener("input", (e) => {
+    share.excerpt = e.target.value;
+    piiCheck(e.target.value);
+    $("paste-count").textContent = `${e.target.value.length.toLocaleString()} / 8,000자`;
+    onChange();
+  });
   $("leading-input").addEventListener("input", (e) => { share.leading = e.target.value.trim(); renderLeading(); });
+}
+
+// 대화 붙여넣기 단계. 짧은 메모가 아니라 대화 원문이 들어오도록 최소 길이를 둔다.
+export const PASTE_MIN = 20;
+export function pasteProblem() {
+  const len = share.excerpt.trim().length;
+  if (!len) return "대화를 붙여 넣어 주세요";
+  if (len < PASTE_MIN) return `조금 더 붙여 넣어 주세요 (${PASTE_MIN}자 이상)`;
+  if (!$("pii-warning").hidden) return "개인정보처럼 보이는 내용을 가려 주세요";
+  return null;
 }
 
 export function shareProblem() {
   if (!share.ai.size) return "사용한 AI를 골라 주세요";
   if (share.ai.has("ai_other") && !share.aiOther) return "어떤 AI였는지 적어 주세요";
-  if (usedAI() && !$("pii-warning").hidden) return "개인정보처럼 보이는 내용을 가려 주세요";
   if (share.intent === null) return "구매 가능성을 골라 주세요";
   if (!share.channel) return "살 곳을 골라 주세요";
   return null;
@@ -163,11 +177,10 @@ export function shareSummary() {
     const opts = s[slot].options ?? s[slot].options_by_market[MARKET];
     return label(opts.find((o) => o.code === code));
   };
-  const out = [["사용한 AI", [...share.ai].map((c) => c === "ai_other" ? `기타(${share.aiOther})` : name("ai_service", c)).join(", ")]];
+  const out = [["붙여 넣은 대화", `${share.excerpt.trim().length.toLocaleString()}자`], ["사용한 AI", [...share.ai].map((c) => c === "ai_other" ? `기타(${share.aiOther})` : name("ai_service", c)).join(", ")]];
   if (usedAI()) {
     out.push(["AI에게 한 질문", share.question || "적지 않음"]);
     out.push(["AI가 알려준 제품", share.candidates.join(", ") || "적지 않음"]);
-    out.push(["붙여 넣은 대화", share.excerpt.trim() ? `${share.excerpt.trim().length}자` : "없음"]);
     out.push(["따로 확인한 곳", [...share.verify].map((c) => name("verify_channels", c)).join(", ") || "고르지 않음"]);
   }
   const sl = s.intent_scale.labels[share.intent];
@@ -179,4 +192,5 @@ export function shareSummary() {
 
 export function setShareLocked(locked) {
   $("step-share").querySelectorAll("button, input, textarea").forEach((el) => (el.disabled = locked));
+  $("ai-excerpt").disabled = locked;
 }

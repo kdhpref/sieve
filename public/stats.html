@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sieve: 소비자 제출 정량 집계</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/interview.css">
+</head>
+<body>
+  <div class="test-banner" role="note" id="banner"></div>
+
+  <header class="top wrap wide">
+    <a class="wordmark" href="/stats.html">Sieve<small>소비자 제출(자기보고) 정량 집계</small></a>
+    <nav>
+      <a href="/interview.html">인터뷰</a>
+      <a href="/stats.html" aria-current="page">정량 집계</a>
+    </nav>
+  </header>
+
+  <main class="wrap wide">
+    <div class="actions" style="margin-top:.5rem">
+      <div class="tabs" role="group" aria-label="데이터 구분" id="dataset">
+        <button type="button" data-ds="internal" aria-pressed="true">내부 테스트</button>
+        <button type="button" data-ds="real" aria-pressed="false">실제 참여자</button>
+      </div>
+      <button class="btn ghost" type="button" id="reload">새로고침</button>
+    </div>
+    <div id="out" aria-live="polite"></div>
+  </main>
+
+  <aside class="drawer" id="drawer" hidden aria-label="원문 근거"></aside>
+  <div class="tip" id="tip" hidden></div>
+
+  <script type="module" src="/stats.js"></script>
+</body>
+</html>

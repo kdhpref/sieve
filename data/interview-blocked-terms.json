@@ -1,0 +1,9 @@
+{
+  "note": "pre_offer 질문 문장에 들어가면 안 되는 브랜드·제품 별칭. sieve.db 프로젝트 prj-toner-demo의 등록 브랜드(라운드랩·아누아·토리든)와 제품 별칭에서 복사했다. 프로젝트 설정이 바뀌면 함께 갱신한다.",
+  "source_project_id": "prj-toner-demo",
+  "terms": [
+    "라운드랩", "ROUND LAB", "Round Lab", "독도 토너", "Dokdo Toner",
+    "아누아", "Anua", "어성초 토너", "Heartleaf 77",
+    "토리든", "Torriden", "다이브인 토너", "DIVE-IN Toner"
+  ]
+}
