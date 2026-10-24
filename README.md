@@ -12,7 +12,7 @@ OpenAI·Anthropic·Google의 "도구형 비서"와 달리, sieve는 에이전트
 
 | 문서 | 내용 |
 | --- | --- |
-| [K_Brand_GEO_Demo_Kickoff_20261024.md](docs/K_Brand_GEO_Demo_Kickoff_20261024.md) | K 브랜드 AI 검색 가시성 모니터 데모 개발 착수 보고서 (에이전트 기준 문서) |
+| [K_Brand_GEO_Demo_Kickoff_20261024.md](docs/K_Brand_GEO_Demo_Kickoff_20261024.md) | Sieve K뷰티 AI 구매 과정 분석: 사업 구조(보상형 소비자 제출)와 데모 착수 보고서 v2.0 (에이전트 기준 문서) |
 
 ## 추천 근거 추적 데모 실행
 
