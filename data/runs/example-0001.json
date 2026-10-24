@@ -1,0 +1,301 @@
+{
+  "run_id": "example-0001",
+  "data_kind": "example",
+  "status": "succeeded",
+  "created_at": "2026-10-24T00:00:00.000Z",
+  "finished_at": "2026-10-24T00:00:00.000Z",
+  "question": {
+    "question_id": "q01-ko",
+    "intent_id": "01",
+    "language": "ko",
+    "country": "KR",
+    "version": "v1",
+    "text": "한국에서 구매할 수 있는 한국 브랜드 토너 중에서 민감한 피부를 고려한 제품을 비교해줘. 후보 3개와 비교 이유를 알려줘."
+  },
+  "settings": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "web_search_tool": "web_search_20260209",
+    "max_uses": 3,
+    "max_tokens": 4000,
+    "user_location": {
+      "type": "approximate",
+      "country": "KR"
+    },
+    "request_timeout_ms": 90000,
+    "max_pause_continues": 3
+  },
+  "collection": {
+    "collected_at": null,
+    "model_id": "(예시 — 수집 안 함)",
+    "stop_reason": "end_turn",
+    "latency_ms": null,
+    "usage": null,
+    "sha256": null,
+    "raw_responses": []
+  },
+  "parsed": {
+    "text": "민감 피부용 토너를 확인하기 위해 검색해 보겠습니다.\n\n민감한 피부를 고려한 한국 브랜드 토너 후보 3개입니다. 나열 순서는 우열을 뜻하지 않습니다.\n\n1. **예시 브랜드 A 카밍 토너**\n무향료이며 피부 자극 테스트를 완료했다고 공식몰에 표기되어 있어 민감 피부에 먼저 고려할 만합니다. 리뷰 비교에서도 자극이 적다는 평가가 많았습니다.\n\n2. **예시 브랜드 B 하이드라 토너**\n보습 성분 중심의 처방으로 건조함을 함께 느끼는 민감 피부에 적합하다고 소개됩니다. 다만 에탄올 함유 여부는 확인되지 않았습니다.\n\n3. **예시 브랜드 C 약산성 토너**\n약산성 pH를 표기하고 있으며 가격대가 낮아 처음 시도하기 좋습니다.\n\n참고로 예시 브랜드 D 토너는 향료가 포함되어 있어 향료를 피하려는 경우 권하지 않습니다.",
+    "segments": [
+      {
+        "id": "s1",
+        "text": "민감 피부용 토너를 확인하기 위해 검색해 보겠습니다.",
+        "start": 0,
+        "end": 29,
+        "citation_ids": []
+      },
+      {
+        "id": "s2",
+        "text": "\n\n민감한 피부를 고려한 한국 브랜드 토너 후보 3개입니다. 나열 순서는 우열을 뜻하지 않습니다.\n\n1. **예시 브랜드 A 카밍 토너**\n",
+        "start": 29,
+        "end": 107,
+        "citation_ids": []
+      },
+      {
+        "id": "s3",
+        "text": "무향료이며 피부 자극 테스트를 완료했다고 공식몰에 표기되어 있어 민감 피부에 먼저 고려할 만합니다.",
+        "start": 107,
+        "end": 162,
+        "citation_ids": [
+          "c1"
+        ]
+      },
+      {
+        "id": "s4",
+        "text": " 리뷰 비교에서도 자극이 적다는 평가가 많았습니다.",
+        "start": 162,
+        "end": 190,
+        "citation_ids": [
+          "c2"
+        ]
+      },
+      {
+        "id": "s5",
+        "text": "\n\n2. **예시 브랜드 B 하이드라 토너**\n",
+        "start": 190,
+        "end": 216,
+        "citation_ids": []
+      },
+      {
+        "id": "s6",
+        "text": "보습 성분 중심의 처방으로 건조함을 함께 느끼는 민감 피부에 적합하다고 소개됩니다.",
+        "start": 216,
+        "end": 262,
+        "citation_ids": [
+          "c3"
+        ]
+      },
+      {
+        "id": "s7",
+        "text": " 다만 에탄올 함유 여부는 확인되지 않았습니다.",
+        "start": 262,
+        "end": 288,
+        "citation_ids": []
+      },
+      {
+        "id": "s8",
+        "text": "\n\n3. **예시 브랜드 C 약산성 토너**\n",
+        "start": 288,
+        "end": 313,
+        "citation_ids": []
+      },
+      {
+        "id": "s9",
+        "text": "약산성 pH를 표기하고 있으며 가격대가 낮아 처음 시도하기 좋습니다.",
+        "start": 313,
+        "end": 351,
+        "citation_ids": [
+          "c4",
+          "c5"
+        ]
+      },
+      {
+        "id": "s10",
+        "text": "\n\n참고로 예시 브랜드 D 토너는 향료가 포함되어 있어 향료를 피하려는 경우 권하지 않습니다.",
+        "start": 351,
+        "end": 403,
+        "citation_ids": [
+          "c6"
+        ]
+      }
+    ],
+    "citations": [
+      {
+        "id": "c1",
+        "url": "https://shop-a.example.com/toner/calm",
+        "title": "예시 브랜드 A 카밍 토너 | 공식몰",
+        "cited_text": "무향료, 피부 자극 테스트 완료",
+        "domain": "shop-a.example.com",
+        "in_search_results": true
+      },
+      {
+        "id": "c2",
+        "url": "https://review-site.example.net/sensitive-toner-2026",
+        "title": "2026 민감 피부 토너 비교 리뷰 (예시)",
+        "cited_text": "A 토너는 자극 관련 불만이 가장 적었다",
+        "domain": "review-site.example.net",
+        "in_search_results": true
+      },
+      {
+        "id": "c3",
+        "url": "https://brand-b.example.org/products/hydra-toner",
+        "title": "예시 브랜드 B 하이드라 토너",
+        "cited_text": "보습 중심 처방, 건조한 민감 피부용",
+        "domain": "brand-b.example.org",
+        "in_search_results": true
+      },
+      {
+        "id": "c4",
+        "url": "https://mall-c.example.com/item/123",
+        "title": "예시 브랜드 C 약산성 토너 - 예시몰",
+        "cited_text": "pH 5.5 약산성",
+        "domain": "mall-c.example.com",
+        "in_search_results": true
+      },
+      {
+        "id": "c5",
+        "url": "https://review-site.example.net/sensitive-toner-2026",
+        "title": "2026 민감 피부 토너 비교 리뷰 (예시)",
+        "cited_text": "C 토너는 가성비 항목에서 높은 점수",
+        "domain": "review-site.example.net",
+        "in_search_results": true
+      },
+      {
+        "id": "c6",
+        "url": "https://review-site.example.net/sensitive-toner-2026",
+        "title": "2026 민감 피부 토너 비교 리뷰 (예시)",
+        "cited_text": "D 토너는 향료 함유",
+        "domain": "review-site.example.net",
+        "in_search_results": true
+      }
+    ],
+    "search": {
+      "used": true,
+      "queries": [
+        "민감성 피부 토너 추천 한국 브랜드"
+      ],
+      "results": [
+        {
+          "url": "https://shop-a.example.com/toner/calm",
+          "title": "예시 브랜드 A 카밍 토너 | 공식몰",
+          "page_age": "2026-09-02",
+          "domain": "shop-a.example.com"
+        },
+        {
+          "url": "https://brand-b.example.org/products/hydra-toner",
+          "title": "예시 브랜드 B 하이드라 토너",
+          "page_age": "2026-08-15",
+          "domain": "brand-b.example.org"
+        },
+        {
+          "url": "https://review-site.example.net/sensitive-toner-2026",
+          "title": "2026 민감 피부 토너 비교 리뷰 (예시)",
+          "page_age": "2026-10-01",
+          "domain": "review-site.example.net"
+        },
+        {
+          "url": "https://mall-c.example.com/item/123",
+          "title": "예시 브랜드 C 약산성 토너 - 예시몰",
+          "page_age": "2026-07-20",
+          "domain": "mall-c.example.com"
+        },
+        {
+          "url": "https://blog.example.net/post/99",
+          "title": "토너 사용 후기 모음 (예시)",
+          "page_age": null,
+          "domain": "blog.example.net"
+        }
+      ],
+      "errors": []
+    }
+  },
+  "analysis": {
+    "status": "succeeded",
+    "products": [
+      {
+        "id": "p1",
+        "brand": "예시 브랜드 A",
+        "product": "카밍 토너",
+        "mention_type": "recommended",
+        "evidence_text": "무향료이며 피부 자극 테스트를 완료했다고 공식몰에 표기되어 있어 민감 피부에 먼저 고려할 만합니다.",
+        "evidence_found": true,
+        "start_offset": 107,
+        "end_offset": 162,
+        "segment_ids": [
+          "s3",
+          "s4"
+        ],
+        "citation_ids": [
+          "c1",
+          "c2"
+        ],
+        "list_position": 1,
+        "explicit_rank": null,
+        "review_required": false,
+        "issues": []
+      },
+      {
+        "id": "p2",
+        "brand": "예시 브랜드 B",
+        "product": "하이드라 토너",
+        "mention_type": "recommended",
+        "evidence_text": "보습 성분 중심의 처방으로 건조함을 함께 느끼는 민감 피부에 적합하다고 소개됩니다.",
+        "evidence_found": true,
+        "start_offset": 216,
+        "end_offset": 262,
+        "segment_ids": [
+          "s6"
+        ],
+        "citation_ids": [
+          "c3"
+        ],
+        "list_position": 2,
+        "explicit_rank": null,
+        "review_required": false,
+        "issues": []
+      },
+      {
+        "id": "p3",
+        "brand": "예시 브랜드 C",
+        "product": "약산성 토너",
+        "mention_type": "recommended",
+        "evidence_text": "약산성 pH를 표기하고 있으며 가격대가 낮아 처음 시도하기 좋습니다.",
+        "evidence_found": true,
+        "start_offset": 313,
+        "end_offset": 351,
+        "segment_ids": [
+          "s9"
+        ],
+        "citation_ids": [
+          "c4",
+          "c5"
+        ],
+        "list_position": 3,
+        "explicit_rank": null,
+        "review_required": false,
+        "issues": []
+      },
+      {
+        "id": "p4",
+        "brand": "예시 브랜드 D",
+        "product": "토너",
+        "mention_type": "discouraged",
+        "evidence_text": "예시 브랜드 D 토너는 향료가 포함되어 있어 향료를 피하려는 경우 권하지 않습니다.",
+        "evidence_found": true,
+        "start_offset": 357,
+        "end_offset": 403,
+        "segment_ids": [
+          "s10"
+        ],
+        "citation_ids": [
+          "c6"
+        ],
+        "list_position": 4,
+        "explicit_rank": null,
+        "review_required": false,
+        "issues": []
+      }
+    ]
+  },
+  "cost_estimate": null
+}

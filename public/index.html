@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>sieve · AI 추천 근거 추적</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">sieve</span>
+      <span class="sub">AI 추천 근거 추적</span>
+    </div>
+    <span class="tag">Claude API 웹 검색 테스트</span>
+    <span id="keyStatus" class="key"></span>
+  </header>
+
+  <div class="layout">
+    <aside class="side">
+      <section class="card">
+        <h2>고정 질문</h2>
+        <p id="questionText" class="question"></p>
+        <dl id="questionMeta" class="meta"></dl>
+        <button id="runBtn" class="run">이 질문 실행</button>
+        <p id="runHint" class="hint"></p>
+      </section>
+      <section class="card">
+        <h2>실행 기록</h2>
+        <ul id="runList" class="runs"></ul>
+      </section>
+    </aside>
+
+    <main class="main" id="main">
+      <div class="empty">왼쪽에서 실행 기록을 선택하거나 질문을 실행하세요.</div>
+    </main>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
