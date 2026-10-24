@@ -213,6 +213,13 @@
       "condition": "outcome in [out_bought_ai_candidate, out_bought_other]",
       "fallback_question": { "ko": "실제로 산 제품 이름을 적어 주세요.", "en": "Write the name of the product you bought." }
     },
+    "satisfaction": {
+      "stage": "post_offer", "type": "scale", "min": 1, "max": 5, "required": false,
+      "condition": "outcome in [out_bought_ai_candidate, out_bought_other]",
+      "note": "대화 붙여넣기 화면에서만 묻는다. 인터뷰 순서(order)에는 넣지 않았다.",
+      "fallback_question": { "ko": "산 제품에 얼마나 만족하나요?", "en": "How satisfied are you with the product you bought?" },
+      "labels": { "1": { "ko": "매우 불만족", "en": "Very dissatisfied" }, "3": { "ko": "보통", "en": "Neutral" }, "5": { "ko": "매우 만족", "en": "Very satisfied" } }
+    },
     "reason_codes": {
       "stage": "post_offer", "type": "multi", "required": true,
       "input": "reason_text (자유 답변) → Claude 분류 + 근거 구간",

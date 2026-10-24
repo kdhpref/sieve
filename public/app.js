@@ -1,30 +1,23 @@
 import { GROUPS, CATEGORY_VERSION } from "./categories.js";
-import { CONCERN_GROUPS, ALL_CONCERNS, SKIN_GUIDE, TONER_ATTRS } from "./concerns.js";
 import { productSVG } from "./illustrations.js";
 import { startRecommend, bindRecommend } from "./recommend.js";
-import { share, initShare, pasteProblem, shareProblem, shareSlots, shareSummary, setShareLocked } from "./share.js";
+import { share, initShare, pasteProblem, aboutProblem, resultProblem, preOfferSlots, preOfferRecord,
+  postOfferSlots, postOfferRecord, shareSummary, setShareLocked } from "./share.js";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 const allItems = GROUPS.flatMap((g) => g.items);
-const concernOf = (code) => ALL_CONCERNS.find((c) => c.code === code);
-// 직접 적은 고민은 적은 내용으로 보여준다
-const concernLabel = (code) => (concernOf(code).free && state.freeText[code]) || concernOf(code).ko;
 
 // 제품 종류를 고른 뒤 두 갈래로 나뉜다. 각 갈래의 화면 순서.
 const FLOWS = {
-  share: [["product", "제품 종류"], ["paste", "대화 붙여넣기"], ["concern", "원래 고민"], ["share", "AI 답 정리"], ["confirm", "확인"]],
+  share: [["product", "제품 종류"], ["paste", "대화 붙여넣기"], ["about", "간단 질문"], ["result", "결과"], ["confirm", "확인"]],
   recommend: [["product", "제품 종류"], ["recommend", "제품 추천"]],
 };
-const VIEWS = ["product", "paste", "recommend", "concern", "share", "confirm"];
+const VIEWS = ["product", "paste", "recommend", "about", "result", "confirm"];
 
 const state = {
   view: "product", path: null, locked: false,
-  // 1단계
   group: "SK", code: null, otherText: "",
-  // 2단계
-  concerns: new Set(), freeText: {}, primary: null, primaryChosen: false,
-  skinSource: null, guideAnswer: null, attrs: {},
 };
 
 // 받침 있는 글자 뒤에는 "을", 없으면 "를"
@@ -92,153 +85,7 @@ $("other-text").addEventListener("input", (e) => {
   renderDock();
 });
 
-/* ---------- 2단계: 원래 고민 ---------- */
-
-function renderConcernHeader() {
-  const item = allItems.find((i) => i.code === state.code);
-  $("picked-product").innerHTML = item ? productSVG(item, "-picked") : "";
-  const name = pickedName();
-  $("concern-title").innerHTML = `${esc(name)}${objectParticle(name)} 고를 때<br>무엇이 중요했나요?`;
-}
-
-function chip(c) {
-  const on = state.concerns.has(c.code);
-  const guided = c.skinType && on && state.skinSource === "guided" && c.code !== "skin_unknown";
-  return `<button type="button" class="chip" data-concern="${c.code}" aria-pressed="${on}">
-    <span class="chip-label">${c.ko}</span>
-    ${c.sub ? `<span class="chip-sub">${guided ? "질문으로 골랐어요" : c.sub}</span>` : ""}
-  </button>`;
-}
-
-function renderConcerns() {
-  $("concerns").innerHTML = CONCERN_GROUPS.map((g, gi) => {
-    const free = g.items.filter((c) => c.free && state.concerns.has(c.code));
-    return `<section class="block">
-      <h2>${g.ko}</h2>
-      ${g.hint ? `<p class="hint">${g.hint}</p>` : ""}
-      <div class="chips ${gi === 0 ? "chips-skin" : ""}">${g.items.map(chip).join("")}</div>
-      ${gi === 0 ? guideHTML() : ""}
-      ${free.map((c) => `
-        <label class="free"><span>${c.free}</span>
-          <input type="text" maxlength="60" data-free="${c.code}" value="${esc(state.freeText[c.code] ?? "")}">
-        </label>`).join("")}
-    </section>`;
-  }).join("");
-}
-
-// 잘 모름을 고르면 유도 질문을 보여준다. 답하면 결과 피부 타입으로 바뀌고, 다시 고를 수 있게 남겨 둔다.
-function guideHTML() {
-  const open = state.concerns.has("skin_unknown") || state.skinSource === "guided";
-  if (!open) return "";
-  return `<div class="guide" role="group" aria-labelledby="guide-q">
-    <p class="guide-q" id="guide-q">${SKIN_GUIDE.question}</p>
-    <div class="guide-answers">
-      ${SKIN_GUIDE.answers.map((a) => `
-        <button type="button" class="guide-answer" data-guide="${a.code}" aria-pressed="${state.guideAnswer === a.code}">
-          ${a.text}<span class="guide-result">${a.result === "skin_unknown" ? "잘 모름으로 둘게요" : concernOf(a.result).ko}</span>
-        </button>`).join("")}
-    </div>
-    <p class="guide-note">피부 진단이 아니라, 고르기 쉽게 돕는 질문이에요.</p>
-  </div>`;
-}
-
-function renderPrimary() {
-  const picked = [...state.concerns];
-  // 고민이 하나면 자동으로 정하고, 둘 이상이면 참여자가 직접 고른 경우에만 유지한다
-  if (!state.concerns.has(state.primary)) state.primaryChosen = false;
-  if (picked.length === 1) { state.primary = picked[0]; state.primaryChosen = false; }
-  else if (!state.primaryChosen) state.primary = null;
-  $("primary-block").hidden = picked.length < 2;
-  $("primary").innerHTML = picked.map((code) => `
-    <button type="button" role="radio" class="primary-option" data-primary="${code}" aria-checked="${state.primary === code}">
-      ${esc(concernLabel(code))}
-    </button>`).join("");
-}
-
-function renderAttrs() {
-  const toner = ["SK-TONER", "SK-PAD"].includes(state.code);
-  $("attrs").hidden = !toner;
-  $("attr-list").innerHTML = TONER_ATTRS.map((a) => `
-    <div class="attr"><h3>${a.ko}</h3><div class="chips">
-      ${a.values.map(([v, ko]) => `<button type="button" class="chip chip-small" data-attr="${a.key}" data-value="${v}"
-        aria-pressed="${state.attrs[a.key] === v}"><span class="chip-label">${ko}</span></button>`).join("")}
-    </div></div>`).join("");
-}
-
-function renderStep2() {
-  renderConcerns();
-  renderPrimary();
-  renderDock();
-}
-
-function toggleConcern(code) {
-  const c = concernOf(code);
-  if (state.concerns.has(code)) {
-    state.concerns.delete(code);
-    if (c.skinType) { state.skinSource = null; state.guideAnswer = null; }
-  } else {
-    if (c.skinType) {
-      for (const s of ALL_CONCERNS) if (s.skinType) state.concerns.delete(s.code);
-      state.skinSource = "self";
-      state.guideAnswer = null;
-    }
-    state.concerns.add(code);
-  }
-  renderStep2();
-}
-
-function answerGuide(code) {
-  const answer = SKIN_GUIDE.answers.find((a) => a.code === code);
-  for (const s of ALL_CONCERNS) if (s.skinType) state.concerns.delete(s.code);
-  state.concerns.add(answer.result);
-  state.skinSource = "guided";
-  state.guideAnswer = code;
-  renderStep2();
-}
-
-$("concerns").addEventListener("click", (e) => {
-  const chipBtn = e.target.closest("[data-concern]");
-  if (chipBtn) return toggleConcern(chipBtn.dataset.concern);
-  const guideBtn = e.target.closest("[data-guide]");
-  if (guideBtn) answerGuide(guideBtn.dataset.guide);
-});
-
-$("concerns").addEventListener("input", (e) => {
-  const code = e.target.dataset.free;
-  if (!code) return;
-  state.freeText[code] = e.target.value.trim();
-  renderPrimary();
-  renderDock();
-});
-
-$("primary").addEventListener("click", (e) => {
-  const btn = e.target.closest("[data-primary]");
-  if (!btn) return;
-  state.primary = btn.dataset.primary;
-  state.primaryChosen = true;
-  renderPrimary();
-  renderDock();
-});
-
-$("attr-list").addEventListener("click", (e) => {
-  const btn = e.target.closest("[data-attr]");
-  if (!btn) return;
-  const { attr, value } = btn.dataset;
-  if (state.attrs[attr] === value) delete state.attrs[attr];
-  else state.attrs[attr] = value;
-  renderAttrs();
-});
-
 /* ---------- 공통: 단계 이동과 하단 바 ---------- */
-
-function step2Problem() {
-  if (state.concerns.size === 0) return "고민을 하나 이상 골라 주세요";
-  for (const code of state.concerns) {
-    if (concernOf(code).free && !state.freeText[code]) return "직접 적는 칸을 채워 주세요";
-  }
-  if (!state.primary) return "가장 중요했던 고민을 골라 주세요";
-  return null;
-}
 
 const flow = () => FLOWS[state.path ?? "share"];
 
@@ -266,22 +113,21 @@ function renderDock() {
   } else if (v === "paste") {
     const problem = pasteProblem();
     $("picked").textContent = problem ?? `${share.excerpt.trim().length.toLocaleString()}자 붙여 넣었어요`;
-    setNext("다음: 원래 고민", problem);
-  } else if (v === "concern") {
-    const problem = step2Problem();
-    $("picked").textContent = problem
-      ?? `고민 ${state.concerns.size}개, 가장 중요한 것은 ${concernLabel(state.primary)}`;
-    setNext("다음: AI 답 정리", problem);
-  } else if (v === "share") {
-    const problem = shareProblem();
+    setNext("다음: 간단 질문", problem);
+  } else if (v === "about") {
+    const problem = aboutProblem();
+    $("picked").textContent = problem ?? "다 골랐어요";
+    setNext("다음: 무엇을 샀나요", problem);
+  } else if (v === "result") {
+    const problem = resultProblem();
     $("picked").textContent = problem ?? "필수 항목을 모두 채웠어요";
     setNext("다음: 확인하기", problem);
   } else if (v === "recommend") {
     $("picked").textContent = "";
     $("next").hidden = true;
   } else {
-    $("picked").textContent = state.locked ? "기록이 잠겼어요" : $("consent").checked ? "확인하면 잠겨요" : "동의에 체크해 주세요";
-    setNext(state.locked ? "잠김" : "확인하고 잠그기", state.locked || !$("consent").checked);
+    $("picked").textContent = state.locked ? "제출했어요" : $("consent").checked ? "제출하면 잠겨요" : "동의에 체크해 주세요";
+    setNext(state.locked ? "제출 완료" : "확인하고 제출하기", state.locked || !$("consent").checked);
   }
   $("back").hidden = v === "product" || state.locked;
 }
@@ -310,7 +156,10 @@ function goTo(view) {
   for (const v of VIEWS) $(`step-${v}`).hidden = v !== view;
   renderSteps();
   document.title = `Sieve: ${flow().find(([v]) => v === view)?.[1] ?? ""}`;
-  if (view === "concern") { renderConcernHeader(); renderAttrs(); renderStep2(); }
+  if (view === "about") {
+    const item = allItems.find((i) => i.code === state.code);
+    $("picked-product").innerHTML = item ? productSVG(item, "-picked") : "";
+  }
   if (view === "recommend") renderRecommend();
   if (view === "confirm" && !state.locked) renderSummary();
   renderDock();
@@ -331,58 +180,18 @@ function choosePath(path) {
   goTo(path === "share" ? "paste" : "recommend");
 }
 
-// 저장 필드는 명세 4.1을 따른다. intent_ids는 선택값에서 파생한다.
-function step2Record() {
-  const codes = [...state.concerns];
-  const hasSkin = codes.some((c) => concernOf(c).skinType);
+function productFields() {
   return {
     category_version: CATEGORY_VERSION,
     product_category: state.code,
     product_category_other: state.code === "OTHER" ? state.otherText : null,
-    product_attrs: { ...state.attrs },
-    concern_codes: codes,
-    // 자유 입력은 선택지 코드별로 둔다. 고르지 않은 칸은 저장하지 않는다.
-    concern_other_text: Object.fromEntries(
-      codes.filter((c) => concernOf(c).free && state.freeText[c]).map((c) => [c, state.freeText[c]])),
-    primary_concern_code: state.primary,
-    intent_ids: [...new Set(codes.map((c) => concernOf(c).intent).filter(Boolean))].sort(),
-    primary_intent_id: concernOf(state.primary).intent,
-    skin_type_source: hasSkin ? state.skinSource : null,
-    skin_guide_answer: hasSkin ? state.guideAnswer : null,
-    is_internal_test: true,
   };
 }
 
-/* ---------- 4단계: 확인과 잠금 ---------- */
-
-// 지침 3.1 슬롯 중 아직 화면이 없는 것. 결측(skipped)과 구분해 not_asked로 남긴다.
-const SLOTS_WITHOUT_SCREEN = ["trigger", "current_status", "dissatisfaction", "decision_factors", "budget_band"];
-
-function step2Slots() {
-  const r = step2Record();
-  const row = (slot, extra) => ({ slot, value_code: null, value_num: null, rank: null, value_text: null,
-    status: "answered", source: "option", ...extra });
-  return [
-    row("product_category", { value_code: r.product_category, value_text: r.product_category_other }),
-    ...r.concern_codes.map((c) => row("concern_codes", { value_code: c, value_text: r.concern_other_text[c] ?? null })),
-    r.skin_type_source === "guided"
-      ? row("skin_guide_answer", { value_code: r.skin_guide_answer })
-      : row("skin_guide_answer", { status: "not_asked", source: null }),
-    row("primary_concern_code", { value_code: r.primary_concern_code }),
-    ...SLOTS_WITHOUT_SCREEN.map((slot) => row(slot, { status: "not_asked", source: null })),
-  ];
-}
+/* ---------- 확인과 제출 ---------- */
 
 function summaryRows() {
-  const r = step2Record();
-  const concerns = r.concern_codes.map(concernLabel).join(", ");
-  const rows = [
-    ["찾던 제품", pickedName()],
-    ["원래 고민", concerns],
-    ["가장 중요했던 고민", concernLabel(r.primary_concern_code)],
-    ...shareSummary(),
-  ];
-  return rows;
+  return [["찾던 제품", pickedName()], ...shareSummary()];
 }
 
 function renderSummary(rows = summaryRows()) {
@@ -394,24 +203,24 @@ async function sha256(text) {
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-async function lockPreOffer() {
-  const body = {
-    stage: "pre_offer",
-    is_internal_test: true,
-    verification_level: "self_reported",
-    codebook_version: state.codebookVersion,
-    ...step2Record(),
-    raw_content: share.excerpt.trim(),
-    slots: [...step2Slots(), ...shareSlots()],
-    consented_at: new Date().toISOString(),
-  };
-  const locked_at = new Date().toISOString();
-  const record = { ...body, locked_at, sha256: await sha256(JSON.stringify(body)) };
-  localStorage.setItem("sieve.pre_offer.locked", JSON.stringify(record));
+// 혜택 노출 전(pre_offer)을 먼저 잠그고, 그 확인값을 붙여 결과(post_offer)를 저장한다.
+// 이 화면은 혜택을 보여주지 않으므로 offer_shown_at은 null이다.
+async function submit() {
+  const consented_at = new Date().toISOString();
+  const common = { is_internal_test: true, verification_level: "self_reported", codebook_version: state.codebookVersion };
+  const p = productFields();
+  const productRow = { slot: "product_category", value_code: p.product_category, value_num: null, rank: null,
+    value_text: p.product_category_other, status: "answered", source: "option" };
+  const preBody = { stage: "pre_offer", ...common, ...p, ...preOfferRecord(),
+    raw_content: share.excerpt.trim(), slots: preOfferSlots(productRow), consented_at };
+  const pre = { ...preBody, locked_at: new Date().toISOString(), sha256: await sha256(JSON.stringify(preBody)) };
+  const postBody = { stage: "post_offer", ...common, pre_offer_sha256: pre.sha256, ...postOfferRecord(), slots: postOfferSlots() };
+  const post = { ...postBody, submitted_at: new Date().toISOString(), sha256: await sha256(JSON.stringify(postBody)) };
+  localStorage.setItem("sieve.pre_offer.locked", JSON.stringify(pre));
+  localStorage.setItem("sieve.post_offer", JSON.stringify(post));
   // 화면 복원용 요약. 기록 본문(해시 대상)과 분리해 둔다.
   localStorage.setItem("sieve.pre_offer.locked.summary", JSON.stringify(summaryRows()));
-  localStorage.removeItem("sieve.pre_offer.draft");
-  showLocked(record);
+  showLocked(pre);
 }
 
 function showLocked(record) {
@@ -419,22 +228,21 @@ function showLocked(record) {
   setShareLocked(true);
   $("consent-wrap").hidden = true;
   $("locked").hidden = false;
-  $("confirm-title").textContent = "기록을 잠갔어요";
-  $("confirm-lead").textContent = "이제 이 기록은 고칠 수 없어요. 다음 단계에서 혜택을 보더라도 지금 기록은 그대로 남아요.";
+  $("confirm-title").textContent = "제출했어요, 고마워요";
+  $("confirm-lead").textContent = "이제 이 기록은 고칠 수 없어요.";
   const at = new Date(record.locked_at).toLocaleString("ko-KR");
-  $("locked-stamp").textContent = `${at} 잠김 · 확인값 ${record.sha256.slice(0, 12)}`;
+  $("locked-stamp").textContent = `${at} 제출 · 확인값 ${record.sha256.slice(0, 12)}`;
   renderDock();
 }
 
 $("next").addEventListener("click", async () => {
   if (state.view === "product") return choosePath("share");
   if (state.view !== "confirm") {
-    if (state.view === "concern") localStorage.setItem("sieve.pre_offer.draft", JSON.stringify(step2Record()));
     const steps = flow();
     return goTo(steps[steps.findIndex(([v]) => v === state.view) + 1][0]);
   }
   $("next").disabled = true;
-  await lockPreOffer();
+  await submit();
 });
 
 $("next-alt").addEventListener("click", () => choosePath("recommend"));
@@ -449,6 +257,7 @@ $("consent").addEventListener("change", renderDock);
 $("restart").addEventListener("click", () => {
   localStorage.removeItem("sieve.pre_offer.locked");
   localStorage.removeItem("sieve.pre_offer.locked.summary");
+  localStorage.removeItem("sieve.post_offer");
   location.reload();
 });
 

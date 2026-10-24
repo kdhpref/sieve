@@ -93,92 +93,80 @@
     </section>
   </main>
 
-  <main class="page" id="step-concern" hidden>
+  <main class="page" id="step-about" hidden>
     <section class="intro intro-concern">
       <div class="picked-product" id="picked-product"></div>
       <div>
-        <h1 id="concern-title">무엇을 보고<br>고르려 했나요?</h1>
-        <p>AI에게 묻기 전에 원래 하던 고민을 모두 골라 주세요. 정답은 없어요.</p>
+        <h1>간단한 것만<br>여쭤볼게요</h1>
+        <p>피부 타입과 대화를 나눈 AI만 골라 주세요.</p>
       </div>
     </section>
 
-    <div id="concerns"></div>
-
-    <section class="block" id="primary-block" hidden>
-      <h2>이 중 가장 중요했던 하나는?</h2>
-      <div class="primary-list" id="primary" role="radiogroup" aria-label="가장 중요했던 고민"></div>
-    </section>
-
-    <details class="other" id="attrs">
-      <summary>제형이나 용량도 정해 두었다면 (선택)</summary>
-      <div id="attr-list"></div>
-    </details>
-
-    <p class="lock-note">대화 공유까지 마치면 이 기록은 잠겨서 수정할 수 없어요.
-      혜택 안내는 그다음에 보여 드려요.</p>
-  </main>
-
-  <main class="page" id="step-share" hidden>
-    <section class="intro">
-      <h1>AI 답을<br>정리해 주세요</h1>
-      <p>붙여 넣은 대화를 보며 아래 항목을 골라 주세요. 기억나는 만큼만 적어도 괜찮아요.</p>
+    <section class="block">
+      <h2>피부 타입</h2>
+      <p class="hint">하나만 골라 주세요. 민감한 편이라면 함께 고를 수 있어요.</p>
+      <div class="chips chips-skin" id="skin"></div>
+      <div id="skin-guide"></div>
     </section>
 
     <section class="block">
-      <h2>어떤 AI에게 물어봤나요?</h2>
+      <h2>어떤 AI와 나눈 대화인가요?</h2>
       <p class="hint">여러 개를 썼다면 모두 골라 주세요.</p>
       <div class="chips" id="ai-service"></div>
       <label class="free" id="ai-other-wrap" hidden><span>어떤 AI였는지 적어 주세요</span>
         <input type="text" id="ai-other" maxlength="40"></label>
     </section>
+  </main>
 
-    <div id="ai-used">
+  <main class="page" id="step-result" hidden>
+    <section class="intro">
+      <h1>그래서<br>무엇을 샀나요?</h1>
+      <p>사지 않았어도 괜찮아요. 사지 않은 이유도 똑같이 중요한 기록이고, 조사 보상도 같아요.</p>
+    </section>
+
+    <section class="block">
+      <h2>결국 어떻게 했나요?</h2>
+      <div class="primary-list" id="outcome" role="radiogroup" aria-label="최종 결과"></div>
+    </section>
+
+    <div id="bought" hidden>
       <section class="block">
-        <h2><label for="ai-question">AI에게 실제로 한 질문</label></h2>
-        <p class="hint">처음 물어본 문장을 그대로 붙여 넣거나 기억나는 대로 적어 주세요.</p>
-        <textarea id="ai-question" rows="3" maxlength="500"
-          placeholder="예: 지성 피부인데 끈적이지 않는 토너 추천해 줘"></textarea>
+        <h2><label for="chosen-product">산 제품</label></h2>
+        <p class="hint">브랜드와 제품 이름을 적어 주세요.</p>
+        <input type="text" class="leading-input" id="chosen-product" maxlength="80" placeholder="예: OO 수분 토너 200ml">
       </section>
 
       <section class="block">
-        <h2><label for="candidate-input">AI가 알려준 제품</label></h2>
-        <p class="hint">브랜드와 제품 이름을 AI가 말한 그대로 적어 주세요. 하나씩 추가해요.</p>
-        <div class="candidate-add">
-          <input type="text" id="candidate-input" maxlength="80" placeholder="예: OO 수분 토너">
-          <button type="button" class="add" id="candidate-add">추가</button>
-        </div>
-        <ul class="candidates" id="candidates"></ul>
+        <h2>산 제품에 얼마나 만족하나요?</h2>
+        <p class="hint">아직 많이 써 보지 않았다면 지금 마음으로 골라 주세요.</p>
+        <div class="scale" id="satisfaction-scale" role="radiogroup" aria-label="만족도"></div>
       </section>
 
       <section class="block">
-        <h2>AI 답을 본 뒤 따로 확인한 곳</h2>
-        <p class="hint">여러 개를 고를 수 있어요.</p>
-        <div class="chips" id="verify-channels"></div>
+        <h2><label for="bought-note">좋았던 점이나 아쉬운 점 (선택)</label></h2>
+        <textarea id="bought-note" rows="3" maxlength="500" placeholder="예: 끈적임은 없는데 보습이 조금 아쉬워요"></textarea>
       </section>
     </div>
 
-    <section class="block">
-      <h2>2주 안에 이 제품 종류를 살 가능성은?</h2>
-      <div class="scale" id="intent-scale" role="radiogroup" aria-label="2주 안 구매 가능성"></div>
-    </section>
+    <div id="not-bought" hidden>
+      <section class="block">
+        <h2 id="reason-title">사지 않은 이유는?</h2>
+        <p class="hint">여러 개를 고를 수 있어요.</p>
+        <div class="chips" id="reasons"></div>
+      </section>
 
-    <section class="block" id="leading-block" hidden>
-      <h2>지금 가장 마음이 가는 제품 (선택)</h2>
-      <p class="hint">위에 적은 제품 중에서 고르거나 직접 적어 주세요.</p>
-      <div class="chips" id="leading-chips"></div>
-      <input type="text" class="leading-input" id="leading-input" maxlength="80" placeholder="직접 적기">
-    </section>
-
-    <section class="block">
-      <h2>산다면 어디서 살 생각인가요?</h2>
-      <div class="chips" id="planned-channel"></div>
-    </section>
+      <section class="block">
+        <h2><label for="reason-text">조금 더 자세히 적어 주세요</label></h2>
+        <p class="hint" id="reason-text-hint">무엇이 걸렸는지, 대신 어떻게 할 생각인지 편하게 적어 주세요. (선택)</p>
+        <textarea id="reason-text" rows="4" maxlength="500" placeholder="예: 미국 배송이 2주 넘게 걸려서 일단 미뤘어요"></textarea>
+      </section>
+    </div>
   </main>
 
   <main class="page" id="step-confirm" hidden>
     <section class="intro">
-      <h1 id="confirm-title">이대로 기록할까요?</h1>
-      <p id="confirm-lead">확인하면 지금까지 적은 내용이 잠기고, 그 뒤에는 고칠 수 없어요.
+      <h1 id="confirm-title">이대로 제출할까요?</h1>
+      <p id="confirm-lead">제출하면 지금까지 적은 내용이 잠기고, 그 뒤에는 고칠 수 없어요.
         고칠 곳이 있다면 이전 단계로 돌아가 주세요.</p>
     </section>
     <dl class="summary" id="summary"></dl>
@@ -189,8 +177,8 @@
     </label>
     <section class="locked" id="locked" hidden>
       <p class="locked-stamp" id="locked-stamp"></p>
-      <p>혜택 안내와 최종 결과·이유 제출 화면은 아직 준비 중이에요.
-        구매하지 않았거나 다른 제품을 골라도 조사 보상은 같아요.</p>
+      <p>구매하지 않았거나 다른 제품을 골라도 조사 보상은 같아요.
+        이 화면에서는 혜택 안내를 보여 드리지 않았어요.</p>
       <button type="button" class="restart" id="restart">내부 테스트 다시 시작</button>
     </section>
   </main>

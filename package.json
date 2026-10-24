@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "private": true,
   "type": "module",
-  "description": "Sieve 소비자 참여 화면 — pre_offer 4단계(제품 종류·원래 고민·대화 공유·확인 잠금) (외부 패키지 없음)",
+  "description": "Sieve 소비자 참여 화면 — 제품 종류·대화 붙여넣기·간단 질문·결과(산 제품·만족도 또는 안 산 이유)·확인 (외부 패키지 없음)",
   "engines": { "node": ">=24" },
   "scripts": {
     "start": "node server.mjs",

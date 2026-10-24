@@ -92,6 +92,8 @@
 | O3 | `reason_text` → `reason_codes` | 그렇게 결정한 이유 | 자유 → 복수 코드 | required |
 | O4 | `changed_after_offer` | 혜택을 본 뒤 마음이 바뀌었는지 | 단일 | O1이 true일 때 |
 
+**대화 붙여넣기 화면(index.html 공유 갈래)은 위 슬롯 중 일부만 묻는 짧은 고정 폼이다.** 순서는 대화 붙여넣기(`raw_content`) → 간단 질문(`concern_codes` 중 피부 타입·민감 여부, `skin_guide_answer`, `ai_service`) → 결과(`outcome`, 구매면 `chosen_product_raw`·`satisfaction`·좋았던 점/아쉬운 점, 미구매·고민 중이면 `reason_codes`·`reason_text`) → 확인·제출이다. 묻지 않은 pre_offer 슬롯은 `not_asked`로 남긴다. 구매자에게는 `reason_codes`를 묻지 않고(`not_asked`) 만족도 메모를 `reason_text`로 둔다. `satisfaction`(1~5)은 이 폼에만 있는 슬롯이라 코드북 `slots`에는 있지만 인터뷰 `order`에는 없다. 이 화면은 혜택을 보여주지 않으므로 제출 시 pre_offer를 먼저 잠그고 그 sha256을 붙여 post_offer를 `offer_shown_at=null`로 저장하며, `changed_after_offer`는 `not_asked`다. 저장은 아직 브라우저(localStorage)에만 한다.
+
 ### 3.2 다음 질문 결정 알고리즘 (코드)
 
 ```
