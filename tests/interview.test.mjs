@@ -249,3 +249,106 @@ test("물음표가 두 개면 한 턴에 두 질문으로 보고 고정 문구�
   assert.ok(validateQuestion("Anything else? Or does it work well?", { lang: "en", stage: "pre_offer" }).includes("multiple_questions"));
   assert.deepEqual(validateQuestion("You said it feels sticky. Anything else?", { lang: "en", stage: "pre_offer" }), []);
 });
+
+// 보기형 슬롯마다 먼저 애매한 글 답으로 재질문을 받고, 재질문 턴에서 보기를 누른다(재질문을 최대한 많이 받는 참여자).
+async function answerWithProbes(service, view, picks = {}) {
+  let v = view;
+  let probes = 0;
+  for (let i = 0; v.question && i < 60; i++) {
+    const q = v.question;
+    let payload;
+    if (q.type === "scale") payload = { kind: "option", value_num: 4 };
+    else if (q.type === "text" || q.type === "text_list") payload = { kind: "text", text: "토너 추천해줘" };
+    else if (!q.is_probe) payload = { kind: "text", text: "음 글쎄요" };
+    else {
+      probes++;
+      payload = { kind: "option", codes: picks[q.slot] ?? [q.options[0].code] };
+    }
+    v = await service.answer(v.interview.id, { turn_id: q.turn_id, ...payload });
+  }
+  return { v, probes };
+}
+
+const ambiguousClaude = () => fakeClaude({
+  extract: (input) => ({ slot: input.current_slot.key, status: "ambiguous", codes: [], other_slots: [], probe_question: "어느 쪽에 더 가까우세요?" }),
+});
+
+test("재질문은 최대 턴에 세지 않는다: 재질문이 많아도 뒤쪽 필수 슬롯까지 모두 묻는다", async () => {
+  const { store, service } = setup(ambiguousClaude());
+  const pre = await answerWithProbes(service, await service.start(START), {
+    concern_codes: ["skin_unknown", "feel_nonsticky"],
+    skin_guide_answer: ["guide_combo"],
+    current_status: ["cur_unsatisfied"],
+    ai_service: ["ai_chatgpt"],
+  });
+  assert.equal(pre.v.question, null);
+  const preTurns = store.turns(pre.v.interview.id).filter((t) => t.stage === "pre_offer");
+  assert.equal(preTurns.filter((t) => !t.is_probe).length, 15); // 조건 슬롯까지 전부 해당하는 최대 경로
+  assert.ok(preTurns.length > 18, `재질문 포함 ${preTurns.length}턴`); // 예전 규칙이면 18턴에서 끊겼다
+  assert.ok(pre.probes >= 4);
+
+  let v = await service.lock(pre.v.interview.id);
+  const rows = store.db.prepare("SELECT slot, status FROM interview_values WHERE interview_id = ? AND stage = 'pre_offer'").all(v.interview.id);
+  assert.deepEqual(rows.filter((r) => r.status === "not_asked").map((r) => r.slot), []);
+  assert.equal(rows.find((r) => r.slot === "planned_channel").status, "answered");
+
+  v = await service.offer(v.interview.id, { shown: true });
+  const post = await answerWithProbes(service, v, { outcome: ["out_bought_other"] });
+  assert.equal(post.v.interview.stage, "done");
+  assert.equal(post.probes, 3); // outcome·reason_codes·changed_after_offer 재질문 3회 + 슬롯 4개 = 7턴 > 최대 6턴
+  const changed = store.db.prepare("SELECT status FROM interview_values WHERE interview_id = ? AND slot = 'changed_after_offer'").get(v.interview.id);
+  assert.equal(changed.status, "answered");
+});
+
+// 혜택 후 단계의 첫 질문(outcome)까지 진행한다.
+async function toOutcome(service, aiAnswer) {
+  let v = await answerAll(service, await service.start(START), { ai_service: aiAnswer });
+  await service.lock(v.interview.id);
+  v = await service.offer(v.interview.id, { shown: false });
+  assert.equal(v.question.slot, "outcome");
+  return v;
+}
+
+test("AI를 쓰지 않았다고 답한 참여자에게는 'AI가 알려준 제품을 샀다' 보기를 숨기고, 눌러도 저장하지 않는다", async () => {
+  const codes = (v) => v.question.options.map((o) => o.code);
+
+  const none = setup();
+  let v = await toOutcome(none.service, { kind: "option", codes: ["ai_none"] });
+  assert.deepEqual(codes(v), ["out_bought_other", "out_not_bought", "out_undecided"]);
+  await assert.rejects(
+    none.service.answer(v.interview.id, { turn_id: v.question.turn_id, kind: "option", codes: ["out_bought_ai_candidate"] }),
+    { status: 400 },
+  );
+
+  // AI를 썼거나, AI 질문을 건너뛰어 알 수 없으면 그대로 보여준다.
+  for (const aiAnswer of [{ kind: "option", codes: ["ai_chatgpt"] }, { kind: "skip" }]) {
+    const { service } = setup();
+    v = await toOutcome(service, aiAnswer);
+    assert.ok(codes(v).includes("out_bought_ai_candidate"), JSON.stringify(aiAnswer));
+  }
+});
+
+test("AI 미사용 참여자의 자유 답변을 Claude가 'AI 후보 구매'로 분류해도 확정하지 않는다", async () => {
+  const claude = fakeClaude({
+    extract: (input) => ({
+      slot: input.current_slot.key, status: "clear", other_slots: [], probe_question: null,
+      codes: [{ code: "out_bought_ai_candidate", evidence_text: "추천받은 걸 샀어요", rank: null }],
+    }),
+  });
+  const { store, service } = setup(claude);
+  let v = await toOutcome(service, { kind: "option", codes: ["ai_none"] });
+  v = await service.answer(v.interview.id, { turn_id: v.question.turn_id, kind: "text", text: "추천받은 걸 샀어요" });
+
+  const sent = claude.calls.filter((c) => c.purpose === "extract" && c.input.current_slot.key === "outcome").at(-1);
+  assert.ok(!sent.input.current_slot.options.some((o) => o.code === "out_bought_ai_candidate")); // Claude에게도 보기에서 뺀다
+  const call = store.db.prepare("SELECT validation_errors_json FROM llm_calls WHERE slot = 'outcome' AND purpose = 'extract'").get();
+  assert.match(call.validation_errors_json, /code_not_in_codebook:out_bought_ai_candidate/);
+
+  // 검증에 걸린 분류는 확정하지 않고 한 번 다시 묻는다. 그래도 같으면 검수 대기로 넘긴다.
+  assert.equal(v.question.slot, "outcome");
+  assert.equal(v.question.is_probe, true);
+  v = await service.answer(v.interview.id, { turn_id: v.question.turn_id, kind: "text", text: "추천받은 걸 샀어요" });
+  assert.equal(v.question.slot, "reason_codes"); // 확정된 구매 코드가 없으니 실제로 산 제품 질문도 없다
+  const outcome = v.summary.post_offer.find((x) => x.slot === "outcome");
+  assert.equal(outcome.review_required, true);
+});

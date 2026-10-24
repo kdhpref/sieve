@@ -87,7 +87,7 @@
 | # | 슬롯 | 묻는 것 | 형식 | 조건 |
 | --- | --- | --- | --- | --- |
 | O1 | `offer_seen` | 제휴 혜택을 봤는지 | 단일 | 시스템이 `offer_shown_at`으로 채움. 묻지 않음 |
-| O2 | `outcome` | 최종 결과 | 단일 | required |
+| O2 | `outcome` | 최종 결과 | 단일 | required. P8에서 `ai_none`만 고른 참여자에게는 `out_bought_ai_candidate`(AI가 알려준 제품을 샀다) 보기를 빼고 보여준다. P8을 건너뛴 경우는 알 수 없으므로 그대로 둔다 |
 | O2a | `chosen_product_raw` | 실제로 산 제품 | 자유 | O2가 구매일 때 |
 | O3 | `reason_text` → `reason_codes` | 그렇게 결정한 이유 | 자유 → 복수 코드 | required |
 | O4 | `changed_after_offer` | 혜택을 본 뒤 마음이 바뀌었는지 | 단일 | O1이 true일 때 |
@@ -96,7 +96,7 @@
 
 ```
 next_slot(state):
-  if state.turns >= MAX_TURNS (pre 18 / post 6, 슬롯 15개 + 재질문 여유): return END
+  if state.slot_turns >= MAX_TURNS (pre 18 / post 6): return END   # 재질문 턴은 세지 않는다
   for slot in SLOTS[state.stage] (표 순서):
     if slot.filled or slot.skipped: continue
     if not slot.condition(state): continue
@@ -123,8 +123,9 @@ on_answer(slot, answer):
 **자유 답변은 호출 2회, 보기 클릭은 1회.** 다음에 물을 슬롯이 방금 답의 분류 결과에 달려 있어서(예: `current_status=cur_unsatisfied`일 때만 `dissatisfaction`), 분류와 다음 질문을 한 번에 요청할 수 없다. 분류 호출이 끝나고 코드가 순서를 정한 뒤 질문 호출을 한다. 실측 대기 시간은 보기 클릭 약 2초, 자유 답변 약 4초다(질문 호출 평균 1.9초, 분류 호출 평균 2.4초).
 
 - **재질문은 슬롯당 최대 1회.** 두 번째도 애매하면 원문을 남기고 검수 대기로 넘긴다.
+- **최대 턴은 슬롯 질문만 센다.** 재질문까지 세면 재질문을 많이 받은 참여자에게서 뒤쪽 필수 슬롯(`planned_channel`, `changed_after_offer`)이 `not_asked`로 빠진다. 슬롯 질문은 최대 pre 15개·post 4개라 최대 턴(18/6)은 안전장치로만 남는다. 재질문 수는 슬롯당 1회 제한으로 통제한다.
 - **미리 말한 답 재사용.** 예: P2 답에서 “건조해서 바꾸려고요”라고 하면 `trigger=trg_switch`와 함께 `concern_codes`에 `skin_dry`를 후보로 넣는다. 단, 이 경우 P3를 건너뛰지 않고 “건조함 말고 다른 고민도 있으세요?”처럼 **확인 질문**으로 바꾼다(추정값 확정 금지).
-- **종료 조건.** 모든 required 슬롯 처리, 또는 최대 턴 도달. 최대 턴 도달로 끝난 슬롯은 `not_asked`로 저장해 결측과 구분한다.
+- **종료 조건.** 모든 required 슬롯 처리, 또는 최대 턴(슬롯 질문 기준) 도달. 최대 턴 도달로 끝난 슬롯은 `not_asked`로 저장해 결측과 구분한다.
 - **pre_offer 잠금.** P10 처리 후 요약 화면을 보여주고 참여자가 확인하면 잠근다. 잠근 뒤에만 제휴 혜택 정보를 보여준다.
 
 ## 4 질문 생성 규칙 (Claude에게 주는 지침)
@@ -238,7 +239,7 @@ Claude 출력을 저장하기 전에 코드로 확인한다(`lib/interview/valid
 
 분류 결과: 하나라도 실패하면 해당 값은 `review_required=true`로 저장하고 확정 집계에서 뺀다. 실패한 코드는 버리고 오류를 호출 로그에 남긴다.
 
-1. `code`가 코드북의 해당 슬롯 코드 목록(시장별 보기는 그 시장 것)에 있다.
+1. `code`가 그 참여자에게 보여준 보기 목록(시장별 보기는 그 시장 것, `outcome`은 AI 미사용자면 AI 후보 구매 제외)에 있다. Claude에게 보내는 `current_slot.options`도 같은 목록이다.
 2. `evidence_text`가 `last_answer` 안에 **그대로** 있다(공백 차이만 허용). 위치(`start_offset`, `end_offset`)는 서버가 원문 기준으로 계산해 저장한다.
 3. 단일 선택 슬롯에 코드가 2개 이상이면 실패. 순위 슬롯은 rank 1~3, 중복 없음.
 4. “없음” 보기(`ai_none`, `v_none`)를 다른 보기와 함께 고르면 실패.
